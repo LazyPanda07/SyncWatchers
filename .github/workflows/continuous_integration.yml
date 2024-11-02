@@ -1,0 +1,54 @@
+name: "Continuous Integration"
+
+on:
+  push:
+    branches: [master, dev, server]
+
+
+env:
+  WEB_FRAMEWORK_TAG: v3.0.7
+
+
+jobs:
+  windows:
+    runs-on: windows
+
+    steps:
+    - uses: actions/checkout@v4
+  
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Download WebFramework
+      uses: robinraju/release-downloader@v1.11      
+      with:
+        repository: LazyPanda07/WebFramework
+        tag: ${{ env.WEB_FRAMEWORK_TAG }}
+        filename: windows.zip
+        tarBall: false
+        zipBall: false
+        out-file-path: WebFrameworkLibrary
+        extract: true
+  
+    - name: Build
+      shell: bash
+      run: |
+          export WEB_FRAMEWORK_SDK=$(pwd)/WebFrameworkLibrary/ReleaseDLL_Windows
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=bin .. && cmake --build . --parallel $(nproc) --config Release --target install
+
+
+  linux:
+    runs-on: ubuntu-latest
+    container:
+      image: lazypanda07/web_framework_dev:1.0.2
+
+    steps:
+    - uses: actions/checkout@v4
+  
+    - name: Build
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=bin .. && make install -j $(nproc)
