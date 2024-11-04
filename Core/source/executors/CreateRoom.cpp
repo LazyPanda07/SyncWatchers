@@ -1,5 +1,7 @@
 #include "CreateRoom.h"
 
+#include <UUID.h>
+
 void CreateRoom::init(const framework::utility::JSONSettingsParser::ExecutorSettings& settings)
 {
 
@@ -12,7 +14,9 @@ void CreateRoom::doGet(framework::HTTPRequest& request, framework::HTTPResponse&
 
 void CreateRoom::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
 {
-	throw framework::exceptions::NotImplementedException(typeid(*this).name(), __func__);
+	std::string roomUUID = utility::generateUUID();
+
+
 }
 
 void CreateRoom::doHead(framework::HTTPRequest& request, framework::HTTPResponse& response)

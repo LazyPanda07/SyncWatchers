@@ -4,10 +4,15 @@ project(Core)
 
 add_library(
 	${PROJECT_NAME} SHARED
-	source/CreateRoom.cpp
+	source/executors/CreateRoom.cpp
+	source/models/RoomModel.cpp
+	source/models/UserModel.cpp
+	source/models/UserToRoomModel.cpp
 )
 
 target_link_libraries(
 	${PROJECT_NAME} PRIVATE
 	${WEB_FRAMEWORK_LIBS}
 )
+
+install(TARGETS ${PROJECT_NAME} DESTINATION executors/)

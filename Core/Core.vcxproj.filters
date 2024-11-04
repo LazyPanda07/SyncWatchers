@@ -18,12 +18,30 @@
     <None Include="core.json" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\CreateRoom.h">
+    <ClInclude Include="source\executors\CreateRoom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\models\RoomModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\models\UserModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\models\UserToRoomModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\CreateRoom.cpp">
+    <ClCompile Include="source\executors\CreateRoom.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\models\RoomModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\models\UserModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\models\UserToRoomModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
