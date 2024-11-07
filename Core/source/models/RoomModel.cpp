@@ -1,12 +1,15 @@
 #include "RoomModel.h"
 
-RoomModel::RoomModel()
+namespace models
 {
-	this->createTable
-	(
-		{
-			{ "uuid", "TEXT UNIQUE NOT NULL" },
-			{ "name", "TEXT NOT NULL" }
-		}
-	);
+	RoomModel::RoomModel()
+	{
+		this->createTable
+		(
+			{
+				{ "uuid", "TEXT UNIQUE NOT NULL" },
+				{ "name", "TEXT NOT NULL" }
+			}
+		);
+	}
 }

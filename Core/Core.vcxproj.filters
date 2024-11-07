@@ -18,7 +18,7 @@
     <None Include="core.json" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\executors\CreateRoom.h">
+    <ClInclude Include="source\executors\Rooms.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="source\models\RoomModel.h">
@@ -32,7 +32,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\executors\CreateRoom.cpp">
+    <ClCompile Include="source\executors\Rooms.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\models\RoomModel.cpp">

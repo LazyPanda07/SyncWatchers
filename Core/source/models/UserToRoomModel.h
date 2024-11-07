@@ -2,12 +2,15 @@
 
 #include <SQLite3/SQLiteDatabaseModel.h>
 
-class UserToRoomModel : public framework::sqlite::SQLiteDatabaseModel
+namespace models
 {
-	DECLARE_DATABASE_AND_TABLE_NAME("core", "user_to_room");
+	class UserToRoomModel : public framework::sqlite::SQLiteDatabaseModel
+	{
+		DECLARE_DATABASE_AND_TABLE_NAME("core", "user_to_room");
 
-public:
-	UserToRoomModel();
+	public:
+		UserToRoomModel();
 
-	~UserToRoomModel() = default;
-};
+		~UserToRoomModel() = default;
+	};
+}

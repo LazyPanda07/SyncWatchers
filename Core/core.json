@@ -1,6 +1,6 @@
 {
-  "Core": {
-    "route": "",
+  "Rooms": {
+    "route": "rooms",
     "loadType": "initialization"
   }
 }

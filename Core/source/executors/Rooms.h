@@ -2,10 +2,10 @@
 
 #include <Executors/BaseStatelessExecutor.h>
 
-class CreateRoom : public framework::BaseStatelessExecutor
+class Rooms : public framework::BaseStatelessExecutor
 {
 public:
-	CreateRoom() = default;
+	Rooms() = default;
 
 	void init(const framework::utility::JSONSettingsParser::ExecutorSettings& settings) override;
 
@@ -27,5 +27,5 @@ public:
 
 	void doConnect(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
 
-	~CreateRoom() = default;
+	~Rooms() = default;
 };

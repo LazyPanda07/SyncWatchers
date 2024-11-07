@@ -2,12 +2,15 @@
 
 #include <SQLite3/SQLiteDatabaseModel.h>
 
-class UserModel : public framework::sqlite::SQLiteDatabaseModel
+namespace models
 {
-	DECLARE_DATABASE_AND_TABLE_NAME("core", "user");
+	class UserModel : public framework::sqlite::SQLiteDatabaseModel
+	{
+		DECLARE_DATABASE_AND_TABLE_NAME("core", "user");
 
-public:
-	UserModel();
+	public:
+		UserModel();
 
-	~UserModel() = default;
-};
+		~UserModel() = default;
+	};
+}

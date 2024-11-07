@@ -45,7 +45,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <DebugInformationFormat>None</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(WEB_FRAMEWORK_SDK)/include/;$(WEB_FRAMEWORK_SDK)/include/vendor/OpenSSL/;$(WEB_FRAMEWORK_SDK)/include/vendor/sqlite3/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WEB_FRAMEWORK_SDK)/include/;$(WEB_FRAMEWORK_SDK)/include/vendor/OpenSSL/;$(WEB_FRAMEWORK_SDK)/include/vendor/sqlite3/;$(ProjectDir)source\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -53,7 +53,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(WEB_FRAMEWORK_SDK)/lib/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>WebFramework.lib;Localization.lib;UtilityLibrary.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>WebFramework.lib;Localization.lib;UtilityLibrary.lib;JSON.lib;rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y $(ProjectDir)*.json $(OutDir)
@@ -66,13 +66,13 @@ if exist $(OutDir)\*.exp del /f $(OutDir)*.exp
     <None Include="core.json" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\executors\CreateRoom.h" />
+    <ClInclude Include="source\executors\Rooms.h" />
     <ClInclude Include="source\models\RoomModel.h" />
     <ClInclude Include="source\models\UserModel.h" />
     <ClInclude Include="source\models\UserToRoomModel.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\executors\CreateRoom.cpp" />
+    <ClCompile Include="source\executors\Rooms.cpp" />
     <ClCompile Include="source\models\RoomModel.cpp" />
     <ClCompile Include="source\models\UserModel.cpp" />
     <ClCompile Include="source\models\UserToRoomModel.cpp" />

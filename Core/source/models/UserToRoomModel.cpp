@@ -1,12 +1,15 @@
 #include "UserToRoomModel.h"
 
-UserToRoomModel::UserToRoomModel()
+namespace models
 {
-	this->createTable
-	(
-		{
-			{ "user_uuid", "TEXT NOT NULL" },
-			{ "room_uuid", "TEXT NOT NULL" }
-		}
-	);
+	UserToRoomModel::UserToRoomModel()
+	{
+		this->createTable
+		(
+			{
+				{ "user_uuid", "TEXT NOT NULL" },
+				{ "room_uuid", "TEXT NOT NULL" }
+			}
+		);
+	}
 }
