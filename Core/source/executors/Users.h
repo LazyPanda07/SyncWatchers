@@ -4,10 +4,10 @@
 
 namespace executors
 {
-	class Rooms : public framework::BaseStatelessExecutor
+	class Users : public framework::BaseStatelessExecutor
 	{
 	public:
-		Rooms() = default;
+		Users() = default;
 
 		void init(const framework::utility::JSONSettingsParser::ExecutorSettings& settings) override;
 
@@ -29,6 +29,6 @@ namespace executors
 
 		void doConnect(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
 
-		~Rooms() = default;
+		~Users() = default;
 	};
 }

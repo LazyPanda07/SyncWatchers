@@ -33,8 +33,12 @@
 
 # Visual Studio
 .vs/
+*.vcxproj.user
 
 # Binaries
 build/
 out/
 bin/
+
+# WebFramework
+WebFrameworkLibrary/

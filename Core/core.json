@@ -2,5 +2,9 @@
   "Rooms": {
     "route": "rooms",
     "loadType": "initialization"
+  },
+  "Users": {
+    "route": "users/{string:uuid}",
+    "loadType": "initialization"
   }
 }

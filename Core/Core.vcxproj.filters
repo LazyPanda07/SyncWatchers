@@ -30,6 +30,9 @@
     <ClInclude Include="source\models\UserToRoomModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="source\executors\Users.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\executors\Rooms.cpp">
@@ -42,6 +45,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\models\UserToRoomModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\executors\Users.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -5,6 +5,7 @@ project(Core)
 add_library(
 	${PROJECT_NAME} SHARED
 	source/executors/Rooms.cpp
+	source/executors/Users.cpp
 	source/models/RoomModel.cpp
 	source/models/UserModel.cpp
 	source/models/UserToRoomModel.cpp

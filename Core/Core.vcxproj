@@ -67,12 +67,14 @@ if exist $(OutDir)\*.exp del /f $(OutDir)*.exp
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\executors\Rooms.h" />
+    <ClInclude Include="source\executors\Users.h" />
     <ClInclude Include="source\models\RoomModel.h" />
     <ClInclude Include="source\models\UserModel.h" />
     <ClInclude Include="source\models\UserToRoomModel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\executors\Rooms.cpp" />
+    <ClCompile Include="source\executors\Users.cpp" />
     <ClCompile Include="source\models\RoomModel.cpp" />
     <ClCompile Include="source\models\UserModel.cpp" />
     <ClCompile Include="source\models\UserToRoomModel.cpp" />
