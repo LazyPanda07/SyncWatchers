@@ -6,11 +6,17 @@ set(WEB_FRAMEWORK_TAG v3.0.8 CACHE STRING "")
 
 project(SyncWatchersProject VERSION 1.0.0)
 
+set(WEB_FRAMEWORK_LIBRARY_DIR ${CMAKE_SOURCE_DIR}/WebFrameworkLibrary)
+
 list(APPEND CMAKE_MODULE_PATH $ENV{WEB_FRAMEWORK_SDK})
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/WebFrameworkLibrary)
+list(APPEND CMAKE_MODULE_PATH ${WEB_FRAMEWORK_LIBRARY_DIR})
 
 if (UNIX)
 	list(APPEND CMAKE_MODULE_PATH /usr/lib/web-framework)
+endif()
+
+if (EXISTS ${WEB_FRAMEWORK_LIBRARY_DIR})
+	set(WEB_FRAMEWORK_SDK ${WEB_FRAMEWORK_LIBRARY_DIR})
 endif()
 
 find_package(WebFramework QUIET)
@@ -46,6 +52,8 @@ if (NOT ${WebFramework_FOUND})
 		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/build/WebFramework/build
 		COMMAND ${CMAKE_COMMAND} --build . --target install --config ${CMAKE_BUILD_TYPE} --parallel ${CPUCores}
 	)
+
+	set(WEB_FRAMEWORK_SDK ${WEB_FRAMEWORK_LIBRARY_DIR})
 
 	find_package(WebFramework REQUIRED)
 endif()
