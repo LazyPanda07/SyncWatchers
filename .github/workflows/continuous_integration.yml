@@ -72,4 +72,6 @@ jobs:
 
     - name: Run tests
       working-directory: Tests/scripts
-      run: source run_tests.sh
+      run: |
+          chmod +x run_tests.sh
+          ./run_tests.sh
