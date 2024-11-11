@@ -15,7 +15,19 @@ namespace executors
 
 	void Rooms::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
 	{
-		throw framework::exceptions::NotImplementedException(typeid(*this).name(), __func__);
+		std::shared_ptr<models::RoomModel> model = request.getModel<models::RoomModel>();
+		std::string uuid = request.getJSON().getString("uuid");
+
+		framework::sqlite::utility::SQLiteResult result = model->selectByField("uuid", uuid);
+
+		if (result.isEmpty())
+		{
+			response.setResponseCode(web::responseCodes::notFound);
+
+			return;
+		}
+
+		response.addBody(json::JSONBuilder(CP_UTF8).appendString("roomName", result[0].at("name")));
 	}
 
 	void Rooms::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)

@@ -5,6 +5,10 @@ on:
     branches: [master, dev, server]
 
 
+env:
+  WEB_FRAMEWORK_IMAGE_VERSION: 1.0.3
+
+
 jobs:
   windows:
     runs-on: windows-latest
@@ -25,11 +29,17 @@ jobs:
           cd build
           cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=bin .. && cmake --build . --parallel $(nproc) --config Release --target install
 
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: windows
+        path: build/bin
+
 
   linux:
     runs-on: ubuntu-latest
     container:
-      image: lazypanda07/web_framework_dev:1.0.3
+      image: lazypanda07/web_framework_dev:${{ env.WEB_FRAMEWORK_IMAGE_VERSION }}
 
     steps:
     - uses: actions/checkout@v4
@@ -39,3 +49,31 @@ jobs:
           mkdir build
           cd build
           cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=bin .. && make install -j $(nproc)
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: linux
+        path: build/bin
+
+  
+  linux-test:
+    runs-on: ubuntu-latest
+    needs: linux
+    container:
+      image: lazypanda07/web_framework_dev:${{ env.WEB_FRAMEWORK_IMAGE_VERSION }}
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: linux
+        path: Tests/binaries
+
+    - name: Run tests
+      working-directory: Tests/scripts
+      run: source run_tests.sh

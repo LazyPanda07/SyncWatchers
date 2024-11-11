@@ -40,5 +40,11 @@ build/
 out/
 bin/
 
+# Python
+.venv/
+
+# JetBrains
+.idea/
+
 # WebFramework
 WebFrameworkLibrary/
