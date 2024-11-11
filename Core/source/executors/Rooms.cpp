@@ -4,6 +4,7 @@
 
 #include "models/RoomModel.h"
 #include "models/UserModel.h"
+#include "models/UserToRoomModel.h"
 
 namespace executors
 {
@@ -60,7 +61,14 @@ namespace executors
 
 	void Rooms::doDelete(framework::HTTPRequest& request, framework::HTTPResponse& response)
 	{
-		throw framework::exceptions::NotImplementedException(typeid(*this).name(), __func__);
+		std::shared_ptr<models::UserModel> userModel = request.getModel<models::UserModel>();
+		std::shared_ptr<models::RoomModel> roomModel = request.getModel<models::RoomModel>();
+		std::shared_ptr<models::UserToRoomModel> userToRoomModel = request.getModel<models::UserToRoomModel>();
+		const std::string& roomUUID = request.getJSON().getString("uuid");
+
+		userToRoomModel->raw(std::format("DELETE FROM {} WHERE room_uuid = {}", userToRoomModel->getTableName(), roomUUID));
+		userModel->raw(std::format("DELETE FROM {} WHERE room_uuid = {}", userModel->getTableName(), roomUUID));
+		roomModel->deleteQuery("uuid", roomUUID);
 	}
 
 	void Rooms::doPatch(framework::HTTPRequest& request, framework::HTTPResponse& response)

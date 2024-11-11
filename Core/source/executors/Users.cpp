@@ -83,7 +83,12 @@ namespace executors
 
 	void Users::doDelete(framework::HTTPRequest& request, framework::HTTPResponse& response)
 	{
-		throw framework::exceptions::NotImplementedException(typeid(*this).name(), __func__);
+		std::shared_ptr<models::UserToRoomModel> userToRoomModel = request.getModel<models::UserToRoomModel>();
+		std::shared_ptr<models::UserModel> userModel = request.getModel<models::UserModel>();
+		const std::string& uuid = request.getRouteParameter<std::string>("uuid");
+
+		userToRoomModel->deleteQuery("user_uuid", uuid);
+		userModel->deleteQuery("uuid", uuid);
 	}
 
 	void Users::doPatch(framework::HTTPRequest& request, framework::HTTPResponse& response)
