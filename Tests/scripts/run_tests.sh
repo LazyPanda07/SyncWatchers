@@ -12,4 +12,4 @@ export WORKIND_DIR=$(pwd)
 
 cd binaries
 
-./SyncWatchers & python3 ${WORKIND_DIR}/core_test.py
+./SyncWatchers & python3 ${WORKIND_DIR}/core_tests.py
