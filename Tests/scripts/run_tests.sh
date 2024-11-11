@@ -14,4 +14,6 @@ cd binaries/bin
 
 export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
 
+chmod +x SyncWatchers
+
 ./SyncWatchers & python3 ${WORKIND_DIR}/core_tests.py
