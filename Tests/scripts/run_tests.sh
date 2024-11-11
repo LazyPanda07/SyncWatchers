@@ -10,7 +10,7 @@ python3 -m pip install -r requirements.txt
 
 export WORKIND_DIR=$(pwd)
 
-cd binaries
+cd binaries/bin
 
 export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
 
