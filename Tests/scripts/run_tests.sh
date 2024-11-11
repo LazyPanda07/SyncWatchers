@@ -12,4 +12,6 @@ export WORKIND_DIR=$(pwd)
 
 cd binaries
 
+export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
+
 ./SyncWatchers & python3 ${WORKIND_DIR}/core_tests.py

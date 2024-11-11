@@ -8,6 +8,8 @@ int main(int argc, char** argv)
 
     framework::utility::Config config("configs/config.json");
 
+    config.overrideBasePath("executors");
+
     framework::WebFramework server(config);
     int64_t port = config.getConfigurationInteger("port");
 

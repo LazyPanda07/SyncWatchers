@@ -21,4 +21,5 @@ target_link_libraries(
 	${WEB_FRAMEWORK_LIBS}
 )
 
-install(TARGETS ${PROJECT_NAME} DESTINATION executors/)
+install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX}/executors/)
+install(FILES core.json DESTINATION ${CMAKE_INSTALL_PREFIX}/executors/)
