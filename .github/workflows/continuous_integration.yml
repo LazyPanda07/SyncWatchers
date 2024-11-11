@@ -61,7 +61,7 @@ jobs:
 
     steps:
     - name: Install dependencies
-      run: sudo apt update && sudo apt install -y python3 python3-pip
+      run: sudo apt update && sudo apt install -y python3 python3-pip python3-venv
 
     - uses: actions/checkout@v4
       with:
@@ -76,4 +76,4 @@ jobs:
     - name: Run tests
       working-directory: Tests/scripts
       shell: bash
-      run: sudo source run_tests.sh
+      run: source run_tests.sh
