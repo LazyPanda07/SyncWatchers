@@ -76,4 +76,4 @@ jobs:
     - name: Run tests
       working-directory: Tests/scripts
       shell: bash
-      run: source run_tests.sh
+      run: sudo source run_tests.sh
