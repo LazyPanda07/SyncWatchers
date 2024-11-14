@@ -15,7 +15,7 @@ int main(int argc, char** argv)
 
     server.start(true, [port]()
         {
-            std::cout << "Server is running on port: " << port;
+            std::cout << "Server is running on port: " << port << std::endl;
         });
 
     return 0;

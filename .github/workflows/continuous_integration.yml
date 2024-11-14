@@ -2,7 +2,7 @@ name: "Continuous Integration"
 
 on:
   push:
-    branches: [master, dev, server]
+    branches: [master, dev, client, server]
 
 
 jobs:
@@ -35,7 +35,7 @@ jobs:
   linux:
     runs-on: ubuntu-latest
     container:
-      image: lazypanda07/web_framework_dev:1.0.3
+      image: lazypanda07/web_framework_dev:1.0.4
 
     steps:
     - uses: actions/checkout@v4
@@ -57,7 +57,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: linux
     container:
-      image: lazypanda07/web_framework_dev:1.0.3
+      image: lazypanda07/web_framework_dev:1.0.4
 
     steps:
     - name: Install dependencies

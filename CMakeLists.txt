@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.27.0)
 
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/bin CACHE STRING "")
 set(CMAKE_BUILD_TYPE Release CACHE STRING "")
-set(WEB_FRAMEWORK_TAG v3.0.8 CACHE STRING "")
+set(WEB_FRAMEWORK_TAG v3.0.9 CACHE STRING "")
 
 project(SyncWatchersProject VERSION 1.0.0)
 
