@@ -2,6 +2,12 @@ cmake_minimum_required(VERSION 3.27.0)
 
 project(SyncWatchers)
 
+option(REMOVE_DATABASE_ON_START "" OFF)
+
+if (${REMOVE_DATABASE_ON_START})
+	add_definitions(-DREMOVE_DATABASE_ON_START)
+endif()
+
 add_executable(
 	${PROJECT_NAME}
 	source/Main.cpp

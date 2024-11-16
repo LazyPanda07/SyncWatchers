@@ -4,6 +4,10 @@
 
 int main(int argc, char** argv)
 {
+#ifdef REMOVE_DATABASE_ON_START
+    std::remove("core.sqlite");
+#endif
+
     framework::utility::initializeWebFramework();
 
     framework::utility::Config config("configs/config.json");
