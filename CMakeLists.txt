@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.27.0)
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/bin CACHE STRING "")
 set(CMAKE_BUILD_TYPE Release CACHE STRING "")
 set(WEB_FRAMEWORK_TAG v3.0.10 CACHE STRING "")
+option(BUILD_TESTS "" OFF)
 
 project(SyncWatchersProject VERSION 1.0.0)
 
@@ -20,6 +21,10 @@ if (EXISTS ${WEB_FRAMEWORK_LIBRARY_DIR})
 endif()
 
 find_package(WebFramework QUIET)
+
+if (${WebFramework_FOUND})
+	message("Use WebFramework in ${WEB_FRAMEWORK_LIBRARY_DIR}")
+endif()
 
 if (NOT ${WebFramework_FOUND})
 	message("Can't find WebFramework locally. Build WebFramework from source")
@@ -60,5 +65,9 @@ endif()
 
 add_subdirectory(SyncWatchers)
 add_subdirectory(Core)
+
+if (${BUILD_TESTS})
+	add_subdirectory(Tests)
+endif()
 
 install(DIRECTORY configs DESTINATION ${CMAKE_INSTALL_PREFIX})

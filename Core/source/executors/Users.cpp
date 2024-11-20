@@ -1,4 +1,4 @@
-#include "Users.h"
+	#include "Users.h"
 
 #include "models/UserToRoomModel.h"
 #include "models/UserModel.h"
@@ -31,6 +31,13 @@ namespace executors
 
 		result = userToRoomModel->selectByField("room_uuid", roomUUID);
 
+		if (result.isEmpty())
+		{
+			response.setResponseCode(web::responseCodes::notFound);
+
+			return;
+		}
+
 		for (const std::unordered_map<std::string, std::string>& row : result)
 		{
 			ids.emplace_back(row.at("user_uuid"));
@@ -38,11 +45,6 @@ namespace executors
 
 		for (const std::string& userUUID : ids)
 		{
-			if (userUUID == uuid)
-			{
-				continue;
-			}
-
 			result = userModel->selectByField("uuid", userUUID);
 
 			if (result.isEmpty())

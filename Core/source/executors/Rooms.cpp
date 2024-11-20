@@ -16,7 +16,7 @@ namespace executors
 	void Rooms::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
 	{
 		std::shared_ptr<models::RoomModel> model = request.getModel<models::RoomModel>();
-		std::string uuid = request.getJSON().getString("uuid");
+		const std::string& uuid = request.getKeyValueParameters().at("uuid");
 
 		framework::sqlite::utility::SQLiteResult result = model->selectByField("uuid", uuid);
 
