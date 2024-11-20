@@ -4,6 +4,6 @@ project(Tests)
 
 add_custom_target(
 	${PROJECT_NAME} ALL
-	WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/Tests
+	WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 	COMMAND dotnet publish Tests.sln -o ${CMAKE_INSTALL_PREFIX}/Tests -p:DebugType=None -p:DebugSymbols=false -p:Configuration=Release -p:Platform=AnyCPU
 )
