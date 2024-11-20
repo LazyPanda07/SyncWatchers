@@ -23,19 +23,18 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=bin -DBUILD_TESTS=ON .. && cmake --build . --parallel $(nproc) --config Release --target install
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../bin -DBUILD_TESTS=ON .. && cmake --build . --parallel $(nproc) --config Release --target install
 
     - name: Tests
-      working-directory: build/bin
       run: |
-          start SyncWatchers.exe
-          dotnet test Tests/Tests.dll
+          start bin/SyncWatchers.exe
+          dotnet test build/Tests/Tests.dll
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
         name: windows
-        path: build/bin
+        path: bin
 
 
   linux:
@@ -50,15 +49,14 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=bin -DBUILD_TESTS=ON .. && make install -j $(nproc)
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../bin -DBUILD_TESTS=ON .. && make install -j $(nproc)
 
     - name: Tests
-      working-directory: build/bin
-      run: ./SyncWatchers & dotnet test Tests/Tests.dll
+      run: ./bin/SyncWatchers & dotnet test build/Tests/Tests.dll
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
         name: linux
-        path: build/bin
+        path: bin
         

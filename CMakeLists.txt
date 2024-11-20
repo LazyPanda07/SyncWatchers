@@ -70,4 +70,4 @@ if (${BUILD_TESTS})
 	add_subdirectory(Tests)
 endif()
 
-install(DIRECTORY configs DESTINATION ${CMAKE_INSTALL_PREFIX})
+install(DIRECTORY configs/ DESTINATION configs)
