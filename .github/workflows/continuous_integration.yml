@@ -28,7 +28,8 @@ jobs:
     - name: Tests
       run: |
           start bin/SyncWatchers.exe
-          dotnet test build/Tests/Tests.dll
+          cd build/Tests
+          dotnet test Tests.dll
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
