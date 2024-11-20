@@ -52,7 +52,12 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../bin -DBUILD_TESTS=ON .. && make install -j $(nproc)
 
     - name: Tests
-      run: ./bin/SyncWatchers & dotnet test build/Tests/Tests.dll
+      run: |
+          cd bin
+          export LD_LIBRARY_PATH=$(pwd)
+          ./SyncWatchers & sleep 1
+          cd ../build/Tests
+          dotnet test Tests.dll
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
