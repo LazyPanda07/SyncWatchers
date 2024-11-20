@@ -58,7 +58,7 @@ jobs:
           export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
           ./SyncWatchers & sleep 1
           cd ../build/Tests
-          dotnet test Tests.dll
+          yes | dotnet test Tests.dll
           cd ../../bin/logs
           cd $(ls)
           cat $(ls)
