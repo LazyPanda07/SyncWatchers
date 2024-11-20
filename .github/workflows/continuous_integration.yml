@@ -29,7 +29,7 @@ jobs:
       working-directory: build/bin
       run: |
           start SyncWatchers.exe
-          dotnet test Tests/CSharpAPI.dll
+          dotnet test Tests/Tests.dll
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
@@ -54,7 +54,7 @@ jobs:
 
     - name: Tests
       working-directory: build/bin
-      run: ./SyncWatchers & dotnet test Tests/CSharpAPI.dll
+      run: ./SyncWatchers & dotnet test Tests/Tests.dll
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
