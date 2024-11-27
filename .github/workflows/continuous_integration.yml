@@ -23,19 +23,21 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../bin -DBUILD_TESTS=ON .. && cmake --build . --parallel $(nproc) --config Release --target install
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON .. && cmake --build . --parallel $(nproc) --config Release --target install
 
     - name: Tests
+      shell: bash
       run: |
-          start bin/SyncWatchers.exe
-          cd build/Tests
+          cd build/bin
+          ./SyncWatchers.exe & sleep 1
+          cd ../Tests
           dotnet test Tests.dll
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
         name: windows
-        path: bin
+        path: build/bin
 
 
   linux:
@@ -50,22 +52,22 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../bin -DBUILD_TESTS=ON .. && make install -j $(nproc)
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON .. && make install -j $(nproc)
 
     - name: Tests
       run: |
-          cd bin
+          cd build/bin
           export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
           ./SyncWatchers & sleep 1
-          cd ../build/Tests
-          yes | dotnet test Tests.dll
-          cd ../../bin/logs
-          cd $(ls)
-          cat $(ls)
+          cd ../Tests
+          dotnet test Tests.dll
+          # cd ../../bin/logs
+          # cd $(ls)
+          # cat $(ls)
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
         name: linux
-        path: bin
+        path: build/bin
         
