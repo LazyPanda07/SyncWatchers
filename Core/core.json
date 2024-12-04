@@ -1,4 +1,8 @@
 {
+  "Notifications": {
+    "route": "notifications",
+    "loadType": "initialization"
+  }
   "Rooms": {
     "route": "rooms",
     "loadType": "initialization"

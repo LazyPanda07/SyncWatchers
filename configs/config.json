@@ -4,6 +4,10 @@
     "port": 50200,
     "timeout": 5000
   },
+  "NotificationsServer": {
+    "port": 50201,
+    "timeout": 5000
+  },
   "WebFramework": {
     "settingsPaths": [
       "core.json"

@@ -4,11 +4,13 @@ project(Core)
 
 add_library(
 	${PROJECT_NAME} SHARED
+	source/executors/Notifications.cpp
 	source/executors/Rooms.cpp
 	source/executors/Users.cpp
 	source/models/RoomModel.cpp
 	source/models/UserModel.cpp
 	source/models/UserToRoomModel.cpp
+	source/notifications/NotificationsServer.cpp
 )
 
 target_include_directories(

@@ -33,6 +33,12 @@
     <ClInclude Include="source\executors\Users.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="source\executors\Notifications.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\notifications\NotificationsServer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\executors\Rooms.cpp">
@@ -48,6 +54,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\executors\Users.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\executors\Notifications.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\notifications\NotificationsServer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
