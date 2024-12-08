@@ -1,6 +1,6 @@
 {
   "Notifications": {
-    "route": "notifications",
+    "route": "notifications/{string:user_uuid}/{string:room_uuid}/{string:notify}",
     "loadType": "initialization"
   }
   "Rooms": {

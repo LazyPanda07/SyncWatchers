@@ -2,6 +2,40 @@
 
 namespace executors
 {
+	void Notifications::start(const std::string& userUuid, const std::string& roomUuid, framework::HTTPRequest& request)
+	{
+
+	}
+
+	void Notifications::stop(const std::string& userUuid, const std::string& roomUuid, framework::HTTPRequest& request)
+	{
+
+	}
+
+	void Notifications::rewind(const std::string& userUuid, const std::string& roomUuid, framework::HTTPRequest& request)
+	{
+
+	}
+
+	void Notifications::sync(const std::string& userUuid, const std::string& roomUuid, framework::HTTPRequest& request)
+	{
+
+	}
+
+	Notifications::Notifications() :
+		actions
+		(
+			{
+				{ "stop", &Notifications::stop },
+				{ "start", &Notifications::start },
+				{ "rewind", &Notifications::rewind },
+				{ "sync", &Notifications::sync },
+			}
+		)
+	{
+
+	}
+
 	void Notifications::init(const framework::utility::JSONSettingsParser::ExecutorSettings& settings)
 	{
 
@@ -14,7 +48,10 @@ namespace executors
 
 	void Notifications::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
 	{
-		throw framework::exceptions::NotImplementedException(typeid(*this).name(), __func__);
+		actions.at
+		(
+			request.getRouteParameter<std::string>("notify")
+		)(request.getRouteParameter<std::string>("user_uuid"), request.getRouteParameter<std::string>("room_uuid"), request);
 	}
 
 	void Notifications::doHead(framework::HTTPRequest& request, framework::HTTPResponse& response)
