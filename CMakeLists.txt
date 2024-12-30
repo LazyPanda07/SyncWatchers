@@ -6,7 +6,7 @@ option(BUILD_TESTS "" OFF)
 
 project(SyncWatchersProject VERSION 1.0.0)
 
-include(SetupWebframework.cmake)
+include(${CMAKE_SOURCE_DIR}/SetupWebframework.cmake)
 
 add_subdirectory(SyncWatchers)
 add_subdirectory(Core)
