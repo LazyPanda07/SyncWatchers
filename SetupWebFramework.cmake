@@ -10,11 +10,11 @@ if (UNIX)
 	list(APPEND CMAKE_MODULE_PATH /usr/lib/web-framework)
 endif()
 
-find_package(WebFramework QUIET)
-
 if (NOT DEFINED WEB_FRAMEWORK_SDK)
 	set(WEB_FRAMEWORK_SDK ${WEB_FRAMEWORK_LIBRARY_DIR})
 endif()
+
+find_package(WebFramework QUIET)
 
 if (${WebFramework_FOUND})
 	message("Use WebFramework in ${WEB_FRAMEWORK_LIBRARY_DIR}")
