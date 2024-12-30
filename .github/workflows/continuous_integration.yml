@@ -19,15 +19,16 @@ jobs:
       uses: ilammy/msvc-dev-cmd@v1.13.0
 
     - name: Build
+      shell: bash
       run: |
-          msbuild SyncWatchers.sln /p:Configuration=Release -t:rebuild
-          cd Tests
-          dotnet publish Tests.sln -o ${{ github.workspace }}/bin/Release-x64/Tests /p:DebugType=None /p:DebugSymbols=false /p:Configuration=Release /p:Platform="Any CPU"
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON .. && cmake --build . --parallel $(nproc) --config Release --target install
 
     - name: Tests
       shell: bash
       run: |
-          cd bin/Release-x64/SyncWatchers
+          cd build/bin
           ./SyncWatchers.exe & sleep 1
           cd ../Tests
           dotnet test Tests.dll
