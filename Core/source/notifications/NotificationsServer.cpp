@@ -6,7 +6,7 @@
 
 namespace notifications
 {
-	void NotificationsServer::clientConnection(const std::string& ip, SOCKET clientSocket, sockaddr address, std::function<void()>&& cleanup)
+	void NotificationsServer::clientConnection(const std::string& ip, SOCKET clientSocket, sockaddr address, std::function<void()>& cleanup)
 	{
 
 	}
@@ -27,8 +27,8 @@ namespace notifications
 			const std::string& ip = parser.getString("ip", true);
 			const json::utility::jsonObject& notificationsServerSettings = parser.getObject("NotificationsServer");
 
-			int64_t port = notificationsServerSettings.getInt("port");
-			int64_t timeout = notificationsServerSettings.getInt("timeout");
+			int port = static_cast<int>(notificationsServerSettings.getInt("port"));
+			int timeout = static_cast<int>(notificationsServerSettings.getInt("timeout"));
 
 			server = std::unique_ptr<NotificationsServer>(new NotificationsServer(ip, port, timeout));
 		}

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <format>
 
 #include <import.h>
 
@@ -19,7 +20,8 @@ int main(int argc, char** argv)
 
     server.start(true, [port]()
         {
-            std::cout << "Server is running on port: " << port << std::endl;
+            std::cout << std::format("Start WebFramework server: {}", framework::WebFramework::getWebFrameworkVersion()) << std::endl;
+            std::cout << std::format("Server is running on port: {}", port) << std::endl;
         });
 
     return 0;
