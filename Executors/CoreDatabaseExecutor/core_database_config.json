@@ -1,0 +1,8 @@
+{
+  "settingsPaths": [
+    "core_database_web.json"
+  ],
+  "loadSources": [
+    "CoreDatabaseExecutor"
+  ]
+}

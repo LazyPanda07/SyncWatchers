@@ -13,19 +13,19 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{74b813dc-7dba-47cb-8cbf-bedb091da09c}</ProjectGuid>
-    <RootNamespace>SyncWatchers</RootNamespace>
+    <ProjectGuid>{8b1b7f47-3d45-459e-90b9-340bd9b091b6}</ProjectGuid>
+    <RootNamespace>FetchWebFramework</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>Utility</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>Utility</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -59,20 +59,22 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(SolutionDir)build\_deps\webframework-src\Release_Windows\api\cxx\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>call "$(VCInstallDir)Auxiliary\Build\vcvars64.bat"
+
+cd $(SolutionDir)
+
+if not exist build mkdir build
+
+cd build &amp;&amp; cmake ..
+
+if not exist "$(OutDir)..\$(SolutionName)" mkdir "$(OutDir)..\$(SolutionName)"</Command>
     </PreBuildEvent>
-    <PostBuildEvent>
-      <Command>copy /y "$(SolutionDir)build\_deps\webframework-src\Release_Windows\dll\*.dll" $(OutDir)
-copy /y "$(ProjectDir)config.json" $(OutDir)</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -84,7 +86,6 @@ copy /y "$(ProjectDir)config.json" $(OutDir)</Command>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(SolutionDir)build\_deps\webframework-src\Release_Windows\api\cxx\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -93,28 +94,17 @@ copy /y "$(ProjectDir)config.json" $(OutDir)</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>call "$(VCInstallDir)Auxiliary\Build\vcvars64.bat"
+
+cd $(SolutionDir)
+
+if not exist build mkdir build
+
+cd build &amp;&amp; cmake ..
+
+if not exist "$(OutDir)..\$(SolutionName)" mkdir "$(OutDir)..\$(SolutionName)"</Command>
     </PreBuildEvent>
-    <PostBuildEvent>
-      <Command>copy /y "$(SolutionDir)build\_deps\webframework-src\Release_Windows\dll\*.dll" $(OutDir)
-copy /y "$(ProjectDir)config.json" $(OutDir)</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="src\Main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="config.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Executors\CoreDatabaseExecutor\CoreDatabaseExecutor.vcxproj">
-      <Project>{a391454b-0826-4dde-a00f-596b9b41fd2d}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\FetchWebFramework\FetchWebFramework.vcxproj">
-      <Project>{8b1b7f47-3d45-459e-90b9-340bd9b091b6}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -9,11 +9,13 @@
     "assetsPath": "assets",
     "templatesPath": "templates",
     "webServerType": "multiThreaded",
-    "loadSources": [
-      "CoreDatabaseExecutor",
-      "IOExecutor",
-      "EventsExecutor"
+    "additionalConfigs": [
+      "core_database_config.json"
     ],
-    "HTTPS": { "useHTTPS": false }
+    "HTTPS": {
+      "useHTTPS": false,
+      "pathToCertificate": "certificates/cert.pem",
+      "pathToKey": "certificates/key.pem"
+    }
   }
 }

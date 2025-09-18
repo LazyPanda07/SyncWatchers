@@ -3,7 +3,7 @@
 
 #include <import.hpp>
 
-int main(int argc, char** argv)
+int main(int argc, char** argv) try
 {
 	framework::utility::initializeWebFramework();
 
@@ -28,4 +28,10 @@ int main(int argc, char** argv)
 	);
 
 	return 0;
+}
+catch (const std::exception& e)
+{
+	std::cerr << e.what() << std::endl;
+
+	return 1;
 }

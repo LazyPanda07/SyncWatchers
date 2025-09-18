@@ -1,0 +1,7 @@
+{
+  "CoreDatabaseExecutor": {
+    "loadType": "initialization",
+    "route": "",
+    "api": "cxx"
+  }
+}
