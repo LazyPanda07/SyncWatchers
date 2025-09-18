@@ -1,0 +1,19 @@
+{
+  "$schema": "https://raw.githubusercontent.com/LazyPanda07/WebFramework/refs/heads/master/schemas/web_framework_config_schema.json",
+  "WebServer": {
+    "ip": "0.0.0.0",
+    "port": 52000,
+    "timeout": 0
+  },
+  "WebFramework": {
+    "assetsPath": "assets",
+    "templatesPath": "templates",
+    "webServerType": "multiThreaded",
+    "loadSources": [
+      "CoreDatabaseExecutor",
+      "IOExecutor",
+      "EventsExecutor"
+    ],
+    "HTTPS": { "useHTTPS": false }
+  }
+}

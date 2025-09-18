@@ -1,9 +1,25 @@
 #include <iostream>
+#include <format>
+
+#include <import.hpp>
 
 int main(int argc, char** argv)
 {
-	std::cout << "Hello, World!" << std::endl;
+	framework::utility::initializeWebFramework();
 
+	framework::utility::Config config("config.json");
+	framework::WebFramework server(config);
+
+	server.start
+	(
+		true,
+		[&config]()
+		{
+			std::string protocol = config.getConfigurationBoolean("useHTTPS") ? "https" : "http";
+
+			std::cout << std::format("Server is running at {}://{}:{}", protocol, config.getConfigurationString("ip"), config.getConfigurationInteger("port")) << std::endl;
+		}
+	);
 
 	return 0;
 }
