@@ -17,7 +17,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(WebFramework)
 
 if (UNIX)
-    set(WEB_FRAMEWORK_SDK ${webframework_SOURCE_DIR}/Release_Linux)
+    set(WEB_FRAMEWORK_SDK ${webframework_SOURCE_DIR})
 else()
     set(WEB_FRAMEWORK_SDK ${webframework_SOURCE_DIR}/Release_Windows)
 endif()

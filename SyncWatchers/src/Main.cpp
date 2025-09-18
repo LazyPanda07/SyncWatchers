@@ -8,6 +8,12 @@ int main(int argc, char** argv)
 	framework::utility::initializeWebFramework();
 
 	framework::utility::Config config("config.json");
+
+	if (argc == 2)
+	{
+		config.overrideConfiguration("ip", argv[1]);
+	}
+
 	framework::WebFramework server(config);
 
 	server.start
