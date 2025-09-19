@@ -15,7 +15,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\CoreDatabaseExecutor.cpp">
+    <ClCompile Include="src\RoomsExecutor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\InviteLinkExecutor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CreateTableQueries.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -24,7 +30,13 @@
     <None Include="core_database_web.json" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\CoreDatabaseExecutor.h">
+    <ClInclude Include="src\RoomsExecutor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\InviteLinkExecutor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CreateTableQueries.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

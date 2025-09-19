@@ -1,7 +1,15 @@
 {
-  "CoreDatabaseExecutor": {
+  "RoomsExecutor": {
     "loadType": "initialization",
-    "route": "",
+    "route": "rooms",
+    "api": "cxx",
+    "initParameters": {
+      "inviteLink": "http://127.0.0.1:52000/invite_link"
+    }
+  },
+  "InviteLinkExecutor": {
+    "loadType": "initialization",
+    "route": "invite_link/{string:link}",
     "api": "cxx"
   }
 }

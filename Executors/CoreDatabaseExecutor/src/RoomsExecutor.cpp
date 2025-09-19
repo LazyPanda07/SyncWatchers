@@ -1,0 +1,80 @@
+#include "RoomsExecutor.h"
+
+#include <Utility/WebFrameworkUtility.hpp>
+
+namespace executors
+{
+	std::string RoomsExecutor::inviteLink = "";
+
+	std::string_view RoomsExecutor::getBaseInviteLink()
+	{
+		return RoomsExecutor::inviteLink;
+	}
+
+	void RoomsExecutor::init(const framework::utility::ExecutorSettings& settings)
+	{
+		RoomsExecutor::inviteLink = settings.getInitParameters().get<std::string>("inviteLink");
+	}
+
+	void RoomsExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
+	{
+		framework::Table users = request.getTable(":memory:", "users");
+		framework::SQLResult sqlResult = users.execute
+		(
+			"SELECT name FROM users WHERE room_id = ?",
+			{ framework::SQLValue(request.getQueryParameters().at("room_id")) }
+		);
+		std::vector<framework::JSONObject> result;
+
+		for (const auto& row : sqlResult)
+		{
+			for (const auto& [_, value] : row)
+			{
+				framework::utility::appendArray(result, value.get<std::string>());
+			}
+		}
+
+		response.setBody(framework::JSONBuilder().append("users", result));
+	}
+
+	void RoomsExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
+	{
+		framework::Table rooms = request.getTable
+		(
+			":memory:",
+			"rooms"
+		);
+
+		std::string roomName = framework::JSONParser(request.getBody()).get<std::string>("name");
+		std::string roomInviteLink = std::format("{}/{}", inviteLink, framework::utility::uuid::generateUUID());
+
+		rooms.execute
+		(
+			"INSERT INTO rooms (invite_link, name) VALUES (?, ?)",
+			{ framework::SQLValue(roomInviteLink), framework::SQLValue(roomName) }
+		);
+
+		response.setBody(framework::JSONBuilder().append("inviteLink", roomInviteLink));
+	}
+
+	void RoomsExecutor::doDelete(framework::HTTPRequest& request, framework::HTTPResponse& response)
+	{
+		framework::Table rooms = request.getTable(":memory:", "rooms");
+		framework::Table users = request.getTable(":memory:", "users");
+		int64_t roomId = std::stoll(request.getQueryParameters().at("room_id"));
+
+		users.execute
+		(
+			"DELETE from users WHERE room_id = ?",
+			{ framework::SQLValue(roomId) }
+		);
+
+		rooms.execute
+		(
+			"DELETE FROM rooms WHERE id = ?",
+			{ framework::SQLValue(roomId) }
+		);
+	}
+
+	DEFINE_EXECUTOR(RoomsExecutor);
+}

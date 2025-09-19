@@ -94,14 +94,18 @@ copy /y $(OutDir)*.* $(OutDir)..\SyncWatchers\*.*</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\CoreDatabaseExecutor.cpp" />
+    <ClCompile Include="src\CreateTableQueries.cpp" />
+    <ClCompile Include="src\InviteLinkExecutor.cpp" />
+    <ClCompile Include="src\RoomsExecutor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="core_database_config.json" />
     <None Include="core_database_web.json" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\CoreDatabaseExecutor.h" />
+    <ClInclude Include="src\CreateTableQueries.h" />
+    <ClInclude Include="src\InviteLinkExecutor.h" />
+    <ClInclude Include="src\RoomsExecutor.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\FetchWebFramework\FetchWebFramework.vcxproj">
@@ -111,4 +115,9 @@ copy /y $(OutDir)*.* $(OutDir)..\SyncWatchers\*.*</Command>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties core_3database_3web_1json__JsonSchema="https://raw.githubusercontent.com/LazyPanda07/WebFramework/refs/heads/master/schemas/executors_schema.json" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>
