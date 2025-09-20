@@ -21,9 +21,6 @@
     <ClCompile Include="src\InviteLinkExecutor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\CreateTableQueries.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="core_database_config.json" />
