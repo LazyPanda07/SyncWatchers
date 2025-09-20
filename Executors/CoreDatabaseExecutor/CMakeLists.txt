@@ -4,7 +4,8 @@ project(CoreDatabaseExecutor)
 
 add_library(
 	${PROJECT_NAME} SHARED
-	src/CoreDatabaseExecutor.cpp
+	src/InviteLinkExecutor.cpp
+	src/RoomsExecutor.cpp
 )
 
 install(TARGETS ${PROJECT_NAME} DESTINATION .)

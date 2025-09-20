@@ -3,6 +3,7 @@
 #include <random>
 
 #include "RoomsExecutor.h"
+#include "CreateTableQueries.h"
 
 namespace executors
 {
@@ -31,7 +32,7 @@ namespace executors
 
 		if (sqlResult.size())
 		{
-			framework::Table users = request.getTable(":memory:", "users");
+			framework::Table users = request.getOrCreateTable(":memory:", "users", database::createUsersQuery());
 			const framework::SQLResult::Row& row = *sqlResult.begin();
 			int64_t id = row.begin()->second.get<int64_t>();
 			std::string userName = InviteLinkExecutor::generateDefaultName();

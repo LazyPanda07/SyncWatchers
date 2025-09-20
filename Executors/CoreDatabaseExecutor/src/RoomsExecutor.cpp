@@ -2,6 +2,8 @@
 
 #include <Utility/WebFrameworkUtility.hpp>
 
+#include "CreateTableQueries.h"
+
 namespace executors
 {
 	std::string RoomsExecutor::inviteLink = "";
@@ -39,11 +41,8 @@ namespace executors
 
 	void RoomsExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
 	{
-		framework::Table rooms = request.getTable
-		(
-			":memory:",
-			"rooms"
-		);
+		framework::Database database = request.getOrCreateDatabase(":memory");
+		framework::Table rooms = database.getOrCreateTable("rooms", database::createRoomsQuery());
 
 		std::string roomName = framework::JSONParser(request.getBody()).get<std::string>("name");
 		std::string roomInviteLink = std::format("{}/{}", inviteLink, framework::utility::uuid::generateUUID());
