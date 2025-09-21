@@ -25,4 +25,22 @@ jobs:
           cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=bin ..
           cmake --build . -j --config Release
           cmake --install . --config Release
-          
+        
+
+  tests:
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Build
+      working-directory: Tests
+      run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=bin ..
+          cmake --build . -j --config Release
+          ctest -V -C Release
