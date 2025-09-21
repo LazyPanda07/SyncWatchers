@@ -9,5 +9,5 @@ add_library(
 )
 
 install(TARGETS ${PROJECT_NAME} DESTINATION .)
-install(FILES ${PROJECT_SOURCE_DIR}/core_database_web.json DESTINATION .)
-install(FILES ${PROJECT_SOURCE_DIR}/core_database_config.json DESTINATION .)
+install(FILES core_database_web.json DESTINATION .)
+install(FILES core_database_config.json DESTINATION .)

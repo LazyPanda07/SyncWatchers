@@ -75,7 +75,7 @@ endif()
 add_custom_target(
 	build_sync_watchers ALL
 	COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/SyncWatchers
-	COMMAND ${CMAKE_COMMAND} -S ${CMAKE_SOURCE_DIR}/../ -B ${CMAKE_BINARY_DIR}/SyncWatchers -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR} 
+	COMMAND ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR} -S ${CMAKE_SOURCE_DIR}/../ -B ${CMAKE_BINARY_DIR}/SyncWatchers
 	COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR}/SyncWatchers -j --config Release
 	COMMAND ${CMAKE_COMMAND} --install ${CMAKE_BINARY_DIR}/SyncWatchers --config Release
 )
