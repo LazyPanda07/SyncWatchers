@@ -9,6 +9,12 @@
     "assetsPath": "assets",
     "templatesPath": "templates",
     "webServerType": "multiThreaded",
+    "loadSources": [
+      "current"
+    ],
+    "settingsPaths": [
+      "web.json"
+    ],
     "additionalConfigs": [
       "core_database_config.json"
     ],
@@ -17,5 +23,9 @@
       "pathToCertificate": "certificates/cert.pem",
       "pathToKey": "certificates/key.pem"
     }
+  },
+  "Logging": {
+    "dateFormat": "DMY",
+    "usingLogging": true
   }
 }

@@ -103,9 +103,11 @@ copy /y "$(ProjectDir)config.json" $(OutDir)</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\StateExecutor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="config.json" />
+    <None Include="web.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Executors\CoreDatabaseExecutor\CoreDatabaseExecutor.vcxproj">
@@ -114,6 +116,9 @@ copy /y "$(ProjectDir)config.json" $(OutDir)</Command>
     <ProjectReference Include="..\FetchWebFramework\FetchWebFramework.vcxproj">
       <Project>{8b1b7f47-3d45-459e-90b9-340bd9b091b6}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\StateExecutor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

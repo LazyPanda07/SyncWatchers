@@ -5,7 +5,9 @@ project(SyncWatchers)
 add_executable(
 	${PROJECT_NAME}
 	src/Main.cpp
+	src/StateExecutor.cpp
 )
 
 install(TARGETS ${PROJECT_NAME} DESTINATION .)
-install(FILES ${PROJECT_SOURCE_DIR}/config.json DESTINATION .)
+install(FILES config.json DESTINATION .)
+install(FILES web.json DESTINATION .)
