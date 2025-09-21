@@ -9,4 +9,5 @@ add_library(
 )
 
 install(TARGETS ${PROJECT_NAME} DESTINATION .)
-install(DIRECTORY ${PROJECT_SOURCE_DIR}/ DESTINATION . FILES_MATCHING PATTERN "*.json")
+install(FILES ${PROJECT_SOURCE_DIR}/core_database_web.json DESTINATION .)
+install(FILES ${PROJECT_SOURCE_DIR}/core_database_config.json DESTINATION .)
