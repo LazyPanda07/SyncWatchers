@@ -1,3 +1,7 @@
+#include <format>
+#include <chrono>
+#include <thread>
+
 #include <gtest/gtest.h>
 #include <curl/curl.h>
 #include <nlohmann/json.hpp>
@@ -68,6 +72,8 @@ int main(int argc, char** argv)
 		return 1;
 	}
 
+	std::this_thread::sleep_for(std::chrono::seconds(5)); // wait for server
+
 	testing::InitGoogleTest(&argc, argv);
 	curl_global_init(CURL_GLOBAL_ALL);
 
@@ -82,7 +88,7 @@ int main(int argc, char** argv)
 
 std::error_code runServer(reproc::process& server)
 {
-	std::vector<std::string> args = { "SyncWatchers", "127.0.0.1" };
+	std::vector<std::string> args = { (std::filesystem::current_path() / "SyncWatchers").string(), "127.0.0.1" };
 	reproc::options options;
 
 	return server.start(reproc::arguments(args), options);
