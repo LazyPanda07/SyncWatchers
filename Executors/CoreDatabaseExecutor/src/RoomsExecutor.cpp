@@ -41,13 +41,13 @@ namespace executors
 
 	void RoomsExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
 	{
-		framework::Database database = request.getOrCreateDatabase(":memory");
+		framework::Database database = request.getOrCreateDatabase(":memory:");
 		framework::Table rooms = database.getOrCreateTable("rooms", database::createRoomsQuery());
 
 		std::string roomName = framework::JSONParser(request.getBody()).get<std::string>("name");
 		std::string roomInviteLink = std::format("{}/{}", inviteLink, framework::utility::uuid::generateUUID());
 
-		rooms.execute
+		framework::SQLResult test = rooms.execute
 		(
 			"INSERT INTO rooms (invite_link, name) VALUES (?, ?)",
 			{ framework::SQLValue(roomInviteLink), framework::SQLValue(roomName) }
