@@ -56,13 +56,28 @@ if (NOT ${nlohmann_json_FOUND})
 	FetchContent_MakeAvailable(nlohmann_json)
 endif()
 
+find_package(reproc++ QUIET)
+
+if (NOT ${reproc++_FOUND})
+	set(REPROC_TAG v14.2.5)
+
+	FetchContent_Declare(
+		reproc++
+		GIT_REPOSITORY https://github.com/DaanDeMeyer/reproc.git
+		GIT_TAG ${REPROC_TAG}
+	)
+
+	set(REPROC++ ON CACHE BOOL "" FORCE)
+
+	FetchContent_MakeAvailable(reproc++)
+endif()
+
 add_custom_target(
 	build_sync_watchers ALL
 	COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/SyncWatchers
-	COMMAND ${CMAKE_COMMAND} -E echo "Directory: ${CMAKE_BINARY_DIR}, Source directory: ${CMAKE_SOURCE_DIR}/../"
-	COMMAND ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR} ${CMAKE_SOURCE_DIR}/../
-	# COMMAND ${CMAKE_COMMAND} --build . -j --config Release
-	# COMMAND ${CMAKE_COMMAND} --install . --config Release
+	COMMAND ${CMAKE_COMMAND} -S ${CMAKE_SOURCE_DIR}/../ -B ${CMAKE_BINARY_DIR}/SyncWatchers -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR} 
+	COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR}/SyncWatchers -j --config Release
+	COMMAND ${CMAKE_COMMAND} --install ${CMAKE_BINARY_DIR}/SyncWatchers --config Release
 )
 
 add_executable(
@@ -76,6 +91,7 @@ target_link_libraries(
 	gtest_main
 	libcurl
 	nlohmann_json::nlohmann_json
+	reproc++
 )
 
 add_dependencies(

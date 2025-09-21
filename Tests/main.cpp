@@ -1,8 +1,9 @@
 #include <gtest/gtest.h>
 #include <curl/curl.h>
 #include <nlohmann/json.hpp>
+#include <reproc++/run.hpp>
 
-size_t writeCallback(char* content, size_t size, size_t numberOfBytes, void* response)
+static size_t writeCallback(char* content, size_t size, size_t numberOfBytes, void* response)
 {
 	static_cast<std::string*>(response)->append(content, size * numberOfBytes);
 
@@ -54,8 +55,19 @@ TEST(Users, UpdateName)
 
 }
 
+std::error_code runServer(reproc::process& server);
+
 int main(int argc, char** argv)
 {
+	reproc::process server;
+
+	if (std::error_code code = runServer(server); code)
+	{
+		std::cerr << code.message() << std::endl;
+
+		return 1;
+	}
+
 	testing::InitGoogleTest(&argc, argv);
 	curl_global_init(CURL_GLOBAL_ALL);
 
@@ -63,5 +75,15 @@ int main(int argc, char** argv)
 
 	curl_global_cleanup();
 
+	server.kill();
+
 	return result;
+}
+
+std::error_code runServer(reproc::process& server)
+{
+	std::vector<std::string> args = { "SyncWatchers", "127.0.0.1" };
+	reproc::options options;
+
+	return server.start(reproc::arguments(args), options);
 }
