@@ -14,9 +14,31 @@ static size_t writeCallback(char* content, size_t size, size_t numberOfBytes, vo
 	return size * numberOfBytes;
 };
 
-TEST(Rooms, CreateRoom)
+class Rooms : public testing::Test
 {
-	CURL* curl = curl_easy_init();
+protected:
+	CURL* curl;
+
+public:
+	Rooms() :
+		curl(nullptr)
+	{
+		
+	}
+
+	void SetUp() override
+	{
+		curl = curl_easy_init();
+	}
+
+	void TearDown()
+	{
+		curl_easy_cleanup(curl);
+	}
+};
+
+TEST_F(Rooms, CreateRoom)
+{
 	std::string response;
 
 	ASSERT_TRUE(curl);
@@ -50,10 +72,7 @@ TEST(Rooms, CreateRoom)
 
 	responseJSON = nlohmann::json::parse(response);
 
-
-
 	curl_slist_free_all(headers);
-	curl_easy_cleanup(curl);
 }
 
 TEST(Users, UpdateName)
@@ -61,20 +80,11 @@ TEST(Users, UpdateName)
 
 }
 
-std::error_code runServer(reproc::process& server);
+reproc::process runServer();
 
 int main(int argc, char** argv)
 {
-	reproc::process server;
-
-	if (std::error_code code = runServer(server); code)
-	{
-		std::cerr << code.message() << std::endl;
-
-		return 1;
-	}
-
-	std::this_thread::sleep_for(std::chrono::seconds(5)); // wait for server
+	reproc::process server = runServer();
 
 	testing::InitGoogleTest(&argc, argv);
 	curl_global_init(CURL_GLOBAL_ALL);
@@ -88,10 +98,31 @@ int main(int argc, char** argv)
 	return result;
 }
 
-std::error_code runServer(reproc::process& server)
+reproc::process runServer()
 {
+	reproc::process server;
 	std::vector<std::string> args = { (std::filesystem::current_path() / "SyncWatchers").string(), "127.0.0.1" };
 	reproc::options options;
+	std::vector<uint8_t> buffer(256, '\0');
 
-	return server.start(reproc::arguments(args), options);
+	if (std::error_code errorCode = server.start(reproc::arguments(args), options); errorCode)
+	{
+		std::cerr << errorCode.message() << std::endl;
+
+		exit(errorCode.value());
+	}
+
+	while (true)
+	{
+		auto [numberOfBytes, errorCode] = server.read(reproc::stream::out, buffer.data(), buffer.size());
+
+		if (numberOfBytes)
+		{
+			break;
+		}
+
+		std::this_thread::sleep_for(std::chrono::seconds(1));
+	}
+
+	return server;
 }
