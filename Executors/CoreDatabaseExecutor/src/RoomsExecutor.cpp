@@ -23,8 +23,8 @@ namespace executors
 		framework::Table users = request.getTable(":memory:", "users");
 		framework::SQLResult sqlResult = users.execute
 		(
-			"SELECT name FROM users WHERE room_id = ?",
-			{ framework::SQLValue(request.getQueryParameters().at("room_id")) }
+			"SELECT name FROM users WHERE room_id = (SELECT id FROM rooms WHERE uuid = ?)",
+			{ framework::SQLValue(request.getQueryParameters().at("room_uuid")) }
 		);
 		std::vector<framework::JSONObject> result;
 
@@ -49,8 +49,8 @@ namespace executors
 
 		framework::SQLResult test = rooms.execute
 		(
-			"INSERT INTO rooms (invite_link, name) VALUES (?, ?)",
-			{ framework::SQLValue(roomInviteLink), framework::SQLValue(roomName) }
+			"INSERT INTO rooms (invite_link, name, uuid) VALUES (?, ?, ?)",
+			{ framework::SQLValue(roomInviteLink), framework::SQLValue(roomName), framework::SQLValue(framework::utility::uuid::generateUUID()) }
 		);
 
 		response.setBody(framework::JSONBuilder().append("inviteLink", roomInviteLink));
@@ -60,18 +60,18 @@ namespace executors
 	{
 		framework::Table rooms = request.getTable(":memory:", "rooms");
 		framework::Table users = request.getTable(":memory:", "users");
-		int64_t roomId = std::stoll(request.getQueryParameters().at("room_id"));
+		std::string uuid = request.getQueryParameters().at("room_uuid");
 
 		users.execute
 		(
-			"DELETE from users WHERE room_id = ?",
-			{ framework::SQLValue(roomId) }
+			"DELETE from users WHERE room_id = (SELECT id FROM rooms WHERE uuid = ?)",
+			{ framework::SQLValue(uuid) }
 		);
 
 		rooms.execute
 		(
-			"DELETE FROM rooms WHERE id = ?",
-			{ framework::SQLValue(roomId) }
+			"DELETE FROM rooms WHERE id = (SELECT id FROM rooms WHERE uuid = ?)",
+			{ framework::SQLValue(uuid) }
 		);
 	}
 

@@ -48,7 +48,9 @@ TEST(Rooms, CreateRoom)
 
 	ASSERT_EQ(curl_easy_perform(curl), CURLE_OK);
 
-	std::cout << response << std::endl;
+	responseJSON = nlohmann::json::parse(response);
+
+
 
 	curl_slist_free_all(headers);
 	curl_easy_cleanup(curl);

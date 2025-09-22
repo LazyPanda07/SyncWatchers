@@ -1,6 +1,6 @@
 include(FetchContent)
 
-set(WEB_FRAMEWORK_VERSION 3.1.0)
+set(WEB_FRAMEWORK_VERSION 3.1.1)
 set(WEB_FRAMEWORK_URL https://github.com/LazyPanda07/WebFramework/releases/download/v${WEB_FRAMEWORK_VERSION})
 
 if (UNIX)

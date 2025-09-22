@@ -71,7 +71,7 @@
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>copy /y "$(SolutionDir)build\_deps\webframework-src\Release_Windows\dll\*.dll" $(OutDir)
-copy /y "$(ProjectDir)config.json" $(OutDir)</Command>
+copy /y "$(ProjectDir)*.json" $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -98,7 +98,7 @@ copy /y "$(ProjectDir)config.json" $(OutDir)</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>copy /y "$(SolutionDir)build\_deps\webframework-src\Release_Windows\dll\*.dll" $(OutDir)
-copy /y "$(ProjectDir)config.json" $(OutDir)</Command>
+copy /y "$(ProjectDir)*.json" $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

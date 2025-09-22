@@ -2,6 +2,8 @@
 
 #include <random>
 
+#include <Utility/WebFrameworkUtility.hpp>
+
 #include "RoomsExecutor.h"
 #include "CreateTableQueries.h"
 
@@ -26,7 +28,7 @@ namespace executors
 		std::string link = std::format("{}/{}", RoomsExecutor::getBaseInviteLink(), request.getRouteParameter<std::string>("link"));
 		framework::SQLResult sqlResult = rooms.execute
 		(
-			"SELECT id FROM rooms WHERE invite_link = ?",
+			"SELECT id, uuid FROM rooms WHERE invite_link = ?",
 			{ framework::SQLValue(link) }
 		);
 
@@ -34,7 +36,7 @@ namespace executors
 		{
 			framework::Table users = request.getOrCreateTable(":memory:", "users", database::createUsersQuery());
 			const framework::SQLResult::Row& row = *sqlResult.begin();
-			int64_t id = row.begin()->second.get<int64_t>();
+			int64_t id = row.at("id").get<int64_t>();
 			std::string userName = InviteLinkExecutor::generateDefaultName();
 			framework::JSONBuilder result;
 			framework::JSONParser parser(request.getBody());
@@ -44,11 +46,11 @@ namespace executors
 
 			users.execute
 			(
-				"INSERT INTO users (room_id, name, role) VALUES (?, ?, ?)",
-				{ framework::SQLValue(id), framework::SQLValue(userName), framework::SQLValue(role) }
+				"INSERT INTO users (room_id, name, role, uuid) VALUES (?, ?, ?, ?)",
+				{ framework::SQLValue(id), framework::SQLValue(userName), framework::SQLValue(role), framework::SQLValue(framework::utility::uuid::generateUUID()) }
 			);
 
-			result["room_id"] = id;
+			result["room_uuid"] = row.at("uuid").get<std::string>();
 			result["userName"] = userName;
 			result["role"] = role;
 
