@@ -96,6 +96,7 @@ copy /y $(OutDir)*.* $(OutDir)..\SyncWatchers\*.*</Command>
   <ItemGroup>
     <ClCompile Include="src\InviteLinkExecutor.cpp" />
     <ClCompile Include="src\RoomsExecutor.cpp" />
+    <ClCompile Include="src\UsersExecutor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="core_database_config.json" />
@@ -105,6 +106,7 @@ copy /y $(OutDir)*.* $(OutDir)..\SyncWatchers\*.*</Command>
     <ClInclude Include="src\CreateTableQueries.h" />
     <ClInclude Include="src\InviteLinkExecutor.h" />
     <ClInclude Include="src\RoomsExecutor.h" />
+    <ClInclude Include="src\UsersExecutor.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\FetchWebFramework\FetchWebFramework.vcxproj">

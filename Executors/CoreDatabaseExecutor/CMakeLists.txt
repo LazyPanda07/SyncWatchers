@@ -6,6 +6,7 @@ add_library(
 	${PROJECT_NAME} SHARED
 	src/InviteLinkExecutor.cpp
 	src/RoomsExecutor.cpp
+	src/UsersExecutor.cpp
 )
 
 install(TARGETS ${PROJECT_NAME} DESTINATION .)

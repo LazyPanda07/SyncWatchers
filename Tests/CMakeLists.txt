@@ -88,9 +88,9 @@ add_executable(
 
 target_link_libraries(
 	${PROJECT_NAME} PRIVATE
-	gtest
-	gtest_main
-	libcurl
+	GTest::gtest
+	GTest::gtest_main
+	CURL::libcurl
 	nlohmann_json::nlohmann_json
 	reproc++
 )

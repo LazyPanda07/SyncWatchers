@@ -11,5 +11,10 @@
     "loadType": "initialization",
     "route": "invite_link/{string:link}",
     "api": "cxx"
+  },
+  "UsersExecutor": {
+    "loadType": "initialization",
+    "route": "users",
+    "api": "cxx"
   }
 }

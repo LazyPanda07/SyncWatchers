@@ -14,13 +14,16 @@ static size_t writeCallback(char* content, size_t size, size_t numberOfBytes, vo
 	return size * numberOfBytes;
 };
 
-class Rooms : public testing::Test
+class Database : public testing::Test
 {
 protected:
 	CURL* curl;
+	std::string userName;
+	std::string userUUID;
+	std::string role;
 
 public:
-	Rooms() :
+	Database() :
 		curl(nullptr)
 	{
 		
@@ -37,7 +40,7 @@ public:
 	}
 };
 
-TEST_F(Rooms, CreateRoom)
+TEST_F(Database, CreateRoom)
 {
 	std::string response;
 
@@ -72,10 +75,14 @@ TEST_F(Rooms, CreateRoom)
 
 	responseJSON = nlohmann::json::parse(response);
 
+	userName = responseJSON["userName"].get<std::string>();
+	userUUID = responseJSON["userUUID"].get<std::string>();
+	role = responseJSON["role"].get<std::string>();
+
 	curl_slist_free_all(headers);
 }
 
-TEST(Users, UpdateName)
+TEST_F(Database, UpdateName)
 {
 
 }
@@ -114,14 +121,21 @@ reproc::process runServer()
 
 	while (true)
 	{
+		std::this_thread::sleep_for(std::chrono::seconds(1));
+
 		auto [numberOfBytes, errorCode] = server.read(reproc::stream::out, buffer.data(), buffer.size());
+
+		if (errorCode)
+		{
+			std::cerr << errorCode.message() << std::endl;
+
+			exit(errorCode.value());
+		}
 
 		if (numberOfBytes)
 		{
 			break;
 		}
-
-		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
 
 	return server;

@@ -21,6 +21,9 @@
     <ClCompile Include="src\InviteLinkExecutor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\UsersExecutor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="core_database_config.json" />
@@ -34,6 +37,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\CreateTableQueries.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UsersExecutor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

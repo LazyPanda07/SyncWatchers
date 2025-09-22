@@ -1,6 +1,7 @@
 #include "InviteLinkExecutor.h"
 
 #include <random>
+#include <fstream>
 
 #include <Utility/WebFrameworkUtility.hpp>
 
@@ -41,17 +42,19 @@ namespace executors
 			framework::JSONBuilder result;
 			framework::JSONParser parser(request.getBody());
 			std::string role = "default";
+			std::string userUUID = framework::utility::uuid::generateUUID();
 
 			parser.tryGet<std::string>("role", role);
 
 			users.execute
 			(
 				"INSERT INTO users (room_id, name, role, uuid) VALUES (?, ?, ?, ?)",
-				{ framework::SQLValue(id), framework::SQLValue(userName), framework::SQLValue(role), framework::SQLValue(framework::utility::uuid::generateUUID()) }
+				{ framework::SQLValue(id), framework::SQLValue(userName), framework::SQLValue(role), framework::SQLValue(userUUID) }
 			);
 
-			result["room_uuid"] = row.at("uuid").get<std::string>();
+			result["roomUUID"] = row.at("uuid").get<std::string>();
 			result["userName"] = userName;
+			result["userUUID"] = userUUID;
 			result["role"] = role;
 
 			response.setBody(result);
