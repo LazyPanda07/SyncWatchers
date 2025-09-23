@@ -154,3 +154,24 @@ TEST_F(BasicFunctionality, AvailableContent)
 	ASSERT_EQ(content.size(), 1);
 	ASSERT_EQ(content[0].get<std::string>(), "content.mp4");
 }
+
+TEST_F(BasicFunctionality, DeleteRoom)
+{
+	std::string jsonData = std::format(R"({{"room_uuid": "{}", }})", BasicFunctionality::roomUUID);
+
+	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_URL, "http://127.0.0.1:52000/rooms"), CURLE_OK);
+	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "DELETE"), CURLE_OK);
+	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonData.data()), CURLE_OK);
+
+	curl_slist* headers = nullptr;
+
+	headers = curl_slist_append(headers, "Content-Type: application/json");
+
+	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers), CURLE_OK);
+
+	ASSERT_EQ(curl_easy_perform(curl), CURLE_OK);
+
+	curl_slist_free_all(headers);
+
+	ASSERT_EQ(BasicFunctionality::response, "Room deleted");
+}

@@ -1,5 +1,7 @@
 #include "RoomsExecutor.h"
 
+#include <filesystem>
+
 #include <Utility/WebFrameworkUtility.hpp>
 
 #include "CreateTableQueries.h"
@@ -60,7 +62,8 @@ namespace executors
 	{
 		framework::Table rooms = request.getTable(":memory:", "rooms");
 		framework::Table users = request.getTable(":memory:", "users");
-		std::string uuid = request.getQueryParameters().at("room_uuid");
+		framework::JSONParser parser(request.getBody());
+		std::string uuid = parser.get<std::string>("room_uuid");
 
 		users.execute
 		(
@@ -73,6 +76,10 @@ namespace executors
 			"DELETE FROM rooms WHERE id = (SELECT id FROM rooms WHERE uuid = ?)",
 			{ framework::SQLValue(uuid) }
 		);
+
+		std::filesystem::remove_all(std::filesystem::current_path() / "assets" / uuid);
+
+		response.setBody("Room deleted");
 	}
 
 	DEFINE_EXECUTOR(RoomsExecutor);
