@@ -6,7 +6,7 @@
   },
   "DownloadContentExecutor": {
     "loadType": "dynamic",
-    "route": "download",
+    "route": "download/{string:room_uuid}/{string:file_name}",
     "api": "cxx"
   }
 }

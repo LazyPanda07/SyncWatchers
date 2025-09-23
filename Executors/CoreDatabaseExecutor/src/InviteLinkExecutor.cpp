@@ -61,7 +61,6 @@ namespace executors
 		else
 		{
 			response.setResponseCode(framework::ResponseCodes::notFound);
-
 			response.setBody("Can't join to room");
 		}
 	}

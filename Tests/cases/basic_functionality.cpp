@@ -129,7 +129,7 @@ TEST_F(BasicFunctionality, UploadContent)
 {
 	std::string url = std::format("http://127.0.0.1:52000/upload/{}/{}/{}", BasicFunctionality::roomUUID, BasicFunctionality::userUUID, "content.mp4");
 	FILE* file = fopen("content.mp4", "rb");
-
+	
 	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_URL, url.data()), CURLE_OK);
 	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L), CURLE_OK);
 	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_READDATA, file), CURLE_OK);
@@ -153,6 +153,17 @@ TEST_F(BasicFunctionality, AvailableContent)
 
 	ASSERT_EQ(content.size(), 1);
 	ASSERT_EQ(content[0].get<std::string>(), "content.mp4");
+}
+
+TEST_F(BasicFunctionality, DownloadContent)
+{
+	std::string url = std::format("http://127.0.0.1:52000/download/{}/content.mp4", BasicFunctionality::roomUUID);
+
+	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_URL, url.data()), CURLE_OK);
+
+	ASSERT_EQ(curl_easy_perform(curl), CURLE_OK);
+
+	std::cout << BasicFunctionality::response.size() << std::endl;
 }
 
 TEST_F(BasicFunctionality, DeleteRoom)

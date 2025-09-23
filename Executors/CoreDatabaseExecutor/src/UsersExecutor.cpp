@@ -49,14 +49,12 @@ namespace executors
 			catch (const std::exception& e)
 			{
 				response.setResponseCode(framework::ResponseCodes::internalServerError);
-
 				response.setBody(e.what());
 			}	
 		}
 		else
 		{
 			response.setResponseCode(framework::ResponseCodes::notFound);
-
 			response.setBody("Can't find user");
 		}
 	}

@@ -9,6 +9,7 @@
     "assetsPath": "assets",
     "templatesPath": "templates",
     "webServerType": "multiThreaded",
+    "largeBodySizeThreshold": 104857600,
     "loadSources": [
       "current"
     ],
