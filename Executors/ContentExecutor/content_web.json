@@ -1,0 +1,12 @@
+{
+  "UploadContentExecutor": {
+    "loadType": "initialization",
+    "route": "upload/{string:room_uuid}/{string:user_uuid}/{string:file_name}",
+    "api": "cxx"
+  },
+  "DownloadContentExecutor": {
+    "loadType": "initialization",
+    "route": "download",
+    "api": "cxx"
+  }
+}

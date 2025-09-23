@@ -16,7 +16,8 @@
       "web.json"
     ],
     "additionalConfigs": [
-      "core_database_config.json"
+      "core_database_config.json",
+      "content_config.json"
     ],
     "HTTPS": {
       "useHTTPS": false,

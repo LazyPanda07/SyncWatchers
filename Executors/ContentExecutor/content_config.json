@@ -1,0 +1,8 @@
+{
+  "settingsPaths": [
+    "content_web.json"
+  ],
+  "loadSources": [
+    "ContentExecutor"
+  ]
+}
