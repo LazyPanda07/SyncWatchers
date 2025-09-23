@@ -5,7 +5,7 @@
 
 namespace executors
 {
-	void UploadContentExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
+	void UploadContentExecutor::doPut(framework::HTTPRequest& request, framework::HTTPResponse& response)
 	{
 		const auto& [data, last] = request.getLargeData();
 

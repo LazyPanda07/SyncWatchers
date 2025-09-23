@@ -4,6 +4,8 @@ set(CMAKE_CXX_STANDARD 20)
 set(FETCHCONTENT_QUIET OFF CACHE BOOL "")
 set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/bin)
 
+set(CONTENT_TEST_FILE ${CMAKE_INSTALL_PREFIX}/content.mp4)
+
 project(Tests)
 
 include(CTest)
@@ -81,9 +83,24 @@ add_custom_target(
 	COMMAND ${CMAKE_COMMAND} --install ${CMAKE_BINARY_DIR}/_deps/SyncWatchers --config Release
 )
 
+if(UNIX)
+	set(GENERATE_CMD dd if=/dev/zero of=${CONTENT_TEST_FILE} bs=1M count=10)
+else()
+	set(GENERATE_CMD powershell -Command "[IO.File]::WriteAllBytes('${CONTENT_TEST_FILE}', (New-Object Byte[](10485760)))")
+endif()
+
+add_custom_command(
+    OUTPUT ${CONTENT_TEST_FILE}
+    COMMAND ${GENERATE_CMD}
+    COMMENT "Generating 10 MiB content.mp4 file"
+)
+
+add_custom_target(generate_test_content ALL DEPENDS ${CONTENT_TEST_FILE})
+
 add_executable(
 	${PROJECT_NAME}
 	main.cpp
+	cases/basic_functionality.cpp
 )
 
 target_link_libraries(
@@ -102,7 +119,6 @@ add_dependencies(
 
 enable_testing()
 
-add_test(NAME Rooms COMMAND ${PROJECT_NAME})
-add_test(NAME Users COMMAND ${PROJECT_NAME})
+add_test(NAME BasicFunctionality COMMAND ${PROJECT_NAME})
 
 install(TARGETS ${PROJECT_NAME} DESTINATION .)

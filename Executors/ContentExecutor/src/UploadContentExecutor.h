@@ -12,6 +12,6 @@ namespace executors
 		std::ofstream stream;
 
 	public:
-		void doPost(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
+		void doPut(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
 	};
 }

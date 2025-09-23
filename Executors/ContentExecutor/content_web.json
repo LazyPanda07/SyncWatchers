@@ -1,11 +1,11 @@
 {
   "UploadContentExecutor": {
-    "loadType": "initialization",
+    "loadType": "dynamic",
     "route": "upload/{string:room_uuid}/{string:user_uuid}/{string:file_name}",
     "api": "cxx"
   },
   "DownloadContentExecutor": {
-    "loadType": "initialization",
+    "loadType": "dynamic",
     "route": "download",
     "api": "cxx"
   }
