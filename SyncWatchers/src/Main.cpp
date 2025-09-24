@@ -4,8 +4,38 @@
 
 #include <import.hpp>
 
+#include "IEventsManager.h"
+
+#ifdef __LINUX__
+using HMODULE = void*;
+#endif
+
+HMODULE loadLibrary(std::string_view libraryPath)
+{
+#ifdef __LINUX__
+	return dlopen(libraryPath.data(), RTLD_LAZY);
+#else
+	return LoadLibraryA(libraryPath.data());
+#endif
+}
+
+template<typename T>
+T load(HMODULE handle, std::string_view name)
+{
+#ifdef __LINUX__
+	return reinterpret_cast<T>(dlsym(handle, name.data()));
+#else
+	return reinterpret_cast<T>(GetProcAddress(handle, name.data()));
+#endif
+};
+
 int main(int argc, char** argv) try
 {
+	HMODULE module = loadLibrary("Events.dll");
+	auto getter = load<events::IEventsManager * (*)()>(module, "getEventsManager");
+
+	events::IEventsManager& events = *getter();
+
 	framework::utility::initializeWebFramework();
 
 	framework::utility::Config config("config.json");
@@ -14,6 +44,8 @@ int main(int argc, char** argv) try
 	{
 		config.overrideConfiguration("ip", argv[1]);
 	}
+
+	events.startServer(config.getConfigurationString("ip"), config.getConfigurationInteger("port"));
 
 	framework::WebFramework server(config);
 

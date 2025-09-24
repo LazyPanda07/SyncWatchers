@@ -8,6 +8,16 @@ add_executable(
 	src/StateExecutor.cpp
 )
 
+target_include_directories(
+	${PROJECT_NAME} PRIVATE
+	${CMAKE_SOURCE_DIR}/Events/src
+)
+
+target_link_libraries(
+	${PROJECT_NAME} PRIVATE
+	Events
+)
+
 if (UNIX)
 	target_link_options(${PROJECT_NAME} PRIVATE -rdynamic)
 endif()
