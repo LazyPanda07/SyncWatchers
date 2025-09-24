@@ -50,13 +50,28 @@ namespace executors
 			{
 				response.setResponseCode(framework::ResponseCodes::internalServerError);
 				response.setBody(e.what());
-			}	
+			}
 		}
 		else
 		{
 			response.setResponseCode(framework::ResponseCodes::notFound);
 			response.setBody("Can't find user");
 		}
+	}
+
+	void UsersExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
+	{
+		framework::Table users = request.getTable(":memory:", "users");
+		framework::JSONParser parser(request.getBody());
+		std::string ownerUUID = parser.get<std::string>("ownerUUID");
+		std::string name = parser.get<std::string>("userName");
+		std::string newRole = parser.get<std::string>("newRole");
+
+		users.execute
+		(
+			"UPDATE users SET role = ? WHERE id = (SELECT id FROM users WHERE room_id = (SELECT room_id FROM users WHERE uuid = ?) AND name = ?)",
+			{ framework::SQLValue(newRole), framework::SQLValue(ownerUUID), framework::SQLValue(name) }
+		);
 	}
 
 	void UsersExecutor::doPatch(framework::HTTPRequest& request, framework::HTTPResponse& response)

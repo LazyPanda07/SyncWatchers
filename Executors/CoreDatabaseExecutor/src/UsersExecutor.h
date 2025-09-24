@@ -9,6 +9,8 @@ namespace executors
 	public:
 		void doGet(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
 
+		void doPost(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
+
 		void doPatch(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
 	};
 }
