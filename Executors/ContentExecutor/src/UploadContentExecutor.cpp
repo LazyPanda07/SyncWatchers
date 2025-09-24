@@ -35,7 +35,7 @@ namespace executors
 				std::filesystem::create_directories(baseAssetsPath / directoryName);
 			}
 
-			stream.open(baseAssetsPath / directoryName / request.getRouteParameter<std::string>("file_name"), std::ios::binary);
+			stream.open(baseAssetsPath / directoryName / request.getRouteParameter<std::string>("content_name"), std::ios::binary);
 		}
 
 		std::string_view data = request.getBody();
@@ -62,7 +62,7 @@ namespace executors
 			content.execute
 			(
 				"INSERT INTO content (name, room_id, upload_user_id) VALUES (?, (SELECT id FROM rooms WHERE uuid = ?), (SELECT id FROM users WHERE uuid = ?))",
-				{ framework::SQLValue(request.getRouteParameter<std::string>("file_name")), framework::SQLValue(request.getRouteParameter<std::string>("room_uuid")), framework::SQLValue(request.getRouteParameter<std::string>("user_uuid")) }
+				{ framework::SQLValue(request.getRouteParameter<std::string>("content_name")), framework::SQLValue(request.getRouteParameter<std::string>("room_uuid")), framework::SQLValue(request.getRouteParameter<std::string>("user_uuid")) }
 			);
 
 			response.setBody("File uploaded");

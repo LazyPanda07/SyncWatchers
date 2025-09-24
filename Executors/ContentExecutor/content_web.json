@@ -1,12 +1,12 @@
 {
   "UploadContentExecutor": {
     "loadType": "dynamic",
-    "route": "upload/{string:room_uuid}/{string:user_uuid}/{string:file_name}",
+    "route": "upload/{string:room_uuid}/{string:user_uuid}/{string:content_name}",
     "api": "cxx"
   },
   "DownloadContentExecutor": {
     "loadType": "dynamic",
-    "route": "download/{string:room_uuid}/{string:file_name}",
+    "route": "download/{string:room_uuid}/{string:content_name}",
     "api": "cxx"
   }
 }

@@ -16,30 +16,30 @@ namespace executors
 	void DownloadContentExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
 	{
 		std::string uuid = request.getRouteParameter<std::string>("room_uuid");
-		std::string fileName = request.getRouteParameter<std::string>("file_name");
-		std::filesystem::path file(std::filesystem::current_path() / "assets" / uuid / fileName);
+		std::string contentName = request.getRouteParameter<std::string>("content_name");
+		std::filesystem::path file(std::filesystem::current_path() / "assets" / uuid / contentName);
 
 		if (!std::filesystem::exists(file))
 		{
 			response.setResponseCode(framework::ResponseCodes::notFound);
-			response.setBody(std::format("Can't find {}", fileName));
+			response.setBody(std::format("Can't find {}", contentName));
 
 			return;
 		}
 
-		request.streamFile((std::filesystem::path(uuid) / fileName).string(), response, fileName);
+		request.streamFile((std::filesystem::path(uuid) / contentName).string(), response, contentName);
 	}
 
 	void DownloadContentExecutor::doOptions(framework::HTTPRequest& request, framework::HTTPResponse& response)
 	{
 		std::string uuid = request.getRouteParameter<std::string>("room_uuid");
-		std::string fileName = request.getRouteParameter<std::string>("file_name");
-		std::filesystem::path file(std::filesystem::current_path() / "assets" / uuid / fileName);
+		std::string contentName = request.getRouteParameter<std::string>("contentName");
+		std::filesystem::path file(std::filesystem::current_path() / "assets" / uuid / contentName);
 
 		if (!std::filesystem::exists(file))
 		{
 			response.setResponseCode(framework::ResponseCodes::notFound);
-			response.setBody(std::format("Can't find {}", fileName));
+			response.setBody(std::format("Can't find {}", contentName));
 
 			return;
 		}
