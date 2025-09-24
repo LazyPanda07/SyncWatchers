@@ -11,7 +11,7 @@ reproc::process runServer();
 
 int main(int argc, char** argv)
 {
-	// reproc::process server = runServer();
+	reproc::process server = runServer();
 
 	testing::InitGoogleTest(&argc, argv);
 	curl_global_init(CURL_GLOBAL_ALL);
@@ -20,7 +20,7 @@ int main(int argc, char** argv)
 
 	curl_global_cleanup();
 
-	// server.kill();
+	server.kill();
 
 	if (std::none_of(argv, argv + argc, [](const char* value) { using namespace std::string_view_literals; return value == "keep_assets"sv; }))
 	{
