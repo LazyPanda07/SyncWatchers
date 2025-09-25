@@ -1,5 +1,7 @@
 #include "StateExecutor.h"
 
+#include "Utils.h"
+
 namespace executors
 {
 	void StateExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
@@ -24,6 +26,7 @@ namespace executors
 
 			result["numberOfRooms"] = roomsSql.begin()->at("rooms_count").get<int64_t>();
 			result["numberOfUsers"] = usersSql.begin()->at("users_count").get<int64_t>();
+			result["numberOfListeners"] = utils::getEventsManager().getListeners();
 
 			response.setBody(result);
 		}

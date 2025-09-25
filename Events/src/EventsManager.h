@@ -22,7 +22,7 @@ namespace events
 	{
 	private:
 		std::unordered_map<std::string, std::vector<SOCKET>> connections;
-		std::mutex connectionsMutex;
+		mutable std::mutex connectionsMutex;
 		std::unique_ptr<Server> server;
 
 	private:
@@ -37,6 +37,8 @@ namespace events
 		static EventsManager& getInstance();
 
 		void startServer(std::string_view ip, int64_t port) override;
+
+		size_t getListeners() const override;
 
 		friend struct std::default_delete<EventsManager>;
 		friend class Server;

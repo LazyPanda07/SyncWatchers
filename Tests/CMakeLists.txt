@@ -29,6 +29,8 @@ project(Tests)
 include(CTest)
 include(FetchContent)
 
+enable_testing()
+
 find_package(GTest QUIET)
 
 if (NOT ${GTest_FOUND})
@@ -108,6 +110,12 @@ add_executable(
 	${PROJECT_NAME}
 	main.cpp
 	cases/user_actions.cpp
+	utils/Socket.cpp
+)
+
+target_include_directories(
+	${PROJECT_NAME} PRIVATE
+	${CMAKE_SOURCE_DIR}
 )
 
 target_link_libraries(
@@ -124,7 +132,9 @@ add_dependencies(
 	build_sync_watchers
 )
 
-enable_testing()
+if (UNIX)
+	add_definitions(-D__LINUX__)
+endif()
 
 add_test(NAME UserActions COMMAND ${PROJECT_NAME})
 

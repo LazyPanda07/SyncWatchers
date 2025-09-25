@@ -6,6 +6,8 @@
 #include <gtest/gtest.h>
 #include <nlohmann/json.hpp>
 
+#include "utils/Socket.h"
+
 class UserActions : public testing::Test
 {
 private:
@@ -68,6 +70,7 @@ protected:
 	inline static std::string userUUID;
 	inline static std::string roomUUID;
 	inline static std::string role;
+	inline static tcp::Socket socket;
 
 protected:
 	CURL* curl;
@@ -133,6 +136,10 @@ TEST_F(UserActions, JoinRoom)
 	UserActions::userUUID = responseJSON["userUUID"].get<std::string>();
 	UserActions::roomUUID = responseJSON["roomUUID"].get<std::string>();
 	UserActions::role = responseJSON["role"].get<std::string>();
+
+	UserActions::socket.connect("127.0.0.1", 52001);
+
+	UserActions::socket.send(UserActions::roomUUID);
 }
 
 TEST_F(UserActions, UpdateName)

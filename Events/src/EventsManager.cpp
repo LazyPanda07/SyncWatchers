@@ -40,6 +40,19 @@ namespace events
 
 		server->start();
 	}
+
+	size_t EventsManager::getListeners() const
+	{
+		std::lock_guard<std::mutex> lock(connectionsMutex);
+		size_t result = 0;
+		
+		for (const auto& [_, value] : connections)
+		{
+			result += value.size();
+		}
+
+		return result;
+	}
 }
 
 events::IEventsManager* getEventsManager()
