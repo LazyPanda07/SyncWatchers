@@ -16,6 +16,7 @@ target_link_libraries(
 
 target_include_directories(
 	${PROJECT_NAME} PRIVATE
+	${CMAKE_SOURCE_DIR}/src
 	${CMAKE_SOURCE_DIR}/Events/src
 	${CMAKE_SOURCE_DIR}/Utils/src
 )

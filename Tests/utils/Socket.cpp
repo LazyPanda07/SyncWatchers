@@ -54,12 +54,20 @@ namespace tcp
 
 	void Socket::send(std::string_view data) const
 	{
-		::send(descriptor, data.data(), data.size(), NULL);
+		::send(descriptor, data.data(), data.size(), 0);
 	}
 
 	void Socket::receive(std::string& data, size_t size) const
 	{
-		recv(descriptor, data.data(), size ? size : data.size(), NULL);
+		size_t realSize = size ? size : data.size();
+		size_t currentSize = 0;
+
+		while (realSize != currentSize)
+		{
+			int received = recv(descriptor, data.data() + currentSize, realSize - currentSize, 0);
+
+			currentSize += received;
+		}
 	}
 
 	Socket::~Socket()

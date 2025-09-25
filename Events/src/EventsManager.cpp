@@ -43,43 +43,49 @@ namespace events
 
 	void EventsManager::notify(const IEvent& event, const std::string& roomUUID)
 	{
-		std::vector<SOCKET> sockets;
-		std::mutex* sendMutex = nullptr;
-
-		{
-			std::lock_guard<std::mutex> lock(dataMutex);
-
-			if (auto it = data.find(roomUUID); it != data.end())
-			{
-				sockets = it->second.subscribers;
-				sendMutex = &it->second.sendMutex;
-			}
-		}
-
-		if (!sendMutex)
-		{
-			return;
-		}
-
 		EventId eventId = event.getEventId();
-		std::string_view data = event.getEventData();
+		std::string eventData(event.getEventData());
 
-		static_assert(sizeof(eventId) == 1);
+		std::thread
+		(
+			[this, roomUUID = roomUUID, eventId, eventData = std::move(eventData)]()
+			{
+				std::vector<SOCKET> sockets;
+				std::mutex* sendMutex = nullptr;
 
-		std::lock_guard<std::mutex> lock(*sendMutex);
-		
-		for (SOCKET socket : sockets)
-		{
-			send(socket, reinterpret_cast<const char*>(&eventId), sizeof(eventId), NULL);
-			send(socket, data.data(), static_cast<int>(data.size()), NULL);
-		}
+				{
+					std::lock_guard<std::mutex> lock(dataMutex);
+
+					if (auto it = data.find(roomUUID); it != data.end())
+					{
+						sockets = it->second.subscribers;
+						sendMutex = &it->second.sendMutex;
+					}
+				}
+
+				if (!sendMutex)
+				{
+					return;
+				}
+
+				static_assert(sizeof(eventId) == 1);
+
+				std::lock_guard<std::mutex> lock(*sendMutex);
+
+				for (SOCKET socket : sockets)
+				{
+					send(socket, reinterpret_cast<const char*>(&eventId), sizeof(eventId), 0);
+					send(socket, eventData.data(), static_cast<int>(eventData.size()), 0);
+				}
+			}
+		).detach();
 	}
 
 	size_t EventsManager::getListeners() const
 	{
 		std::lock_guard<std::mutex> lock(dataMutex);
 		size_t result = 0;
-		
+
 		for (const auto& [_, room] : data)
 		{
 			result += room.subscribers.size();

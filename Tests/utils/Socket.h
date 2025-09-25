@@ -44,6 +44,15 @@ namespace tcp
 	template<typename T>
 	void Socket::receive(T* data) const
 	{
-		recv(descriptor, reinterpret_cast<char*>(data), sizeof(T), NULL);
+		size_t realSize = sizeof(T);
+		size_t currentSize = 0;
+		char* ptr = reinterpret_cast<char*>(data);
+
+		while (realSize != currentSize)
+		{
+			int received = recv(descriptor, ptr + currentSize, realSize - currentSize, 0);
+
+			currentSize += received;
+		}
 	}
 }
