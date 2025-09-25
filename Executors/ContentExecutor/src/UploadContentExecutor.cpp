@@ -4,6 +4,7 @@
 #include <format>
 
 #include "Utils.h"
+#include "Events/OnUploadContentEvent.h"
 
 namespace executors
 {
@@ -60,15 +61,15 @@ namespace executors
 			stream.close();
 
 			framework::Table content = request.getTable(":memory:", "content");
+			std::string roomUUID = request.getRouteParameter<std::string>("room_uuid");
 
 			content.execute
 			(
 				"INSERT INTO content (name, room_id, upload_user_id) VALUES (?, (SELECT id FROM rooms WHERE uuid = ?), (SELECT id FROM users WHERE uuid = ?))",
-				{ framework::SQLValue(request.getRouteParameter<std::string>("content_name")), framework::SQLValue(request.getRouteParameter<std::string>("room_uuid")), framework::SQLValue(request.getRouteParameter<std::string>("user_uuid")) }
+				{ framework::SQLValue(request.getRouteParameter<std::string>("content_name")), framework::SQLValue(roomUUID), framework::SQLValue(request.getRouteParameter<std::string>("user_uuid")) }
 			);
 
-			// TODO: on upload
-			utils::getEventsManager();
+			utils::getEventsManager().notify(events::OnUploadContentEvent(request.getRouteParameter<std::string>("user_uuid")), roomUUID);
 
 			response.setBody("File uploaded");
 		}

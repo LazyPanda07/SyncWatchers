@@ -6,6 +6,7 @@ add_library(
 	${PROJECT_NAME} SHARED
 	src/DownloadContentExecutor.cpp
 	src/UploadContentExecutor.cpp
+	src/events/OnUploadContentEvent.cpp
 )
 
 target_link_libraries(

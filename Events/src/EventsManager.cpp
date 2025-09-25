@@ -12,15 +12,15 @@ namespace events
 
 		recv(socket, uuid.data(), static_cast<int>(uuid.size()), NULL);
 
-		std::lock_guard<std::mutex> lock(connectionsMutex);
+		std::lock_guard<std::mutex> lock(dataMutex);
 
-		if (auto it = connections.find(uuid); it != connections.end())
+		if (auto it = data.find(uuid); it != data.end())
 		{
-			it->second.push_back(socket);
+			it->second.subscribers.push_back(socket);
 		}
 		else
 		{
-			connections.try_emplace(uuid, std::vector<SOCKET>({ socket }));
+			data.try_emplace(uuid, std::vector<SOCKET>({ socket }));
 		}
 	}
 
@@ -41,14 +41,48 @@ namespace events
 		server->start();
 	}
 
+	void EventsManager::notify(const IEvent& event, const std::string& roomUUID)
+	{
+		std::vector<SOCKET> sockets;
+		std::mutex* sendMutex = nullptr;
+
+		{
+			std::lock_guard<std::mutex> lock(dataMutex);
+
+			if (auto it = data.find(roomUUID); it != data.end())
+			{
+				sockets = it->second.subscribers;
+				sendMutex = &it->second.sendMutex;
+			}
+		}
+
+		if (!sendMutex)
+		{
+			return;
+		}
+
+		EventId eventId = event.getEventId();
+		std::string_view data = event.getEventData();
+
+		static_assert(sizeof(eventId) == 1);
+
+		std::lock_guard<std::mutex> lock(*sendMutex);
+		
+		for (SOCKET socket : sockets)
+		{
+			send(socket, reinterpret_cast<const char*>(&eventId), sizeof(eventId), NULL);
+			send(socket, data.data(), static_cast<int>(data.size()), NULL);
+		}
+	}
+
 	size_t EventsManager::getListeners() const
 	{
-		std::lock_guard<std::mutex> lock(connectionsMutex);
+		std::lock_guard<std::mutex> lock(dataMutex);
 		size_t result = 0;
 		
-		for (const auto& [_, value] : connections)
+		for (const auto& [_, room] : data)
 		{
-			result += value.size();
+			result += room.subscribers.size();
 		}
 
 		return result;

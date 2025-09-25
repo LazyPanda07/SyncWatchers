@@ -16,10 +16,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\DownloadContentExecutor.cpp" />
+    <ClCompile Include="src\Events\OnUploadContentEvent.cpp" />
     <ClCompile Include="src\UploadContentExecutor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\DownloadContentExecutor.h" />
+    <ClInclude Include="src\Events\OnUploadContentEvent.h" />
     <ClInclude Include="src\UploadContentExecutor.h" />
   </ItemGroup>
   <ItemGroup>

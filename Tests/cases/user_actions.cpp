@@ -180,6 +180,8 @@ TEST_F(UserActions, UploadContent)
 	for (std::string_view contentName : UserActions::getContentFiles())
 	{
 		std::string url = std::format("http://127.0.0.1:52000/upload/{}/{}/{}", UserActions::roomUUID, UserActions::userUUID, contentName);
+		std::string event(36, '\0');
+		uint8_t eventId;
 		FILE* file = fopen(contentName.data(), "rb");
 
 		ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_URL, url.data()), CURLE_OK);
@@ -192,6 +194,12 @@ TEST_F(UserActions, UploadContent)
 		ASSERT_EQ(UserActions::response, "File uploaded");
 
 		ASSERT_TRUE(UserActions::compareFiles(contentName, std::filesystem::current_path() / "assets" / UserActions::roomUUID / contentName));
+
+		UserActions::socket.receive(&eventId);
+		UserActions::socket.receive(event);
+
+		ASSERT_EQ(eventId, 0);
+		ASSERT_EQ(event, UserActions::userUUID);
 
 		fclose(file);
 		UserActions::response.clear();

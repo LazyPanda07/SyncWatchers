@@ -15,7 +15,9 @@
     <ClCompile Include="src\Server.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\EventId.h" />
     <ClInclude Include="src\EventsManager.h" />
+    <ClInclude Include="src\IEvent.h" />
     <ClInclude Include="src\IEventsManager.h" />
     <ClInclude Include="src\Server.h" />
   </ItemGroup>

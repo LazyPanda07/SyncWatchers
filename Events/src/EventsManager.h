@@ -21,8 +21,15 @@ namespace events
 	class EventsManager : public IEventsManager
 	{
 	private:
-		std::unordered_map<std::string, std::vector<SOCKET>> connections;
-		mutable std::mutex connectionsMutex;
+		struct Room
+		{
+			std::vector<SOCKET>	subscribers;
+			std::mutex sendMutex;
+		};
+
+	private:
+		std::unordered_map<std::string, Room> data;
+		mutable std::mutex dataMutex;
 		std::unique_ptr<Server> server;
 
 	private:
@@ -37,6 +44,8 @@ namespace events
 		static EventsManager& getInstance();
 
 		void startServer(std::string_view ip, int64_t port) override;
+
+		void notify(const IEvent& event, const std::string& roomUUID) override;
 
 		size_t getListeners() const override;
 

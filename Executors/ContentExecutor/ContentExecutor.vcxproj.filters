@@ -25,12 +25,18 @@
     <ClCompile Include="src\DownloadContentExecutor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Events\OnUploadContentEvent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\UploadContentExecutor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\DownloadContentExecutor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Events\OnUploadContentEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

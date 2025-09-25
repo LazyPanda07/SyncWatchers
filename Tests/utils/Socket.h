@@ -35,6 +35,15 @@ namespace tcp
 
 		void receive(std::string& data, size_t size = 0) const;
 
+		template<typename T>
+		void receive(T* data) const;
+
 		~Socket();
 	};
+
+	template<typename T>
+	void Socket::receive(T* data) const
+	{
+		recv(descriptor, reinterpret_cast<char*>(data), sizeof(T), NULL);
+	}
 }
