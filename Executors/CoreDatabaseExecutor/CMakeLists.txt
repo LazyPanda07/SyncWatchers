@@ -9,6 +9,17 @@ add_library(
 	src/UsersExecutor.cpp
 )
 
+target_link_libraries(
+	${PROJECT_NAME} PRIVATE
+	Utils
+)
+
+target_include_directories(
+	${PROJECT_NAME} PRIVATE
+	${CMAKE_SOURCE_DIR}/Events/src
+	${CMAKE_SOURCE_DIR}/Utils/src
+)
+
 install(TARGETS ${PROJECT_NAME} DESTINATION .)
 install(FILES core_database_web.json DESTINATION .)
 install(FILES core_database_config.json DESTINATION .)

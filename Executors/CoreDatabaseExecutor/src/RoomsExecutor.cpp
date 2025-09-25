@@ -5,6 +5,7 @@
 #include <Utility/WebFrameworkUtility.hpp>
 
 #include "CreateTableQueries.h"
+#include "Utils.h"
 
 namespace executors
 {
@@ -78,6 +79,9 @@ namespace executors
 		);
 
 		std::filesystem::remove_all(std::filesystem::current_path() / "assets" / uuid);
+
+		// TODO: on delete room
+		utils::getEventsManager();
 
 		response.setBody("Room deleted");
 	}

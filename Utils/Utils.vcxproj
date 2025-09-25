@@ -13,19 +13,19 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{74b813dc-7dba-47cb-8cbf-bedb091da09c}</ProjectGuid>
-    <RootNamespace>SyncWatchers</RootNamespace>
+    <ProjectGuid>{9356e47d-4bfa-4e63-bec7-a7c283d4e1fc}</ProjectGuid>
+    <RootNamespace>Utils</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -59,20 +59,12 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(SolutionDir)build\_deps\webframework-src\Release_Windows\api\cxx\include\;$(SolutionDir)Events\src\;$(SolutionDir)Utils\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Events\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <PreBuildEvent>
-      <Command>
-      </Command>
-    </PreBuildEvent>
-    <PostBuildEvent>
-      <Command>copy /y "$(SolutionDir)build\_deps\webframework-src\Release_Windows\dll\*.dll" $(OutDir)
-copy /y "$(ProjectDir)*.json" $(OutDir)</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -84,7 +76,7 @@ copy /y "$(ProjectDir)*.json" $(OutDir)</Command>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(SolutionDir)build\_deps\webframework-src\Release_Windows\api\cxx\include\;$(SolutionDir)Events\src\;$(SolutionDir)Utils\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Events\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -92,49 +84,14 @@ copy /y "$(ProjectDir)*.json" $(OutDir)</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <PreBuildEvent>
-      <Command>
-      </Command>
-    </PreBuildEvent>
-    <PostBuildEvent>
-      <Command>copy /y "$(SolutionDir)build\_deps\webframework-src\Release_Windows\dll\*.dll" $(OutDir)
-copy /y "$(ProjectDir)*.json" $(OutDir)</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Main.cpp" />
-    <ClCompile Include="src\StateExecutor.cpp" />
+    <ClCompile Include="src\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="config.json" />
-    <None Include="web.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Events\Events.vcxproj">
-      <Project>{2f15cfd6-8a14-43c8-9b3a-44be3e49f69d}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Executors\ContentExecutor\ContentExecutor.vcxproj">
-      <Project>{d17f0561-b78f-4bc8-a985-623bfd436cd4}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Executors\CoreDatabaseExecutor\CoreDatabaseExecutor.vcxproj">
-      <Project>{a391454b-0826-4dde-a00f-596b9b41fd2d}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\FetchWebFramework\FetchWebFramework.vcxproj">
-      <Project>{8b1b7f47-3d45-459e-90b9-340bd9b091b6}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Utils\Utils.vcxproj">
-      <Project>{9356e47d-4bfa-4e63-bec7-a7c283d4e1fc}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\StateExecutor.h" />
+    <ClInclude Include="src\Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
-  <ProjectExtensions>
-    <VisualStudio>
-      <UserProperties />
-    </VisualStudio>
-  </ProjectExtensions>
 </Project>

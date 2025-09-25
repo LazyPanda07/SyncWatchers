@@ -1,6 +1,7 @@
 #include "UsersExecutor.h"
 
 #include "CreateTableQueries.h"
+#include "Utils.h"
 
 namespace executors
 {
@@ -72,6 +73,9 @@ namespace executors
 			"UPDATE users SET role = ? WHERE id = (SELECT id FROM users WHERE room_id = (SELECT room_id FROM users WHERE uuid = ?) AND name = ?)",
 			{ framework::SQLValue(newRole), framework::SQLValue(ownerUUID), framework::SQLValue(name) }
 		);
+
+		// TODO: on update role
+		utils::getEventsManager();
 	}
 
 	void UsersExecutor::doPatch(framework::HTTPRequest& request, framework::HTTPResponse& response)
@@ -86,6 +90,9 @@ namespace executors
 			"UPDATE users SET name = ? WHERE uuid = ?",
 			{ framework::SQLValue(newUserName), framework::SQLValue(uuid) }
 		);
+
+		// TODO: on update name
+		utils::getEventsManager();
 
 		response.setBody("User name has been changed");
 	}

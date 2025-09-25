@@ -26,6 +26,9 @@
     <ProjectReference Include="..\..\FetchWebFramework\FetchWebFramework.vcxproj">
       <Project>{8b1b7f47-3d45-459e-90b9-340bd9b091b6}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\Utils\Utils.vcxproj">
+      <Project>{9356e47d-4bfa-4e63-bec7-a7c283d4e1fc}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -76,7 +79,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(SolutionDir)build\_deps\webframework-src\Release_Windows\api\cxx\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)build\_deps\webframework-src\Release_Windows\api\cxx\include\;$(SolutionDir)Utils\src\;$(SolutionDir)Events\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -97,7 +100,7 @@ copy /y $(OutDir)*.* $(OutDir)..\SyncWatchers\*.*</Command>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(SolutionDir)build\_deps\webframework-src\Release_Windows\api\cxx\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)build\_deps\webframework-src\Release_Windows\api\cxx\include\;$(SolutionDir)Utils\src\;$(SolutionDir)Events\src\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

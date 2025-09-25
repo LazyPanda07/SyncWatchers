@@ -6,6 +6,7 @@
 
 #include "RoomsExecutor.h"
 #include "CreateTableQueries.h"
+#include "Utils.h"
 
 namespace executors
 {
@@ -55,6 +56,9 @@ namespace executors
 			result["userName"] = userName;
 			result["userUUID"] = userUUID;
 			result["role"] = role;
+
+			// TODO: on invite
+			utils::getEventsManager();
 
 			response.setBody(result);
 		}

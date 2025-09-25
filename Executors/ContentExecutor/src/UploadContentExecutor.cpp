@@ -3,6 +3,8 @@
 #include <filesystem>
 #include <format>
 
+#include "Utils.h"
+
 namespace executors
 {
 	void UploadContentExecutor::doPut(framework::HTTPRequest& request, framework::HTTPResponse& response)
@@ -64,6 +66,9 @@ namespace executors
 				"INSERT INTO content (name, room_id, upload_user_id) VALUES (?, (SELECT id FROM rooms WHERE uuid = ?), (SELECT id FROM users WHERE uuid = ?))",
 				{ framework::SQLValue(request.getRouteParameter<std::string>("content_name")), framework::SQLValue(request.getRouteParameter<std::string>("room_uuid")), framework::SQLValue(request.getRouteParameter<std::string>("user_uuid")) }
 			);
+
+			// TODO: on upload
+			utils::getEventsManager();
 
 			response.setBody("File uploaded");
 		}

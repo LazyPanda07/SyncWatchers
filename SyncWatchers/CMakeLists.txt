@@ -11,11 +11,13 @@ add_executable(
 target_include_directories(
 	${PROJECT_NAME} PRIVATE
 	${CMAKE_SOURCE_DIR}/Events/src
+	${CMAKE_SOURCE_DIR}/Utils/src
 )
 
 target_link_libraries(
 	${PROJECT_NAME} PRIVATE
 	Events
+	Utils
 )
 
 if (UNIX)

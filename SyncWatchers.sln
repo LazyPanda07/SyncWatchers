@@ -17,6 +17,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ContentExecutor", "Executor
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Events", "Events\Events.vcxproj", "{2F15CFD6-8A14-43C8-9B3A-44BE3E49F69D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Utils", "Utils\Utils.vcxproj", "{9356E47D-4BFA-4E63-BEC7-A7C283D4E1FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -43,6 +45,10 @@ Global
 		{2F15CFD6-8A14-43C8-9B3A-44BE3E49F69D}.Debug|x64.Build.0 = Debug|x64
 		{2F15CFD6-8A14-43C8-9B3A-44BE3E49F69D}.Release|x64.ActiveCfg = Release|x64
 		{2F15CFD6-8A14-43C8-9B3A-44BE3E49F69D}.Release|x64.Build.0 = Release|x64
+		{9356E47D-4BFA-4E63-BEC7-A7C283D4E1FC}.Debug|x64.ActiveCfg = Debug|x64
+		{9356E47D-4BFA-4E63-BEC7-A7C283D4E1FC}.Debug|x64.Build.0 = Debug|x64
+		{9356E47D-4BFA-4E63-BEC7-A7C283D4E1FC}.Release|x64.ActiveCfg = Release|x64
+		{9356E47D-4BFA-4E63-BEC7-A7C283D4E1FC}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -51,6 +57,7 @@ Global
 		{A391454B-0826-4DDE-A00F-596B9B41FD2D} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{8B1B7F47-3D45-459E-90B9-340BD9B091B6} = {A64FE1C4-E6BF-49D7-90C8-FA69CF166897}
 		{D17F0561-B78F-4BC8-A985-623BFD436CD4} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{9356E47D-4BFA-4E63-BEC7-A7C283D4E1FC} = {A64FE1C4-E6BF-49D7-90C8-FA69CF166897}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {86AB336D-FA9F-4E25-AE2A-9A56A18DD8E2}

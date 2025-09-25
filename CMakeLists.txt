@@ -9,6 +9,7 @@ include(FetchWebFramework/FetchWebFramework.cmake)
 
 find_package(WebFramework REQUIRED)
 
-add_subdirectory(SyncWatchers)
+add_subdirectory(Utils)
 add_subdirectory(Events)
+add_subdirectory(SyncWatchers)
 add_subdirectory(Executors)
