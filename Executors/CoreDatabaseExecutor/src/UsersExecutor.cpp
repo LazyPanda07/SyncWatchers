@@ -2,6 +2,7 @@
 
 #include "CreateTableQueries.h"
 #include "Utils.h"
+#include "Events/OnUpdateRoleEvent.h"
 
 namespace executors
 {
@@ -74,8 +75,7 @@ namespace executors
 			{ framework::SQLValue(newRole), framework::SQLValue(ownerUUID), framework::SQLValue(name) }
 		);
 
-		// TODO: on update role
-		utils::getEventsManager();
+		// utils::getEventsManager().notify(events::OnUpdateRoleEvent(newRole), "");
 	}
 
 	void UsersExecutor::doPatch(framework::HTTPRequest& request, framework::HTTPResponse& response)

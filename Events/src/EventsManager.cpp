@@ -10,7 +10,7 @@ namespace events
 	{
 		std::string uuid(36, '\0');
 
-		recv(socket, uuid.data(), static_cast<int>(uuid.size()), NULL);
+		recv(socket, uuid.data(), static_cast<int>(uuid.size()), 0);
 
 		std::lock_guard<std::mutex> lock(dataMutex);
 

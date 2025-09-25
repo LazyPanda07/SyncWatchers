@@ -6,6 +6,8 @@ namespace events
 {
 	enum class EventId : uint8_t
 	{
-		onUploadContent
+		onUploadContent,
+		onInvite,
+		onUpdateRole
 	};
 }

@@ -7,6 +7,7 @@
 #include "RoomsExecutor.h"
 #include "CreateTableQueries.h"
 #include "Utils.h"
+#include "Events/OnInviteEvent.h"
 
 namespace executors
 {
@@ -43,6 +44,7 @@ namespace executors
 			framework::JSONParser parser(request.getBody());
 			std::string role = "default";
 			std::string userUUID = framework::utility::uuid::generateUUID();
+			std::string roomUUID = row.at("uuid").get<std::string>();
 
 			parser.tryGet<std::string>("role", role);
 
@@ -52,13 +54,12 @@ namespace executors
 				{ framework::SQLValue(id), framework::SQLValue(userName), framework::SQLValue(role), framework::SQLValue(userUUID) }
 			);
 
-			result["roomUUID"] = row.at("uuid").get<std::string>();
+			result["roomUUID"] = roomUUID;
 			result["userName"] = userName;
 			result["userUUID"] = userUUID;
 			result["role"] = role;
 
-			// TODO: on invite
-			utils::getEventsManager();
+			utils::getEventsManager().notify(events::OnInviteEvent(userName), roomUUID);
 
 			response.setBody(result);
 		}

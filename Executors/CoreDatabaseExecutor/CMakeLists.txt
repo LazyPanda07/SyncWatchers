@@ -7,6 +7,8 @@ add_library(
 	src/InviteLinkExecutor.cpp
 	src/RoomsExecutor.cpp
 	src/UsersExecutor.cpp
+	src/Events/OnInviteEvent.cpp
+	src/Events/OnUpdateRoleEvent.cpp
 )
 
 target_link_libraries(
