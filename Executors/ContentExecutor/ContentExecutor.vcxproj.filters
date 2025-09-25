@@ -25,7 +25,7 @@
     <ClCompile Include="src\DownloadContentExecutor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Events\OnUploadContentEvent.cpp">
+    <ClCompile Include="src\events\OnUploadContentEvent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -36,7 +36,7 @@
     <ClInclude Include="src\DownloadContentExecutor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Events\OnUploadContentEvent.h">
+    <ClInclude Include="src\events\OnUploadContentEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
