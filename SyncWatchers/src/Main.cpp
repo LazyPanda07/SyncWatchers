@@ -31,7 +31,12 @@ T load(HMODULE handle, std::string_view name)
 
 int main(int argc, char** argv) try
 {
+#ifdef __LINUX__
+	HMODULE module = loadLibrary("libEvents.so");
+#else
 	HMODULE module = loadLibrary("Events.dll");
+#endif
+	
 	auto getter = load<events::IEventsManager * (*)()>(module, "getEventsManager");
 
 	events::IEventsManager& events = *getter();
