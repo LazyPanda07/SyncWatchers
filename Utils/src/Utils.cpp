@@ -20,15 +20,4 @@ namespace utils
 		return *reinterpret_cast<events::IEventsManager * (*)()>(GetProcAddress(eventsLibrary, "getEventsManager"))();
 #endif
 	}
-
-	std::string makeStringWithSize(std::string_view source)
-	{
-		int size = static_cast<int>(source.size());
-		std::string	result(sizeof(size) + source.size(), '\0');
-
-		std::memcpy(result.data(), &size, sizeof(size));
-		std::memcpy(result.data() + sizeof(size), result.data(), result.size());
-
-		return result;
-	}
 }

@@ -8,6 +8,7 @@ namespace events
 	{
 		onUploadContent,
 		onInvite,
-		onUpdateRole
+		onUpdateRole,
+		onUserNameUpdate
 	};
 }

@@ -12,7 +12,7 @@ namespace events
 		std::string role;
 
 	public:
-		OnUpdateRoleEvent(const std::string& role);
+		OnUpdateRoleEvent(std::string_view role);
 
 		EventId getEventId() const override;
 

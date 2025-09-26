@@ -12,7 +12,7 @@ namespace events
 		std::string uploadUserUUID;
 
 	public:
-		OnUploadContentEvent(const std::string& uploadUserUUID);
+		OnUploadContentEvent(std::string_view uploadUserUUID);
 
 		EventId getEventId() const override;
 

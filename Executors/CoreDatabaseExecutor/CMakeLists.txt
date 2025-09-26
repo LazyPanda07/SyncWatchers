@@ -9,6 +9,7 @@ add_library(
 	src/UsersExecutor.cpp
 	src/Events/OnInviteEvent.cpp
 	src/Events/OnUpdateRoleEvent.cpp
+	src/Events/OnUserNameUpdateEvent.cpp
 )
 
 target_link_libraries(

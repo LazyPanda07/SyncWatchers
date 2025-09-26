@@ -2,7 +2,7 @@
 
 namespace events
 {
-	OnUploadContentEvent::OnUploadContentEvent(const std::string& uploadUserUUID) :
+	OnUploadContentEvent::OnUploadContentEvent(std::string_view uploadUserUUID) :
 		uploadUserUUID(uploadUserUUID)
 	{
 

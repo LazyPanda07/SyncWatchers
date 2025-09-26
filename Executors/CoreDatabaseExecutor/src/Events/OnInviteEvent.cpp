@@ -4,7 +4,7 @@
 
 namespace events
 {
-	OnInviteEvent::OnInviteEvent(const std::string& userName) :
+	OnInviteEvent::OnInviteEvent(std::string_view userName) :
 		userName(utils::makeStringWithSize(userName))
 	{
 		

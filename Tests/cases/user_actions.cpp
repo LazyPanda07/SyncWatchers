@@ -1,6 +1,7 @@
 #include <fstream>
 #include <filesystem>
 #include <format>
+#include <sstream>
 
 #include <curl/curl.h>
 #include <gtest/gtest.h>
@@ -145,6 +146,8 @@ TEST_F(UserActions, JoinRoom)
 TEST_F(UserActions, UpdateName)
 {
 	std::string jsonData = std::format(R"({{"userUUId": "{}", "newUserName": "{}"}})", UserActions::userUUID, UserActions::newUserName);
+	uint8_t eventId;
+	std::string event;
 
 	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_URL, "http://127.0.0.1:52000/users"), CURLE_OK);
 	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "PATCH"), CURLE_OK);
@@ -157,6 +160,35 @@ TEST_F(UserActions, UpdateName)
 	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers), CURLE_OK);
 
 	ASSERT_EQ(curl_easy_perform(curl), CURLE_OK);
+
+	ASSERT_EQ(UserActions::response, "User name has been changed");
+
+	UserActions::socket.receive(&eventId);
+
+	ASSERT_EQ(eventId, 3);
+
+	{
+		int size;
+		std::string data;
+
+		UserActions::socket.receive(&size);
+
+		data.resize(size);
+
+		UserActions::socket.receive(data);
+
+		std::istringstream is(data);
+
+		std::string temp;
+
+		is >> temp;
+
+		ASSERT_EQ(temp, UserActions::userName);
+
+		is >> temp;
+
+		ASSERT_EQ(temp, UserActions::newUserName);
+	}
 
 	curl_slist_free_all(headers);
 }
@@ -180,8 +212,8 @@ TEST_F(UserActions, UploadContent)
 	for (std::string_view contentName : UserActions::getContentFiles())
 	{
 		std::string url = std::format("http://127.0.0.1:52000/upload/{}/{}/{}", UserActions::roomUUID, UserActions::userUUID, contentName);
-		std::string event(36, '\0');
 		uint8_t eventId;
+		std::string event(36, '\0');
 		FILE* file = fopen(contentName.data(), "rb");
 
 		ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_URL, url.data()), CURLE_OK);

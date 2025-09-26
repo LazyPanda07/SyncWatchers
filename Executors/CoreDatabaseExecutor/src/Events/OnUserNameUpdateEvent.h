@@ -6,18 +6,18 @@
 
 namespace events
 {
-	class OnInviteEvent : public IEvent
+	class OnUserNameUpdateEvent : public IEvent
 	{
 	private:
-		std::string userName;
+		std::string userNames;
 
 	public:
-		OnInviteEvent(std::string_view userName);
+		OnUserNameUpdateEvent(std::string_view oldUserName, std::string_view newUserName);
 
 		EventId getEventId() const override;
 
 		std::string_view getEventData() const override;
 
-		~OnInviteEvent() = default;
+		~OnUserNameUpdateEvent() = default;
 	};
 }

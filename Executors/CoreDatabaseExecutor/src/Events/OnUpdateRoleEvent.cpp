@@ -4,10 +4,10 @@
 
 namespace events
 {
-	OnUpdateRoleEvent::OnUpdateRoleEvent(const std::string& role) :
+	OnUpdateRoleEvent::OnUpdateRoleEvent(std::string_view role) :
 		role(utils::makeStringWithSize(role))
 	{
-
+		
 	}
 
 	EventId events::OnUpdateRoleEvent::getEventId() const

@@ -30,6 +30,9 @@
     <ClCompile Include="src\Events\OnUpdateRoleEvent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Events\OnUserNameUpdateEvent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="core_database_config.json" />
@@ -52,6 +55,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Events\OnUpdateRoleEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Events\OnUserNameUpdateEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
