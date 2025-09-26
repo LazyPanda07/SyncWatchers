@@ -9,6 +9,7 @@ namespace events
 		onUploadContent,
 		onInvite,
 		onUpdateRole,
-		onUserNameUpdate
+		onUserNameUpdate,
+		onRoomDelete
 	};
 }

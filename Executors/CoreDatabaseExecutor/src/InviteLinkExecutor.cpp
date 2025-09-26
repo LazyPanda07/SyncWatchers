@@ -59,7 +59,7 @@ namespace executors
 			result["userUUID"] = userUUID;
 			result["role"] = role;
 
-			utils::getEventsManager().notify(events::OnInviteEvent(userName), roomUUID);
+			utils::notify<events::OnInviteEvent>(roomUUID, userName);
 
 			response.setBody(result);
 		}

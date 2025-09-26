@@ -69,7 +69,7 @@ namespace executors
 				{ framework::SQLValue(request.getRouteParameter<std::string>("content_name")), framework::SQLValue(roomUUID), framework::SQLValue(request.getRouteParameter<std::string>("user_uuid")) }
 			);
 
-			utils::getEventsManager().notify(events::OnUploadContentEvent(request.getRouteParameter<std::string>("user_uuid")), roomUUID);
+			utils::notify<events::OnUploadContentEvent>(roomUUID, request.getRouteParameter<std::string>("user_uuid"));
 
 			response.setBody("File uploaded");
 		}

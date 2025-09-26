@@ -82,7 +82,7 @@ namespace executors
 			{ framework::SQLValue(ownerUUID) }
 		);
 
-		utils::getEventsManager().notify(events::OnUpdateRoleEvent(newRole), sqlResult.begin()->at("uuid").get<std::string>());
+		utils::notify<events::OnUpdateRoleEvent>(sqlResult.begin()->at("uuid").get<std::string>(), newRole);
 
 		response.setBody("Role has been changed");
 	}
@@ -116,7 +116,7 @@ namespace executors
 			{ framework::SQLValue(sqlResult.begin()->at("room_id").get<int64_t>()) }
 		);
 
-		utils::getEventsManager().notify(events::OnUserNameUpdateEvent(userName, newUserName), sqlResult.begin()->at("uuid").get<std::string>());
+		utils::notify<events::OnUserNameUpdateEvent>(sqlResult.begin()->at("uuid").get<std::string>(), userName, newUserName);
 
 		response.setBody("User name has been changed");
 	}

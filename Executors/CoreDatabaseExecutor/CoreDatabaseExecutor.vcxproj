@@ -94,6 +94,7 @@ copy /y $(OutDir)*.* $(OutDir)..\SyncWatchers\*.*</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Events\OnDeleteRoomEvent.cpp" />
     <ClCompile Include="src\Events\OnInviteEvent.cpp" />
     <ClCompile Include="src\Events\OnUpdateRoleEvent.cpp" />
     <ClCompile Include="src\Events\OnUserNameUpdateEvent.cpp" />
@@ -107,6 +108,7 @@ copy /y $(OutDir)*.* $(OutDir)..\SyncWatchers\*.*</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CreateTableQueries.h" />
+    <ClInclude Include="src\Events\OnDeleteRoomEvent.h" />
     <ClInclude Include="src\Events\OnInviteEvent.h" />
     <ClInclude Include="src\Events\OnUpdateRoleEvent.h" />
     <ClInclude Include="src\Events\OnUserNameUpdateEvent.h" />

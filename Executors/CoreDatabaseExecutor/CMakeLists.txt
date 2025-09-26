@@ -10,6 +10,7 @@ add_library(
 	src/Events/OnInviteEvent.cpp
 	src/Events/OnUpdateRoleEvent.cpp
 	src/Events/OnUserNameUpdateEvent.cpp
+	src/Events/OnDeleteRoomEvent.cpp
 )
 
 target_link_libraries(

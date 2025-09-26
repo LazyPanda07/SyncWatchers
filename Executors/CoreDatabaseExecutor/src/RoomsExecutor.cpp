@@ -6,6 +6,7 @@
 
 #include "CreateTableQueries.h"
 #include "Utils.h"
+#include "Events/OnDeleteRoomEvent.h"
 
 namespace executors
 {
@@ -80,8 +81,7 @@ namespace executors
 
 		std::filesystem::remove_all(std::filesystem::current_path() / "assets" / uuid);
 
-		// TODO: on delete room
-		utils::getEventsManager();
+		utils::notify<events::OnDeleteRoomEvent>(uuid);
 
 		response.setBody("Room deleted");
 	}

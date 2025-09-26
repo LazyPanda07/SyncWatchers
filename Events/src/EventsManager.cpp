@@ -75,7 +75,11 @@ namespace events
 				for (SOCKET socket : sockets)
 				{
 					send(socket, reinterpret_cast<const char*>(&eventId), sizeof(eventId), 0);
-					send(socket, eventData.data(), static_cast<int>(eventData.size()), 0);
+
+					if (eventData.size())
+					{
+						send(socket, eventData.data(), static_cast<int>(eventData.size()), 0);
+					}
 				}
 			}
 		).detach();

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "IEventsManager.h"
-
 #include <concepts>
 #include <string>
 #include <cstring>
+
+#include "IEventsManager.h"
 
 namespace utils
 {
@@ -12,6 +12,9 @@ namespace utils
 
 	template<typename... Args>
 	std::string makeStringWithSize(Args... args) requires (std::same_as<Args, std::string_view> && ...);
+
+	template<std::derived_from<events::IEvent> EventT, typename... Args>
+	void notify(const std::string& roomUUID, Args&&... args);
 }
 
 namespace utils
@@ -34,5 +37,11 @@ namespace utils
 		(callback(args), ...);
 
 		return result;
+	}
+
+	template<std::derived_from<events::IEvent> EventT, typename... Args>
+	inline void notify(const std::string& roomUUID, Args&&... args)
+	{
+		getEventsManager().notify(EventT(std::forward<Args>(args)...), roomUUID);
 	}
 }

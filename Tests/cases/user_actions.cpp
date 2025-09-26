@@ -280,6 +280,7 @@ TEST_F(UserActions, DownloadContent)
 TEST_F(UserActions, DeleteRoom)
 {
 	std::string jsonData = std::format(R"({{"room_uuid": "{}", }})", UserActions::roomUUID);
+	uint8_t eventId;
 
 	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_URL, "http://127.0.0.1:52000/rooms"), CURLE_OK);
 	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "DELETE"), CURLE_OK);
@@ -292,6 +293,10 @@ TEST_F(UserActions, DeleteRoom)
 	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers), CURLE_OK);
 
 	ASSERT_EQ(curl_easy_perform(curl), CURLE_OK);
+
+	UserActions::socket.receive(&eventId);
+
+	ASSERT_EQ(eventId, 4);
 
 	curl_slist_free_all(headers);
 
