@@ -48,7 +48,7 @@ namespace executors
 		framework::Database database = request.getOrCreateDatabase(":memory:");
 		framework::Table rooms = database.getOrCreateTable("rooms", database::createRoomsQuery());
 
-		std::string roomName = framework::JSONParser(request.getBody()).get<std::string>("name");
+		std::string roomName = request.getJSON().get<std::string>("name");
 		std::string roomInviteLink = std::format("{}/{}", inviteLink, framework::utility::uuid::generateUUID());
 
 		framework::SQLResult test = rooms.execute
@@ -64,8 +64,7 @@ namespace executors
 	{
 		framework::Table rooms = request.getTable(":memory:", "rooms");
 		framework::Table users = request.getTable(":memory:", "users");
-		framework::JSONParser parser(request.getBody());
-		std::string uuid = parser.get<std::string>("room_uuid");
+		std::string uuid = request.getJSON().get<std::string>("room_uuid");
 
 		users.execute
 		(

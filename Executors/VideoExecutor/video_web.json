@@ -1,0 +1,7 @@
+{
+  "StopExecutor": {
+    "loadType": "initialization",
+    "route": "video/stop",
+    "api": "cxx"
+  }
+}

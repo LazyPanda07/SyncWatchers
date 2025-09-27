@@ -18,7 +18,8 @@
     ],
     "additionalConfigs": [
       "core_database_config.json",
-      "content_config.json"
+      "content_config.json",
+      "video_config.json"
     ],
     "HTTPS": {
       "useHTTPS": false,

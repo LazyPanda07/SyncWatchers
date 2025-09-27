@@ -117,6 +117,9 @@ copy /y $(OutDir)*.* $(OutDir)..\SyncWatchers\*.*</Command>
     <ClInclude Include="src\UsersExecutor.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Events\Events.vcxproj">
+      <Project>{2f15cfd6-8a14-43c8-9b3a-44be3e49f69d}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\FetchWebFramework\FetchWebFramework.vcxproj">
       <Project>{8b1b7f47-3d45-459e-90b9-340bd9b091b6}</Project>
     </ProjectReference>

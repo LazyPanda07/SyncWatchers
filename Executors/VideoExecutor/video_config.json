@@ -1,0 +1,8 @@
+{
+  "settingsPaths": [
+    "video_web.json"
+  ],
+  "loadSources": [
+    "VideoExecutor"
+  ]
+}

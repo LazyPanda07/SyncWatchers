@@ -4,3 +4,4 @@ project(Executors)
 
 add_subdirectory(CoreDatabaseExecutor)
 add_subdirectory(ContentExecutor)
+add_subdirectory(VideoExecutor)

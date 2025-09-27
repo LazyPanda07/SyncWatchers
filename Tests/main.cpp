@@ -5,13 +5,14 @@
 
 #include <gtest/gtest.h>
 #include <curl/curl.h>
-#include <reproc++/run.hpp>
+
+#include "utils/ProcessWrapper.h"
 
 reproc::process runServer();
 
 int main(int argc, char** argv)
 {
-	reproc::process server = runServer();
+	process::ProcessWrapper server(runServer());
 
 	testing::InitGoogleTest(&argc, argv);
 	curl_global_init(CURL_GLOBAL_ALL);
@@ -19,8 +20,6 @@ int main(int argc, char** argv)
 	int result = RUN_ALL_TESTS();
 
 	curl_global_cleanup();
-
-	server.kill();
 
 	if (std::none_of(argv, argv + argc, [](const char* value) { using namespace std::string_view_literals; return value == "keep_assets"sv; }))
 	{
@@ -61,6 +60,8 @@ reproc::process runServer()
 
 		if (numberOfBytes)
 		{
+			std::cout << buffer.data() << std::endl;
+
 			break;
 		}
 	}

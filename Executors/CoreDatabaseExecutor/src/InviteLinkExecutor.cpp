@@ -41,12 +41,11 @@ namespace executors
 			int64_t id = row.at("id").get<int64_t>();
 			std::string userName = InviteLinkExecutor::generateDefaultName();
 			framework::JSONBuilder result;
-			framework::JSONParser parser(request.getBody());
 			std::string role = "default";
 			std::string userUUID = framework::utility::uuid::generateUUID();
 			std::string roomUUID = row.at("uuid").get<std::string>();
 
-			parser.tryGet<std::string>("role", role);
+			request.getJSON().tryGet<std::string>("role", role);
 
 			users.execute
 			(

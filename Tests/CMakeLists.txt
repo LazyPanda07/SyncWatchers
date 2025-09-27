@@ -111,6 +111,7 @@ add_executable(
 	main.cpp
 	cases/user_actions.cpp
 	utils/Socket.cpp
+	utils/ProcessWrapper.cpp
 )
 
 target_include_directories(

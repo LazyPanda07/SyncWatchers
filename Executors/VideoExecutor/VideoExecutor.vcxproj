@@ -11,18 +11,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <None Include="content_config.json" />
-    <None Include="content_web.json" />
+    <None Include="video_config.json" />
+    <None Include="video_web.json" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\DownloadContentExecutor.cpp" />
-    <ClCompile Include="src\Events\OnUploadContentEvent.cpp" />
-    <ClCompile Include="src\UploadContentExecutor.cpp" />
+    <ClCompile Include="src\Events\StopEvent.cpp" />
+    <ClCompile Include="src\StopExecutor.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\DownloadContentExecutor.h" />
-    <ClInclude Include="src\Events\OnUploadContentEvent.h" />
-    <ClInclude Include="src\UploadContentExecutor.h" />
+    <ClInclude Include="src\Events\StopEvent.h" />
+    <ClInclude Include="src\StopExecutor.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Events\Events.vcxproj">
@@ -38,8 +36,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{d17f0561-b78f-4bc8-a985-623bfd436cd4}</ProjectGuid>
-    <RootNamespace>ContentExecutor</RootNamespace>
+    <ProjectGuid>{ecd4943a-2a3e-459c-ac44-6d31cde33db9}</ProjectGuid>
+    <RootNamespace>VideoExecutor</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

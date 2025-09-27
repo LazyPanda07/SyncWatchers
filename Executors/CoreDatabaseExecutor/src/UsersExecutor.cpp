@@ -65,10 +65,10 @@ namespace executors
 	void UsersExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
 	{
 		framework::Table users = request.getTable(":memory:", "users");
-		framework::JSONParser parser(request.getBody());
-		std::string ownerUUID = parser.get<std::string>("ownerUUID");
-		std::string name = parser.get<std::string>("userName");
-		std::string newRole = parser.get<std::string>("newRole");
+		const framework::JSONParser& json = request.getJSON();
+		std::string ownerUUID = json.get<std::string>("ownerUUID");
+		std::string name = json.get<std::string>("userName");
+		std::string newRole = json.get<std::string>("newRole");
 
 		users.execute
 		(
@@ -90,9 +90,9 @@ namespace executors
 	void UsersExecutor::doPatch(framework::HTTPRequest& request, framework::HTTPResponse& response)
 	{
 		framework::Table users = request.getTable(":memory:", "users");
-		framework::JSONParser parser(request.getBody());
-		std::string uuid = parser.get<std::string>("userUUId");
-		std::string newUserName = parser.get<std::string>("newUserName");
+		const framework::JSONParser& json = request.getJSON();
+		std::string uuid = json.get<std::string>("userUUId");
+		std::string newUserName = json.get<std::string>("newUserName");
 		std::string userName;
 		std::string roomUUID;
 

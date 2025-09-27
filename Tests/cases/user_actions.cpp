@@ -106,9 +106,7 @@ TEST_F(UserActions, CreateRoom)
 	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_POST, 1L), CURLE_OK);
 	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonData.data()), CURLE_OK);
 
-	curl_slist* headers = nullptr;
-
-	headers = curl_slist_append(headers, "Content-Type: application/json");
+	curl_slist* headers = curl_slist_append(nullptr, "Content-Type: application/json");
 
 	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers), CURLE_OK);
 
@@ -129,6 +127,10 @@ TEST_F(UserActions, JoinRoom)
 	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "PUT"), CURLE_OK);
 	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonData.data()), CURLE_OK);
 
+	curl_slist* headers = curl_slist_append(nullptr, "Content-Type: application/json");
+
+	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers), CURLE_OK);
+
 	ASSERT_EQ(curl_easy_perform(curl), CURLE_OK);
 
 	auto responseJSON = nlohmann::json::parse(UserActions::response);
@@ -141,6 +143,8 @@ TEST_F(UserActions, JoinRoom)
 	UserActions::socket.connect("127.0.0.1", 52001);
 
 	UserActions::socket.send(UserActions::roomUUID);
+
+	curl_slist_free_all(headers);
 }
 
 TEST_F(UserActions, UpdateName)
@@ -153,9 +157,7 @@ TEST_F(UserActions, UpdateName)
 	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "PATCH"), CURLE_OK);
 	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonData.data()), CURLE_OK);
 
-	curl_slist* headers = nullptr;
-
-	curl_slist_append(headers, "Content-Type: application/json");
+	curl_slist* headers = curl_slist_append(nullptr, "Content-Type: application/json");
 
 	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers), CURLE_OK);
 

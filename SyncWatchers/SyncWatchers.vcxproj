@@ -119,6 +119,9 @@ copy /y "$(ProjectDir)*.json" $(OutDir)</Command>
     <ProjectReference Include="..\Executors\CoreDatabaseExecutor\CoreDatabaseExecutor.vcxproj">
       <Project>{a391454b-0826-4dde-a00f-596b9b41fd2d}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\Executors\VideoExecutor\VideoExecutor.vcxproj">
+      <Project>{ecd4943a-2a3e-459c-ac44-6d31cde33db9}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\FetchWebFramework\FetchWebFramework.vcxproj">
       <Project>{8b1b7f47-3d45-459e-90b9-340bd9b091b6}</Project>
     </ProjectReference>
