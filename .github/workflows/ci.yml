@@ -8,6 +8,10 @@ on:
     - dev
 
 
+env:
+  flutter-version: 3.35.4
+
+
 jobs:
   windows-tests:
     runs-on: windows-latest
@@ -57,6 +61,12 @@ jobs:
     
     steps:
     - uses: actions/checkout@v4
+  
+    - name: Install Flutter
+      uses: subosito/flutter-action@v2.16.0
+      with:
+        channel: stable
+        flutter-version: ${{ env.flutter-version }}
     
     - name: Build
       run: |
