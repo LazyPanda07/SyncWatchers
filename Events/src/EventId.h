@@ -13,6 +13,7 @@ namespace events
 		onRoomDelete,
 		stop,
 		play,
-		rewind
+		rewind,
+		changeVideo
 	};
 }

@@ -7,9 +7,11 @@ add_library(
 	src/StopExecutor.cpp
 	src/PlayExecutor.cpp
 	src/RewindExecutor.cpp
+	src/ChangeVideoExecutor.cpp
 	src/Events/StopEvent.cpp
 	src/Events/PlayEvent.cpp
 	src/Events/RewindEvent.cpp
+	src/Events/ChangeVideoEvent.cpp
 )
 
 target_link_libraries(
