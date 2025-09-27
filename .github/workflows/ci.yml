@@ -55,7 +55,7 @@ jobs:
           ./Tests
 
 
-  build-windows-artifacts:
+  build-windows:
     needs: windows-tests
     runs-on: windows-latest
     
@@ -76,6 +76,14 @@ jobs:
           cmake --build . -j --config Release
           cmake --install . --config Release
 
+    - name: Move apps
+      shell: bash
+      run: |
+          mkdir windows
+          mkdir android
+          mv SyncWatchersClient/build/windows/x64/runner/release/* windows
+          mv SyncWatchersClient/build/app/outputs/flutter-apk/app-release.apk android
+
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
@@ -87,11 +95,11 @@ jobs:
       with:
         name: flutter
         path: |
-            SyncWatchersClient/build/windows/x64/runner/release
-            SyncWatchersClient/build/app/outputs/flutter-apk/app-release.apk
+            windows
+            android
             
             
-  build-linux-artifacts:
+  build-linux:
     needs: linux-tests
     runs-on: ubuntu-latest
 
