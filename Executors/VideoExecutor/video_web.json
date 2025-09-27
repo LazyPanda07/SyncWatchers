@@ -3,5 +3,10 @@
     "loadType": "initialization",
     "route": "video/stop",
     "api": "cxx"
+  },
+  "PlayExecutor": {
+    "loadType": "initialization",
+    "route": "video/play",
+    "api": "cxx"
   }
 }

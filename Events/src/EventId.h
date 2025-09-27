@@ -11,6 +11,7 @@ namespace events
 		onUpdateRole,
 		onUserNameUpdate,
 		onRoomDelete,
-		stop
+		stop,
+		play
 	};
 }

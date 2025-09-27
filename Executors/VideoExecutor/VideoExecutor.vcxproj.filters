@@ -25,12 +25,24 @@
     <ClCompile Include="src\Events\StopEvent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Events\PlayEvent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PlayExecutor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\StopExecutor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Events\StopEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Events\PlayEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PlayExecutor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

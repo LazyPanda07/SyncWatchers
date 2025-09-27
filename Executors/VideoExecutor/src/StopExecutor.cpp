@@ -1,7 +1,7 @@
 #include "StopExecutor.h"
 
-#include "Events/StopEvent.h"
 #include "Utils.h"
+#include "Events/StopEvent.h"
 
 namespace executors
 {
