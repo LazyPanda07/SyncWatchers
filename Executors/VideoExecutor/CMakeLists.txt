@@ -5,7 +5,11 @@ project(VideoExecutor)
 add_library(
 	${PROJECT_NAME} SHARED
 	src/StopExecutor.cpp
+	src/PlayExecutor.cpp
+	src/RewindExecutor.cpp
 	src/Events/StopEvent.cpp
+	src/Events/PlayEvent.cpp
+	src/Events/RewindEvent.cpp
 )
 
 target_link_libraries(

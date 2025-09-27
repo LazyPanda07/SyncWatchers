@@ -16,14 +16,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Events\PlayEvent.cpp" />
+    <ClCompile Include="src\Events\RewindEvent.cpp" />
     <ClCompile Include="src\Events\StopEvent.cpp" />
     <ClCompile Include="src\PlayExecutor.cpp" />
+    <ClCompile Include="src\RewindExecutor.cpp" />
     <ClCompile Include="src\StopExecutor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Events\PlayEvent.h" />
+    <ClInclude Include="src\Events\RewindEvent.h" />
     <ClInclude Include="src\PlayExecutor.h" />
     <ClInclude Include="src\Events\StopEvent.h" />
+    <ClInclude Include="src\RewindExecutor.h" />
     <ClInclude Include="src\StopExecutor.h" />
   </ItemGroup>
   <ItemGroup>

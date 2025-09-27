@@ -12,6 +12,7 @@ namespace events
 		onUserNameUpdate,
 		onRoomDelete,
 		stop,
-		play
+		play,
+		rewind
 	};
 }

@@ -9,7 +9,7 @@ namespace events
 	{
 
 	}
-	
+
 	EventId PlayEvent::getEventId() const
 	{
 		return EventId::play;

@@ -10,6 +10,8 @@ namespace executors
 		const framework::JSONParser& json = request.getJSON();
 
 		utils::notify<events::PlayEvent>(json.get<std::string>("room_uuid"), json.get<std::string>("userName"));
+
+		response.setBody("Play video");
 	}
 
 	DEFINE_EXECUTOR(PlayExecutor);

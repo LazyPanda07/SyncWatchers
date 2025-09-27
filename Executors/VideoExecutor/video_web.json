@@ -8,5 +8,10 @@
     "loadType": "initialization",
     "route": "video/play",
     "api": "cxx"
+  },
+  "RewindExecutor": {
+    "loadType": "initialization",
+    "route": "video/rewind",
+    "api": "cxx"
   }
 }
