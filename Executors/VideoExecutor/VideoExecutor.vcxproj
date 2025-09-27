@@ -15,6 +15,8 @@
     <None Include="video_web.json" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\ChangeVideoExecutor.cpp" />
+    <ClCompile Include="src\Events\ChangeVideoEvent.cpp" />
     <ClCompile Include="src\Events\PlayEvent.cpp" />
     <ClCompile Include="src\Events\RewindEvent.cpp" />
     <ClCompile Include="src\Events\StopEvent.cpp" />
@@ -23,6 +25,8 @@
     <ClCompile Include="src\StopExecutor.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ChangeVideoExecutor.h" />
+    <ClInclude Include="src\Events\ChangeVideoEvent.h" />
     <ClInclude Include="src\Events\PlayEvent.h" />
     <ClInclude Include="src\Events\RewindEvent.h" />
     <ClInclude Include="src\PlayExecutor.h" />
