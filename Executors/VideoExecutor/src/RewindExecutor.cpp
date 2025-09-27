@@ -13,4 +13,6 @@ namespace executors
 
 		response.setBody("Rewind video");
 	}
+
+	DEFINE_EXECUTOR(RewindExecutor);
 }
