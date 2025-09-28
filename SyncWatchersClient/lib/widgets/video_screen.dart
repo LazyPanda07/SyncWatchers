@@ -24,7 +24,7 @@ class VideoScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Expanded(child: VideoPlayerWidget()),
-                  if (role != 'default') ...[const SizedBox(height: 16), const UploadButtonWidget()],
+                  if (role != 'default') ...[const SizedBox(height: 16), UploadButtonWidget(onFileSelected: (String? path) => print(path))],
                 ],
               ),
             ),
@@ -36,8 +36,11 @@ class VideoScreen extends StatelessWidget {
               flex: 1,
               child: Column(
                 children: [
-                  if (role == 'owner') ...[const ControlMenuWidget(), const SizedBox(height: 16)],
-                  const DownloadListWidget(),
+                  if (role == 'owner') ...[
+                    ControlMenuWidget(inviteLink: "http://127.0.0.1:52000/invite_link", onSelectVideo: () => print("Selected")),
+                    const SizedBox(height: 16),
+                  ],
+                  const DownloadListWidget(items: ["first", "second", "third"]),
                 ],
               ),
             ),

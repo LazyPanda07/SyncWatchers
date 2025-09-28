@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sync_watchers_client/widgets/main_widget.dart';
+import 'package:sync_watchers_client/widgets/room_screen.dart';
+import 'package:sync_watchers_client/widgets/video_screen.dart';
 import 'package:window_manager/window_manager.dart';
 
 Future<void> main() async {
@@ -63,6 +64,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return VideoScreen(role: "owner");
+    return RoomScreen();
+    // return VideoScreen(role: "owner");
   }
 }

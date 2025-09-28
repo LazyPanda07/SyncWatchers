@@ -1,32 +1,41 @@
 import 'package:flutter/material.dart';
 
-/// Bottom right: List with text fields and download buttons
 class DownloadListWidget extends StatelessWidget {
-  const DownloadListWidget({super.key});
+  final List<String> items;
+
+  const DownloadListWidget({super.key, required this.items});
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        color: Colors.green,
-        child: ListView.builder(
-          itemCount: 5, // sample list
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: TextField(
-                decoration: InputDecoration(
-                  labelText: "Item ${index + 1}",
-                  border: const OutlineInputBorder(),
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: items.length,
+      itemBuilder: (context, index) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+          child: Row(
+            children: [
+              /// Read-only TextField
+              Expanded(
+                child: TextField(
+                  controller: TextEditingController(text: items[index]),
+                  readOnly: true,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                  ),
                 ),
               ),
-              trailing: ElevatedButton(
-                onPressed: () {},
+              const SizedBox(width: 8),
+              ElevatedButton(
+                onPressed: () {
+                  // TODO: Add download logic
+                },
                 child: const Text("Download"),
               ),
-            );
-          },
-        ),
-      ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
