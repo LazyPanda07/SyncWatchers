@@ -4,7 +4,6 @@ import 'package:sync_watchers_client/widgets/upload_button.dart';
 import 'package:sync_watchers_client/widgets/video_player.dart';
 import 'package:sync_watchers_client/widgets/videos_list.dart';
 
-/// Main screen layout
 class VideoScreen extends StatelessWidget {
   final String role;
 
@@ -18,7 +17,6 @@ class VideoScreen extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// Left side (video + upload button)
             Expanded(
               flex: 2,
               child: Column(
@@ -31,7 +29,6 @@ class VideoScreen extends StatelessWidget {
 
             const SizedBox(width: 16),
 
-            /// Right side (menu + list)
             Expanded(
               flex: 1,
               child: Column(

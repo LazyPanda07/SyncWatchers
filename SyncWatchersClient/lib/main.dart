@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:sync_watchers_client/widgets/room_screen.dart';
 import 'package:window_manager/window_manager.dart';
@@ -5,7 +7,16 @@ import 'package:window_manager/window_manager.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await windowManager.ensureInitialized();
+  if (Platform.isWindows) {
+    await windowManager.ensureInitialized();
+
+    WindowOptions windowOptions = const WindowOptions(center: true, backgroundColor: Colors.transparent);
+
+    windowManager.waitUntilReadyToShow(windowOptions, () async {
+      await windowManager.show();
+      await windowManager.focus();
+    });
+  }
 
   runApp(const App());
 }
