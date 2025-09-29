@@ -1,10 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:window_manager/window_manager.dart';
 
-/// Shared video player with controls
 class VideoPlayerWidget extends StatefulWidget {
   const VideoPlayerWidget({super.key});
 
@@ -18,6 +15,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   @override
   void initState() {
     super.initState();
+
     _controller = VideoPlayerController.asset("assets/sample.mp4")
       ..initialize().then((_) {
         setState(() {});
@@ -42,7 +40,6 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
           ? Stack(
               alignment: Alignment.bottomCenter,
               children: [
-                /// Keep aspect ratio properly
                 Center(
                   child: FittedBox(
                     fit: BoxFit.contain,
@@ -59,7 +56,6 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   }
 }
 
-/// Fullscreen player reusing same controller
 class FullscreenVideoPlayer extends StatelessWidget {
   final VideoPlayerController controller;
 
@@ -73,15 +69,12 @@ class FullscreenVideoPlayer extends StatelessWidget {
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
-            /// Expand video to fullscreen area
             SizedBox.expand(
               child: FittedBox(
                 fit: BoxFit.contain, // keep aspect ratio
                 child: SizedBox(width: controller.value.size.width, height: controller.value.size.height, child: VideoPlayer(controller)),
               ),
             ),
-
-            /// Reuse controls overlay
             VideoPlayerControls(controller: controller, onFullscreenToggle: () => Navigator.pop(context), isFullscreen: true),
           ],
         ),
@@ -90,7 +83,6 @@ class FullscreenVideoPlayer extends StatelessWidget {
   }
 }
 
-/// Reusable controls widget
 class VideoPlayerControls extends StatefulWidget {
   final VideoPlayerController controller;
   final VoidCallback onFullscreenToggle;
@@ -162,8 +154,6 @@ class _VideoPlayerControlsState extends State<VideoPlayerControls> {
                   widget.controller.seekTo(current - const Duration(seconds: 10));
                 },
               ),
-
-              /// Volume slider
               Expanded(
                 child: Slider(
                   min: 0,
@@ -177,8 +167,6 @@ class _VideoPlayerControlsState extends State<VideoPlayerControls> {
                   },
                 ),
               ),
-
-              /// Fullscreen / Exit fullscreen button
               IconButton(
                 icon: Icon(widget.isFullscreen ? Icons.fullscreen_exit : Icons.fullscreen, color: Colors.white),
                 onPressed: () async {

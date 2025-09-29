@@ -41,11 +41,11 @@ Future<void> joinRoom(Function(String response) onSuccess, Function(String error
   onFail: onFail,
 );
 
-Future<void> updateUserName(Function(String response) onSuccess, Function(String errorMessage) onFail) async => _makeRequest(
-  method: http.post,
-  url: Uri.parse("http://127.0.0.1:52000/rooms"),
+Future<void> updateUserName(Function(String response) onSuccess, Function(String errorMessage) onFail, Map<String, String> data) async => _makeRequest(
+  method: http.patch,
+  url: Uri.parse("http://127.0.0.1:52000/users"),
   headers: {"Content-Type": "application/json"},
-  body: jsonEncode({"name": "NewRoom"}),
+  body: jsonEncode({"userUUID": data["userUUID"], "newUserName": data["newUserName"]}),
   onSuccess: onSuccess,
   onFail: onFail,
 );

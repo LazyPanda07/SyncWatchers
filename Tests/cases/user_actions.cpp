@@ -149,7 +149,7 @@ TEST_F(UserActions, JoinRoom)
 
 TEST_F(UserActions, UpdateName)
 {
-	std::string jsonData = std::format(R"({{"userUUId": "{}", "newUserName": "{}"}})", UserActions::userUUID, UserActions::newUserName);
+	std::string jsonData = std::format(R"({{"userUUID": "{}", "newUserName": "{}"}})", UserActions::userUUID, UserActions::newUserName);
 	uint8_t eventId;
 	std::string event;
 

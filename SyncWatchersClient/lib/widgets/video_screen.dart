@@ -5,9 +5,11 @@ import 'package:sync_watchers_client/widgets/video_player.dart';
 import 'package:sync_watchers_client/widgets/videos_list.dart';
 
 class VideoScreen extends StatelessWidget {
-  final String role;
+  final Map<String, dynamic> responseData;
 
-  const VideoScreen({super.key, required this.role});
+  const VideoScreen({super.key, required this.responseData});
+
+  String get role => responseData["role"];
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,7 @@ class VideoScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Expanded(child: VideoPlayerWidget()),
-                  if (role != 'default') ...[const SizedBox(height: 16), UploadButtonWidget(onFileSelected: (String? path) => print(path))],
+                  if (role != "default") ...[const SizedBox(height: 16), UploadButtonWidget(onFileSelected: (String? path) => print(path))],
                 ],
               ),
             ),
@@ -33,10 +35,7 @@ class VideoScreen extends StatelessWidget {
               flex: 1,
               child: Column(
                 children: [
-                  if (role == 'owner') ...[
-                    ControlMenuWidget(inviteLink: "http://127.0.0.1:52000/invite_link", onSelectVideo: () => print("Selected")),
-                    const SizedBox(height: 16),
-                  ],
+                  if (role == "owner") ...[ControlMenuWidget(inviteLink: responseData["inviteLink"], onSelectVideo: () => print("Selected")), const SizedBox(height: 16)],
                   const DownloadListWidget(items: ["first", "second", "third"]),
                 ],
               ),

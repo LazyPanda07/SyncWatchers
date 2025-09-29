@@ -91,7 +91,7 @@ namespace executors
 	{
 		framework::Table users = request.getTable(":memory:", "users");
 		const framework::JSONParser& json = request.getJSON();
-		std::string uuid = json.get<std::string>("userUUId");
+		std::string uuid = json.get<std::string>("userUUID");
 		std::string newUserName = json.get<std::string>("newUserName");
 		std::string userName;
 		std::string roomUUID;

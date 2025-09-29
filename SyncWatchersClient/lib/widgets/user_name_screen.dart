@@ -1,14 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:sync_watchers_client/widgets/video_screen.dart';
 
-class UsernameScreen extends StatelessWidget {
+import '../web/requests.dart';
+
+class UsernameScreen extends StatefulWidget {
   final Map<String, dynamic> responseData;
 
   const UsernameScreen({super.key, required this.responseData});
 
   @override
+  State<UsernameScreen> createState() => _UsernameScreenState();
+}
+
+class _UsernameScreenState extends State<UsernameScreen> {
+  final TextEditingController _userNameController = TextEditingController();
+  late ScaffoldMessengerState _messenger;
+  SnackBar? _currentSnackBar;
+
+  void _showSnackBar(SnackBar? snackBar) {
+    if (_currentSnackBar != null) {
+      _messenger.hideCurrentSnackBar();
+    }
+
+    _currentSnackBar = snackBar;
+
+    if (snackBar != null) {
+      _messenger.showSnackBar(snackBar).closed.whenComplete(() => _currentSnackBar = null);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _userNameController.text = widget.responseData["userName"];
+  }
+
+  Future<void> _updateUserName() async {
+    _showSnackBar(SnackBar(content: Text("Update user name..."), onVisible: () async => await _updateUserNameRequest()));
+  }
+
+  Future<void> _updateUserNameRequest() async {
+    return updateUserName(
+      (String response) {
+        widget.responseData["userName"] = _userNameController.text;
+
+        Navigator.push(context, MaterialPageRoute(builder: (_) => VideoScreen(responseData: widget.responseData)));
+      },
+      (String errorMessage) {
+        _showSnackBar(SnackBar(content: Text(errorMessage)));
+      },
+      {"userUUID": widget.responseData["userUUID"], "newUserName": _userNameController.text},
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final usernameController = TextEditingController();
+    _messenger = ScaffoldMessenger.of(context);
 
     return Scaffold(
       appBar: AppBar(title: const Text("Create Username")),
@@ -18,15 +66,14 @@ class UsernameScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextField(
-              controller: usernameController,
-              decoration: const InputDecoration(hintText: "Enter username", border: OutlineInputBorder()),
+              controller: _userNameController,
+              decoration: const InputDecoration(hintText: "Enter user name", border: OutlineInputBorder()),
             ),
             const SizedBox(height: 16),
             ElevatedButton(
-              onPressed: () {
-                final username = usernameController.text.trim();
-                if (username.isNotEmpty) {
-                  Navigator.push(context, MaterialPageRoute(builder: (_) => const VideoScreen(role: "owner")));
+              onPressed: () async {
+                if (_currentSnackBar == null && _userNameController.text.isNotEmpty) {
+                  _updateUserName();
                 }
               },
               child: const Text("Create"),

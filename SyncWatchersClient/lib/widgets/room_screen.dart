@@ -47,7 +47,11 @@ class _RoomScreenState extends State<RoomScreen> {
   Future<void> _joinToRoom(String link, String role) async {
     return joinRoom(
       (String response) {
-        Navigator.push(context, MaterialPageRoute(builder: (_) => UsernameScreen(responseData: jsonDecode(response))));
+        final Map<String, dynamic> responseData = jsonDecode(response);
+
+        responseData["inviteLink"] = link;
+
+        Navigator.push(context, MaterialPageRoute(builder: (_) => UsernameScreen(responseData: responseData)));
       },
       (String errorMessage) {
         _showSnackBar(SnackBar(content: Text(errorMessage)));
