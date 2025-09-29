@@ -24,7 +24,7 @@ class VideoScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Expanded(child: VideoPlayerWidget()),
-                  if (role != "default") ...[const SizedBox(height: 16), UploadButtonWidget(onFileSelected: (String? path) => print(path))],
+                  if (role != "default") ...[const SizedBox(height: 16), UploadButtonWidget(responseData: responseData)],
                 ],
               ),
             ),

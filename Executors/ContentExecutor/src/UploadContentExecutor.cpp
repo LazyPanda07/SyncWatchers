@@ -59,7 +59,6 @@ namespace executors
 		if (last)
 		{
 			stream.close();
-
 			framework::Table content = request.getTable(":memory:", "content");
 			std::string roomUUID = request.getRouteParameter<std::string>("room_uuid");
 

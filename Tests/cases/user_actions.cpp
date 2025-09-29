@@ -218,6 +218,8 @@ TEST_F(UserActions, UploadContent)
 		std::string event(36, '\0');
 		FILE* file = fopen(contentName.data(), "rb");
 
+		ASSERT_NE(file, nullptr);
+
 		ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_URL, url.data()), CURLE_OK);
 		ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L), CURLE_OK);
 		ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_READDATA, file), CURLE_OK);

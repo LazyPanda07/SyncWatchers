@@ -41,6 +41,8 @@ class _UsernameScreenState extends State<UsernameScreen> {
   }
 
   Future<void> _updateUserNameRequest() async {
+    await getRoomInformation((String) {}, (String) {}, {"userUUID": widget.responseData["userUUID"]});
+
     return updateUserName(
       (String response) {
         widget.responseData["userName"] = _userNameController.text;
