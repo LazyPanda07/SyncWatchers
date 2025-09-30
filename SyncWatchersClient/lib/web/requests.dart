@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 
 Future<void> _makeRequest({
   required Future<http.Response> Function(Uri url, {Map<String, String>? headers, Object? body, Encoding? encoding}) method,
@@ -70,12 +71,8 @@ Future<void> updateUserName(Function(String response) onSuccess, Function(String
   onFail: onFail,
 );
 
-Future<void> getRoomInformation(Function(String response) onSuccess, Function(String errorMessage) onFail, Map<String, String> data) async => _makeGetRequest(
-  method: http.get,
-  url: Uri.parse("http://127.0.0.1:52000/users?user_uuid=${data["userUUID"]}"),
-  onSuccess: onSuccess,
-  onFail: onFail,
-);
+Future<void> getRoomInformation(Function(String response) onSuccess, Function(String errorMessage) onFail, Map<String, String> data) async =>
+    _makeGetRequest(method: http.get, url: Uri.parse("http://127.0.0.1:52000/users?user_uuid=${data["userUUID"]}"), onSuccess: onSuccess, onFail: onFail);
 
 Future<void> uploadContent(Function(String response) onSuccess, Function(String errorMessage) onFail, Map<String, String> data, String filePath) async {
   try {
@@ -107,11 +104,27 @@ Future<void> uploadContent(Function(String response) onSuccess, Function(String 
   }
 }
 
-Future<void> downloadContent(Function(String response) onSuccess, Function(String errorMessage) onFail, Map<String, String> data) async => _makeRequest(
-  method: http.patch,
-  url: Uri.parse("http://127.0.0.1:52000/users"),
-  headers: {"Content-Type": "application/json"},
-  body: jsonEncode({"userUUID": data["userUUID"], "newUserName": data["newUserName"]}),
-  onSuccess: onSuccess,
-  onFail: onFail,
-);
+Future<void> downloadContent(Function(String response) onSuccess, Function(String errorMessage) onFail, Map<String, String> data) async {
+  try {
+    final String contentName = data["contentName"]!;
+    final request = await HttpClient().getUrl(Uri.parse("http://127.0.0.1:52000/download/${data["roomUUID"]}/$contentName"));
+    final response = await request.close();
+
+    if (response.statusCode == 200) {
+      Directory temporaryDirectory = await getTemporaryDirectory();
+
+      final file = File("${temporaryDirectory.path}/$contentName");
+      final sink = file.openWrite();
+
+      await response.pipe(sink);
+
+      await sink.close();
+
+      onSuccess("Download completed: $contentName");
+    } else {
+      onFail("Failed to download file: $contentName");
+    }
+  } catch (e) {
+    onFail(e.toString());
+  }
+}

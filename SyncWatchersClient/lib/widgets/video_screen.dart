@@ -1,15 +1,31 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:sync_watchers_client/web/events.dart';
+import 'package:sync_watchers_client/web_listener.dart';
 import 'package:sync_watchers_client/widgets/room_menu.dart';
 import 'package:sync_watchers_client/widgets/upload_button.dart';
 import 'package:sync_watchers_client/widgets/video_player.dart';
 import 'package:sync_watchers_client/widgets/videos_list.dart';
 
-class VideoScreen extends StatelessWidget {
+class VideoScreen extends StatefulWidget {
   final Map<String, dynamic> responseData;
 
   const VideoScreen({super.key, required this.responseData});
 
-  String get role => responseData["role"];
+  @override
+  State<VideoScreen> createState() => _VideoScreenState();
+}
+
+class _VideoScreenState extends State<VideoScreen> implements WebListener {
+  String get role => widget.responseData["role"];
+
+  @override
+  void initState() {
+    super.initState();
+
+    EventsHandler.instance.addListener(this);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +40,7 @@ class VideoScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Expanded(child: VideoPlayerWidget()),
-                  if (role != "default") ...[const SizedBox(height: 16), UploadButtonWidget(responseData: responseData)],
+                  if (role != "default") ...[const SizedBox(height: 16), UploadButtonWidget(responseData: widget.responseData)],
                 ],
               ),
             ),
@@ -35,8 +51,8 @@ class VideoScreen extends StatelessWidget {
               flex: 1,
               child: Column(
                 children: [
-                  if (role == "owner") ...[ControlMenuWidget(inviteLink: responseData["inviteLink"], onSelectVideo: () => print("Selected")), const SizedBox(height: 16)],
-                  const DownloadListWidget(items: ["first", "second", "third"]),
+                  if (role == "owner") ...[ControlMenuWidget(inviteLink: widget.responseData["inviteLink"], onSelectVideo: () => print("Selected")), const SizedBox(height: 16)],
+                  DownloadListWidget(responseData: widget.responseData),
                 ],
               ),
             ),
@@ -44,5 +60,56 @@ class VideoScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  Future<void> changeVideo(String videoName) async {
+    // TODO: implement changeVideo
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> onInvite(String userName) async {
+    // TODO: implement onInvite
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> onRoomDelete() async {
+    // TODO: implement onRoomDelete
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> onUpdateRole(String role) async {
+    // TODO: implement onUpdateRole
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> onUploadContent(String userUUID) async {}
+
+  @override
+  Future<void> onUserNameUpdate(String oldUserName, String newUserName) async {
+    // TODO: implement onUserNameUpdate
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> play(String userName) async {
+    // TODO: implement play
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> rewind(int offsetInSecondsFromStart) async {
+    // TODO: implement rewind
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> stop(String userName) async {
+    // TODO: implement stop
+    throw UnimplementedError();
   }
 }
