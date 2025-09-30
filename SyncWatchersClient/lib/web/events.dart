@@ -4,6 +4,8 @@ import 'dart:typed_data';
 
 import 'package:sync_watchers_client/web_listener.dart';
 
+import '../settings.dart';
+
 enum _Events { onUploadContent, onInvite, onUpdateRole, onUserNameUpdate, onRoomDelete, stop, play, rewind, changeVideo }
 
 enum _TypeFromBytes { int32, uint32 }
@@ -144,7 +146,7 @@ class EventsHandler {
   }
 
   Future<void> _eventLoop(String roomUUID) async {
-    final Socket socket = await Socket.connect("127.0.0.1", 52001);
+    final Socket socket = await Socket.connect(Settings.instance["host"], 52001);
 
     socket.write(roomUUID);
     socket.flush();

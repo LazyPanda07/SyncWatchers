@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
+import '../settings.dart';
+
 Future<void> _makeRequest({
   required Future<http.Response> Function(Uri url, {Map<String, String>? headers, Object? body, Encoding? encoding}) method,
   required Uri url,
@@ -46,7 +48,7 @@ Future<void> _makeGetRequest({
 
 Future<void> createRoom(Function(String response) onSuccess, Function(String errorMessage) onFail, Map<String, String> data) async => _makeRequest(
   method: http.post,
-  url: Uri.parse("http://127.0.0.1:52000/rooms"),
+  url: Uri.parse("http://${Settings.instance["host"]}:52000/rooms"),
   headers: {"Content-Type": "application/json"},
   body: jsonEncode({"name": data["roomName"]}),
   onSuccess: onSuccess,
@@ -64,7 +66,7 @@ Future<void> joinRoom(Function(String response) onSuccess, Function(String error
 
 Future<void> updateUserName(Function(String response) onSuccess, Function(String errorMessage) onFail, Map<String, String> data) async => _makeRequest(
   method: http.patch,
-  url: Uri.parse("http://127.0.0.1:52000/users"),
+  url: Uri.parse("http://${Settings.instance["host"]}:52000/users"),
   headers: {"Content-Type": "application/json"},
   body: jsonEncode({"userUUID": data["userUUID"], "newUserName": data["newUserName"]}),
   onSuccess: onSuccess,
@@ -72,7 +74,7 @@ Future<void> updateUserName(Function(String response) onSuccess, Function(String
 );
 
 Future<void> getRoomInformation(Function(String response) onSuccess, Function(String errorMessage) onFail, Map<String, String> data) async =>
-    _makeGetRequest(method: http.get, url: Uri.parse("http://127.0.0.1:52000/users?user_uuid=${data["userUUID"]}"), onSuccess: onSuccess, onFail: onFail);
+    _makeGetRequest(method: http.get, url: Uri.parse("http://${Settings.instance["host"]}:52000/users?user_uuid=${data["userUUID"]}"), onSuccess: onSuccess, onFail: onFail);
 
 Future<void> uploadContent(Function(String response) onSuccess, Function(String errorMessage) onFail, Map<String, String> data, String filePath) async {
   try {
@@ -80,7 +82,9 @@ Future<void> uploadContent(Function(String response) onSuccess, Function(String 
     final int length = await file.length();
 
     final HttpClient client = HttpClient()..maxConnectionsPerHost = 1;
-    final HttpClientRequest request = await client.putUrl(Uri.parse("http://127.0.0.1:52000/upload/${data["roomUUID"]}/${data["userUUID"]}/${data["contentName"]}"));
+    final HttpClientRequest request = await client.putUrl(
+      Uri.parse("http://${Settings.instance["host"]}:52000/upload/${data["roomUUID"]}/${data["userUUID"]}/${data["contentName"]}"),
+    );
 
     request.headers.contentType = ContentType.binary;
     request.contentLength = length;
@@ -107,7 +111,7 @@ Future<void> uploadContent(Function(String response) onSuccess, Function(String 
 Future<void> downloadContent(Function(String response) onSuccess, Function(String errorMessage) onFail, Map<String, String> data) async {
   try {
     final String contentName = data["contentName"]!;
-    final request = await HttpClient().getUrl(Uri.parse("http://127.0.0.1:52000/download/${data["roomUUID"]}/$contentName"));
+    final request = await HttpClient().getUrl(Uri.parse("http://${Settings.instance["host"]}:52000/download/${data["roomUUID"]}/$contentName"));
     final response = await request.close();
 
     if (response.statusCode == 200) {
@@ -128,3 +132,12 @@ Future<void> downloadContent(Function(String response) onSuccess, Function(Strin
     onFail(e.toString());
   }
 }
+
+Future<void> changeVideoRequest(Function(String response) onSuccess, Function(String errorMessage) onFail, Map<String, String> data) async => _makeRequest(
+  method: http.post,
+  url: Uri.parse("http://${Settings.instance["host"]}:52000/video/change_video"),
+  headers: {"Content-Type": "application/json"},
+  body: jsonEncode({"roomUUID": data["roomUUID"], "videoName": data["videoName"]}),
+  onSuccess: onSuccess,
+  onFail: onFail,
+);

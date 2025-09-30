@@ -1,4 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:sync_watchers_client/web/events.dart';
+import 'package:sync_watchers_client/web_listener.dart';
 import 'package:video_player/video_player.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -9,15 +14,17 @@ class VideoPlayerWidget extends StatefulWidget {
   State<VideoPlayerWidget> createState() => _VideoPlayerWidgetState();
 }
 
-class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
+class _VideoPlayerWidgetState extends State<VideoPlayerWidget> implements WebListener {
   late VideoPlayerController _controller;
 
   @override
   void initState() {
     super.initState();
 
-    _controller = VideoPlayerController.asset("assets/sample.mp4")
-      ..initialize().then((_) {
+    EventsHandler.instance.addListener(this);
+
+    _controller = VideoPlayerController.asset("")
+      ..initialize().whenComplete(() {
         setState(() {});
       });
   }
@@ -46,14 +53,48 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                     child: SizedBox(width: _controller.value.size.width, height: _controller.value.size.height, child: VideoPlayer(_controller)),
                   ),
                 ),
-
-                /// Reusable controls
                 VideoPlayerControls(controller: _controller, onFullscreenToggle: _enterFullscreen, isFullscreen: false),
               ],
             )
           : const Center(child: CircularProgressIndicator()),
     );
   }
+
+  @override
+  Future<void> changeVideo(String videoName) async {
+    if (_controller.value.isInitialized) {
+      await _controller.pause();
+      await _controller.dispose();
+    }
+
+    Directory temporaryDirectory = await getTemporaryDirectory();
+
+    _controller = VideoPlayerController.file(File("${temporaryDirectory.path}/$videoName"))..initialize().whenComplete(() => setState(() {}));
+  }
+
+  @override
+  Future<void> onInvite(String userName) async {}
+
+  @override
+  Future<void> onRoomDelete() async {}
+
+  @override
+  Future<void> onUpdateRole(String role) async {}
+
+  @override
+  Future<void> onUploadContent(String userUUID) async {}
+
+  @override
+  Future<void> onUserNameUpdate(String oldUserName, String newUserName) async {}
+
+  @override
+  Future<void> play(String userName) async {}
+
+  @override
+  Future<void> rewind(int offsetInSecondsFromStart) async {}
+
+  @override
+  Future<void> stop(String userName) async {}
 }
 
 class FullscreenVideoPlayer extends StatelessWidget {

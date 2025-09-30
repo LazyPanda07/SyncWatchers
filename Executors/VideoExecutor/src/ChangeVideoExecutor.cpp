@@ -9,7 +9,7 @@ namespace executors
 	{
 		const framework::JSONParser& json = request.getJSON();
 
-		utils::notify<events::ChangeVideoEvent>(json.get<std::string>("room_uuid"), json.get<std::string>("videoName"));
+		utils::notify<events::ChangeVideoEvent>(json.get<std::string>("roomUUID"), json.get<std::string>("videoName"));
 
 		response.setBody("Change video");
 	}

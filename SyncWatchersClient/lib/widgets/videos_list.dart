@@ -28,6 +28,8 @@ class _DownloadListState extends State<DownloadListWidget> implements WebListene
   final List<UploadedVideo> _availableVideos = [];
   late Timer _timer;
 
+  String get role => widget.responseData["role"];
+
   @override
   void initState() {
     super.initState();
@@ -51,6 +53,12 @@ class _DownloadListState extends State<DownloadListWidget> implements WebListene
             children: [
               Expanded(
                 child: TextField(
+                  onTap: role == "owner"
+                      ? () async => await changeVideoRequest((String response) => print(response), (String errorMessage) => print(errorMessage), {
+                          "roomUUID": widget.responseData["roomUUID"],
+                          "videoName": _availableVideos[index].videoName,
+                        })
+                      : null,
                   controller: TextEditingController(text: _availableVideos[index].videoName),
                   readOnly: true,
                   decoration: const InputDecoration(border: OutlineInputBorder()),
@@ -90,28 +98,16 @@ class _DownloadListState extends State<DownloadListWidget> implements WebListene
   }
 
   @override
-  Future<void> changeVideo(String videoName) {
-    // TODO: implement changeVideo
-    throw UnimplementedError();
-  }
+  Future<void> changeVideo(String videoName) async {}
 
   @override
-  Future<void> onInvite(String userName) {
-    // TODO: implement onInvite
-    throw UnimplementedError();
-  }
+  Future<void> onInvite(String userName) async {}
 
   @override
-  Future<void> onRoomDelete() {
-    // TODO: implement onRoomDelete
-    throw UnimplementedError();
-  }
+  Future<void> onRoomDelete() async {}
 
   @override
-  Future<void> onUpdateRole(String role) {
-    // TODO: implement onUpdateRole
-    throw UnimplementedError();
-  }
+  Future<void> onUpdateRole(String role) async {}
 
   @override
   Future<void> onUploadContent(String userUUID) async {
@@ -135,26 +131,14 @@ class _DownloadListState extends State<DownloadListWidget> implements WebListene
   }
 
   @override
-  Future<void> onUserNameUpdate(String oldUserName, String newUserName) {
-    // TODO: implement onUserNameUpdate
-    throw UnimplementedError();
-  }
+  Future<void> onUserNameUpdate(String oldUserName, String newUserName) async {}
 
   @override
-  Future<void> play(String userName) {
-    // TODO: implement play
-    throw UnimplementedError();
-  }
+  Future<void> play(String userName) async {}
 
   @override
-  Future<void> rewind(int offsetInSecondsFromStart) {
-    // TODO: implement rewind
-    throw UnimplementedError();
-  }
+  Future<void> rewind(int offsetInSecondsFromStart) async {}
 
   @override
-  Future<void> stop(String userName) {
-    // TODO: implement stop
-    throw UnimplementedError();
-  }
+  Future<void> stop(String userName) async {}
 }

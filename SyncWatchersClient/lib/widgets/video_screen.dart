@@ -63,53 +63,29 @@ class _VideoScreenState extends State<VideoScreen> implements WebListener {
   }
 
   @override
-  Future<void> changeVideo(String videoName) async {
-    // TODO: implement changeVideo
-    throw UnimplementedError();
-  }
+  Future<void> changeVideo(String videoName) async {}
 
   @override
-  Future<void> onInvite(String userName) async {
-    // TODO: implement onInvite
-    throw UnimplementedError();
-  }
+  Future<void> onInvite(String userName) async {}
 
   @override
-  Future<void> onRoomDelete() async {
-    // TODO: implement onRoomDelete
-    throw UnimplementedError();
-  }
+  Future<void> onRoomDelete() async {}
 
   @override
-  Future<void> onUpdateRole(String role) async {
-    // TODO: implement onUpdateRole
-    throw UnimplementedError();
-  }
+  Future<void> onUpdateRole(String role) async {}
 
   @override
   Future<void> onUploadContent(String userUUID) async {}
 
   @override
-  Future<void> onUserNameUpdate(String oldUserName, String newUserName) async {
-    // TODO: implement onUserNameUpdate
-    throw UnimplementedError();
-  }
+  Future<void> onUserNameUpdate(String oldUserName, String newUserName) async {}
 
   @override
-  Future<void> play(String userName) async {
-    // TODO: implement play
-    throw UnimplementedError();
-  }
+  Future<void> play(String userName) async {}
 
   @override
-  Future<void> rewind(int offsetInSecondsFromStart) async {
-    // TODO: implement rewind
-    throw UnimplementedError();
-  }
+  Future<void> rewind(int offsetInSecondsFromStart) async {}
 
   @override
-  Future<void> stop(String userName) async {
-    // TODO: implement stop
-    throw UnimplementedError();
-  }
+  Future<void> stop(String userName) async {}
 }
