@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sync_watchers_client/web/events.dart';
-import 'package:sync_watchers_client/widgets/video_screen.dart';
-
-import '../web/requests.dart';
+import 'package:sync_watchers_client/web/requests.dart';
+import 'package:sync_watchers_client/widgets/screens/video_screen.dart';
 
 class UsernameScreen extends StatefulWidget {
   final Map<String, dynamic> responseData;

@@ -242,7 +242,7 @@ TEST_F(UserActions, UploadContent)
 	}
 }
 
-TEST_F(UserActions, AvailableContent)
+TEST_F(UserActions, UserAvailableContent)
 {
 	std::string url = std::format("http://127.0.0.1:52000/users?user_uuid={}", UserActions::userUUID);
 
@@ -262,6 +262,27 @@ TEST_F(UserActions, AvailableContent)
 		ASSERT_EQ(content[i].get<std::string>(), contentFiles[i]);
 	}
 }
+
+//TEST_F(UserActions, AvailableContent)
+//{
+//	std::string url = std::format("http://127.0.0.1:52000/content/{}", UserActions::roomUUID);
+//
+//	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_URL, url.data()), CURLE_OK);
+//
+//	ASSERT_EQ(curl_easy_perform(curl), CURLE_OK);
+//
+//	auto responseJSON = nlohmann::json::parse(UserActions::response);
+//	const auto& content = responseJSON["uploadedContent"];
+//
+//	ASSERT_EQ(content.size(), UserActions::getContentFiles().size());
+//
+//	auto contentFiles = UserActions::getContentFiles();
+//
+//	for (size_t i = 0; i < contentFiles.size(); i++)
+//	{
+//		ASSERT_EQ(content[i].get<std::string>(), contentFiles[i]);
+//	}
+//}
 
 TEST_F(UserActions, DownloadContent)
 {

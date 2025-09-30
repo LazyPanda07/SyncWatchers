@@ -3,9 +3,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-import '../web/events.dart';
-import '../web/requests.dart';
-import '../web_listener.dart';
+import 'package:sync_watchers_client/web/events.dart';
+import 'package:sync_watchers_client/web/requests.dart';
+import 'package:sync_watchers_client/web_listener.dart';
 
 class UploadedVideo {
   final String userName;
@@ -29,6 +29,26 @@ class _DownloadListState extends State<DownloadListWidget> implements WebListene
   late Timer _timer;
 
   String get role => widget.responseData["role"];
+
+  Future<void> _getAvailableVideos(String userUUID) async {
+    await getRoomInformation(
+      (String response) {
+        Map<String, dynamic> data = jsonDecode(response);
+        String userName = data["name"];
+        List<dynamic> uploadedContent = data["uploadedContent"];
+
+        for (String contentName in uploadedContent) {
+          if (_availableVideos.any((value) => value.videoName == contentName)) {
+            continue;
+          }
+
+          _availableVideos.add(UploadedVideo(userName: userName, videoName: contentName));
+        }
+      },
+      (String errorMessage) => print(errorMessage),
+      {"userUUID": userUUID},
+    );
+  }
 
   @override
   void initState() {
@@ -110,25 +130,7 @@ class _DownloadListState extends State<DownloadListWidget> implements WebListene
   Future<void> onUpdateRole(String role) async {}
 
   @override
-  Future<void> onUploadContent(String userUUID) async {
-    await getRoomInformation(
-      (String response) {
-        Map<String, dynamic> data = jsonDecode(response);
-        String userName = data["name"];
-        List<dynamic> uploadedContent = data["uploadedContent"];
-
-        for (String contentName in uploadedContent) {
-          if (_availableVideos.any((value) => value.videoName == contentName)) {
-            continue;
-          }
-
-          _availableVideos.add(UploadedVideo(userName: userName, videoName: contentName));
-        }
-      },
-      (String errorMessage) => print(errorMessage),
-      {"userUUID": userUUID},
-    );
-  }
+  Future<void> onUploadContent(String userUUID) async => await _getAvailableVideos(userUUID);
 
   @override
   Future<void> onUserNameUpdate(String oldUserName, String newUserName) async {}

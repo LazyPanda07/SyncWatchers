@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:sync_watchers_client/settings.dart';
-import 'package:sync_watchers_client/widgets/room_screen.dart';
+import 'package:sync_watchers_client/widgets/screens/room_screen.dart';
 import 'package:window_manager/window_manager.dart';
 
 Future<void> main() async {

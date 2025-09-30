@@ -4,6 +4,7 @@ project(ContentExecutor)
 
 add_library(
 	${PROJECT_NAME} SHARED
+	src/ContentExecutor.cpp
 	src/DownloadContentExecutor.cpp
 	src/UploadContentExecutor.cpp
 	src/Events/OnUploadContentEvent.cpp

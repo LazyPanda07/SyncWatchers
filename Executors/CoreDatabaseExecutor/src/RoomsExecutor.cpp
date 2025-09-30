@@ -50,11 +50,12 @@ namespace executors
 
 		std::string roomName = request.getJSON().get<std::string>("name");
 		std::string roomInviteLink = std::format("{}/{}", inviteLink, framework::utility::uuid::generateUUID());
+		std::string roomUUID = framework::utility::uuid::generateUUID();
 
 		framework::SQLResult test = rooms.execute
 		(
 			"INSERT INTO rooms (invite_link, name, uuid) VALUES (?, ?, ?)",
-			{ framework::SQLValue(roomInviteLink), framework::SQLValue(roomName), framework::SQLValue(framework::utility::uuid::generateUUID()) }
+			{ framework::SQLValue(roomInviteLink), framework::SQLValue(roomName), framework::SQLValue(roomUUID) }
 		);
 
 		response.setBody(framework::JSONBuilder().append("inviteLink", roomInviteLink));

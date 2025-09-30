@@ -15,11 +15,13 @@
     <None Include="content_web.json" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\ContentExecutor.cpp" />
     <ClCompile Include="src\DownloadContentExecutor.cpp" />
     <ClCompile Include="src\Events\OnUploadContentEvent.cpp" />
     <ClCompile Include="src\UploadContentExecutor.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ContentExecutor.h" />
     <ClInclude Include="src\DownloadContentExecutor.h" />
     <ClInclude Include="src\Events\OnUploadContentEvent.h" />
     <ClInclude Include="src\UploadContentExecutor.h" />

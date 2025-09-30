@@ -11,7 +11,7 @@ class Settings {
     if (!settings.existsSync()) {
       settings.createSync();
 
-      settings.writeAsString(jsonEncode({"host": "26.55.125.90"}));
+      settings.writeAsStringSync(jsonEncode({"host": "26.55.125.90"}));
     }
 
     _settings = jsonDecode(settings.readAsStringSync());

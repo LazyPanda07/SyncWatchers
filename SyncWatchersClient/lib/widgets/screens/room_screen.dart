@@ -1,9 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:sync_watchers_client/widgets/user_name_screen.dart';
-
-import '../web/requests.dart';
+import 'package:sync_watchers_client/web/requests.dart';
+import 'package:sync_watchers_client/widgets/screens/user_name_screen.dart';
 
 class RoomScreen extends StatefulWidget {
   const RoomScreen({super.key});

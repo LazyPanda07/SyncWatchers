@@ -1,4 +1,9 @@
 {
+  "ContentExecutor": {
+    "loadType": "initialization",
+    "route": "content/{string:room_uuid}",
+    "api": "cxx"
+  },
   "UploadContentExecutor": {
     "loadType": "dynamic",
     "route": "upload/{string:room_uuid}/{string:user_uuid}/{string:content_name}",
