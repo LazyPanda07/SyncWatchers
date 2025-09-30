@@ -1,21 +1,25 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:sync_watchers_client/web_listener.dart';
+
 enum _Events { onUploadContent, onInvite, onUpdateRole, onUserNameUpdate, onRoomDelete, stop, play, rewind, changeVideo }
 
-enum _TypeFromBytes { int32_t, uint32_t }
+enum _TypeFromBytes { int32, uint32 }
 
 class EventsHandler {
   static final EventsHandler instance = EventsHandler._internal();
+  final List<WebListener> _listeners = [];
 
   EventsHandler._internal();
 
-  static int _bytesToInt(Uint8List bytes, {_TypeFromBytes type = _TypeFromBytes.int32_t}) {
+  static int _bytesToInt(Uint8List bytes, {_TypeFromBytes type = _TypeFromBytes.int32}) {
     switch (type) {
-      case _TypeFromBytes.int32_t:
+      case _TypeFromBytes.int32:
         return ByteData.sublistView(bytes).getInt32(0, Endian.little);
 
-      case _TypeFromBytes.uint32_t:
+      case _TypeFromBytes.uint32:
         return ByteData.sublistView(bytes).getUint32(0, Endian.little);
     }
   }
@@ -86,7 +90,57 @@ class EventsHandler {
   }
 
   void _handleEvent(_Events eventType, Uint8List payload) {
+    for (WebListener listener in _listeners) {
+      switch (eventType) {
+        case _Events.onUploadContent:
+          listener.onUploadContent(utf8.decode(payload));
 
+          break;
+
+        case _Events.onInvite:
+          listener.onInvite(utf8.decode(Uint8List.view(payload.buffer, 4)));
+
+          break;
+
+        case _Events.onUpdateRole:
+          listener.onUpdateRole(utf8.decode(Uint8List.view(payload.buffer, 4)));
+
+          break;
+
+        case _Events.onUserNameUpdate:
+          String temp = utf8.decode(Uint8List.view(payload.buffer, 4));
+          List<String> userNames = temp.split(' ');
+
+          listener.onUserNameUpdate(userNames[0], userNames[1]);
+
+          break;
+
+        case _Events.onRoomDelete:
+          listener.onRoomDelete();
+
+          break;
+
+        case _Events.stop:
+          listener.stop(utf8.decode(Uint8List.view(payload.buffer, 4)));
+
+          break;
+
+        case _Events.play:
+          listener.play(utf8.decode(Uint8List.view(payload.buffer, 4)));
+
+          break;
+
+        case _Events.rewind:
+          listener.rewind(EventsHandler._bytesToInt(payload, type: _TypeFromBytes.uint32));
+
+          break;
+
+        case _Events.changeVideo:
+          listener.changeVideo(utf8.decode(Uint8List.view(payload.buffer, 4)));
+
+          break;
+      }
+    }
   }
 
   Future<void> _eventLoop(String roomUUID) async {
@@ -112,5 +166,9 @@ class EventsHandler {
 
   void startEventLoop(String roomUUID) {
     _eventLoop(roomUUID);
+  }
+
+  void addListener(WebListener listener) {
+    _listeners.add(listener);
   }
 }
