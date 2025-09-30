@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sync_watchers_client/web/events.dart';
 import 'package:sync_watchers_client/widgets/video_screen.dart';
 
 import '../web/requests.dart';
@@ -34,6 +35,8 @@ class _UsernameScreenState extends State<UsernameScreen> {
     super.initState();
 
     _userNameController.text = widget.responseData["userName"];
+
+    EventsHandler.instance.startEventLoop(widget.responseData["roomUUID"]);
   }
 
   Future<void> _updateUserName() async {
