@@ -32,6 +32,13 @@ protected:
 		};
 	}
 
+	static size_t writeFileCallback(char* content, size_t size, size_t numberOfBytes, void* file)
+	{
+		static_cast<std::ofstream*>(file)->write(content, size * numberOfBytes);
+
+		return size * numberOfBytes;
+	}
+
 	static bool compareFiles(const std::filesystem::path& first, const std::filesystem::path& second)
 	{
 		if (!std::filesystem::exists(first) || !std::filesystem::exists(second))
@@ -229,8 +236,6 @@ TEST_F(UserActions, UploadContent)
 
 		ASSERT_EQ(UserActions::response, "File uploaded");
 
-		ASSERT_TRUE(UserActions::compareFiles(contentName, std::filesystem::current_path() / "assets" / UserActions::roomUUID / contentName));
-
 		UserActions::socket.receive(&eventId);
 		UserActions::socket.receive(event);
 
@@ -287,17 +292,22 @@ TEST_F(UserActions, AvailableContent)
 
 TEST_F(UserActions, DownloadContent)
 {
+	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &UserActions::writeFileCallback), CURLE_OK);
+
 	for (std::string_view contentName : UserActions::getContentFiles())
 	{
 		std::string url = std::format("http://127.0.0.1:52000/download/{}/{}", UserActions::roomUUID, contentName);
+		std::string downloadedFileName = std::format("downloaded_{}", contentName);
+		std::ofstream out(downloadedFileName, std::ios::binary);
 
 		ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_URL, url.data()), CURLE_OK);
+		ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_WRITEDATA, &out), CURLE_OK);
 
 		ASSERT_EQ(curl_easy_perform(curl), CURLE_OK);
 
-		std::ofstream(contentName.data(), std::ios::binary).write(UserActions::response.data(), UserActions::response.size());
+		out.flush();
 
-		ASSERT_TRUE(UserActions::compareFiles(contentName, std::filesystem::current_path() / "assets" / UserActions::roomUUID / contentName));
+		ASSERT_TRUE(UserActions::compareFiles(contentName, downloadedFileName));
 
 		UserActions::response.clear();
 	}
