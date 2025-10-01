@@ -4,29 +4,31 @@ namespace executors
 {
 	void ContentExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
 	{
-		try
-		{
-			framework::Table content = request.getTable(":memory:", "content");
-			framework::SQLResult result = content.execute
-			(
-				"SELECT "
-				"c.name   AS content_name,"
-				"u.name   AS user_name"
-				"FROM content c"
-				"JOIN users u ON c.upload_user_id = u.id"
-				"JOIN rooms r ON c.room_id = r.id"
-				"WHERE r.uuid = ?",
-				{ framework::SQLValue(request.getRouteParameter<std::string>("room_uuid")) }
-			);
+		framework::Table content = request.getTable(":memory:", "content");
+		framework::SQLResult sqlResult = content.execute
+		(
+			"SELECT "
+			"content.name AS content_name, "
+			"users.name AS user_name "
+			"FROM content "
+			"JOIN users ON content.upload_user_id = users.id "
+			"JOIN rooms ON content.room_id = rooms.id "
+			"WHERE rooms.uuid = ?",
+			{ framework::SQLValue(request.getRouteParameter<std::string>("room_uuid")) }
+		);
+		std::vector<framework::JSONObject> result;
 
-			printf("%d\n", result.size());
-		}
-		catch (const std::exception& e)
+		for (const framework::SQLResult::Row& row : sqlResult)
 		{
-			printf("%s\n", e.what());
+			framework::JSONObject object;
 
-			throw;
+			object.setValue("contentName", row.at("content_name").get<std::string>());
+			object.setValue("userName", row.at("user_name").get<std::string>());
+
+			framework::utility::appendArray(result, object);
 		}
+
+		response.setBody(framework::JSONBuilder().append("uploadedContent", result));
 	}
 
 	DEFINE_EXECUTOR(ContentExecutor);
