@@ -27,14 +27,9 @@ Future<void> _makeRequest({
   }
 }
 
-Future<void> _makeGetRequest({
-  required Future<http.Response> Function(Uri url, {Map<String, String>? headers}) method,
-  required Uri url,
-  required Function(String response) onSuccess,
-  required Function(String errorMessage) onFail,
-}) async {
+Future<void> _makeGetRequest({required Uri url, required Function(String response) onSuccess, required Function(String errorMessage) onFail}) async {
   try {
-    final http.Response response = await method(url);
+    final http.Response response = await http.get(url);
 
     if (response.statusCode >= 400) {
       onFail(response.body);
@@ -74,7 +69,7 @@ Future<void> updateUserName(Function(String response) onSuccess, Function(String
 );
 
 Future<void> getRoomInformation(Function(String response) onSuccess, Function(String errorMessage) onFail, Map<String, String> data) async =>
-    _makeGetRequest(method: http.get, url: Uri.parse("http://${Settings.instance["host"]}:52000/users?user_uuid=${data["userUUID"]}"), onSuccess: onSuccess, onFail: onFail);
+    _makeGetRequest(url: Uri.parse("http://${Settings.instance["host"]}:52000/users?user_uuid=${data["userUUID"]}"), onSuccess: onSuccess, onFail: onFail);
 
 Future<void> uploadContent(Function(String response) onSuccess, Function(String errorMessage) onFail, Map<String, String> data, String filePath) async {
   try {
@@ -141,3 +136,6 @@ Future<void> changeVideoRequest(Function(String response) onSuccess, Function(St
   onSuccess: onSuccess,
   onFail: onFail,
 );
+
+Future<void> getRoomContent(Function(String response) onSuccess, Function(String errorMessage) onFail, Map<String, String> data) async =>
+    _makeGetRequest(url: Uri.parse("http://${Settings.instance["host"]}:52000/content/${data["roomUUID"]}"), onSuccess: onSuccess, onFail: onFail);

@@ -30,24 +30,16 @@ class _DownloadListState extends State<DownloadListWidget> implements WebListene
 
   String get role => widget.responseData["role"];
 
-  Future<void> _getAvailableVideos(String userUUID) async {
-    await getRoomInformation(
-      (String response) {
-        Map<String, dynamic> data = jsonDecode(response);
-        String userName = data["name"];
-        List<dynamic> uploadedContent = data["uploadedContent"];
+  void _addVideos(Iterator<dynamic> it, String Function(Iterator<dynamic>) contentNameGetter, String Function(Iterator<dynamic>) userNameGetter) {
+    while (it.moveNext()) {
+      String contentName = contentNameGetter(it);
 
-        for (String contentName in uploadedContent) {
-          if (_availableVideos.any((value) => value.videoName == contentName)) {
-            continue;
-          }
+      if (_availableVideos.any((value) => value.videoName == contentName)) {
+        continue;
+      }
 
-          _availableVideos.add(UploadedVideo(userName: userName, videoName: contentName));
-        }
-      },
-      (String errorMessage) => print(errorMessage),
-      {"userUUID": userUUID},
-    );
+      _availableVideos.add(UploadedVideo(userName: userNameGetter(it), videoName: contentName));
+    }
   }
 
   @override
@@ -56,9 +48,20 @@ class _DownloadListState extends State<DownloadListWidget> implements WebListene
 
     EventsHandler.instance.addListener(this);
 
-    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      setState(() {});
-    });
+    getRoomContent(
+      (String response) {
+        Map<String, dynamic> json = jsonDecode(response);
+        List<dynamic> uploadedContent = json["uploadedContent"];
+
+        _addVideos(uploadedContent.iterator, (it) => it.current["contentName"], (it) => it.current["userName"]);
+      },
+      (String errorMessage) => print(errorMessage),
+      {"roomUUID": widget.responseData["roomUUID"]},
+    ).whenComplete(
+      () => _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+        setState(() {});
+      }),
+    );
   }
 
   @override
@@ -130,7 +133,19 @@ class _DownloadListState extends State<DownloadListWidget> implements WebListene
   Future<void> onUpdateRole(String role) async {}
 
   @override
-  Future<void> onUploadContent(String userUUID) async => await _getAvailableVideos(userUUID);
+  Future<void> onUploadContent(String userUUID) async {
+    await getRoomInformation(
+      (String response) {
+        Map<String, dynamic> data = jsonDecode(response);
+        String userName = data["name"];
+        List<dynamic> uploadedContent = data["uploadedContent"];
+
+        _addVideos(uploadedContent.iterator, (it) => it.current, (it) => userName);
+      },
+      (String errorMessage) => print(errorMessage),
+      {"userUUID": userUUID},
+    );
+  }
 
   @override
   Future<void> onUserNameUpdate(String oldUserName, String newUserName) async {}
