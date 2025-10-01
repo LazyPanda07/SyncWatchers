@@ -12,7 +12,12 @@ reproc::process runServer();
 
 int main(int argc, char** argv)
 {
-	process::ProcessWrapper server(runServer());
+	std::unique_ptr<process::ProcessWrapper> server;
+
+	if (std::none_of(argv, argv + argc, [](const char* value) { using namespace std::string_view_literals; return value == "--external_server"sv; }))
+	{
+		server = std::make_unique<process::ProcessWrapper>(runServer());
+	}
 
 	testing::InitGoogleTest(&argc, argv);
 	curl_global_init(CURL_GLOBAL_ALL);
@@ -21,7 +26,7 @@ int main(int argc, char** argv)
 
 	curl_global_cleanup();
 
-	if (std::none_of(argv, argv + argc, [](const char* value) { using namespace std::string_view_literals; return value == "keep_assets"sv; }))
+	if (std::none_of(argv, argv + argc, [](const char* value) { using namespace std::string_view_literals; return value == "--keep_assets"sv; }))
 	{
 		std::filesystem::remove_all(std::filesystem::current_path() / "assets");
 	}

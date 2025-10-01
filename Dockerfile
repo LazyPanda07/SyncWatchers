@@ -15,4 +15,4 @@ ENV LD_LIBRARY_PATH=/opt/SyncWatchers
 COPY --from=build /opt/SyncWatchers/build/bin /opt/SyncWatchers
 
 WORKDIR /opt/SyncWatchers
-ENTRYPOINT [ ./SyncWatchers "${HOST}" ]
+ENTRYPOINT [ "./SyncWatchers" "${HOST}" ]

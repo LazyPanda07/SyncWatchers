@@ -82,7 +82,7 @@ jobs:
       run: |
           export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
           sudo docker run -d -p 52000:52000 -p 52001:52001 lazypanda07/sync_watchers:${{ env.version }}
-          ./Tests
+          ./Tests --external_server
 
 
   build-windows:
