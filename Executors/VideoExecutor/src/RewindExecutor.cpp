@@ -9,7 +9,7 @@ namespace executors
 	{
 		const framework::JSONParser& json = request.getJSON();
 
-		utils::notify<events::RewindEvent>(json.get<std::string>("room_uuid"), json.get<uint32_t>("offset"));
+		utils::notify<events::RewindEvent>(json.get<std::string>("roomUUID"), json.get<uint32_t>("offset"));
 
 		response.setBody("Rewind video");
 	}

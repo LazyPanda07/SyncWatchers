@@ -19,6 +19,9 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v2
+
     - name: Build
       working-directory: Tests
       run: |
@@ -61,6 +64,9 @@ jobs:
     
     steps:
     - uses: actions/checkout@v4
+  
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v2
   
     - name: Install Flutter
       uses: subosito/flutter-action@v2.16.0

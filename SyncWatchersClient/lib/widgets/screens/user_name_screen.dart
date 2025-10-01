@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sync_watchers_client/settings.dart';
 import 'package:sync_watchers_client/web/events.dart';
 import 'package:sync_watchers_client/web/requests.dart';
 import 'package:sync_watchers_client/widgets/screens/video_screen.dart';
@@ -33,9 +34,12 @@ class _UsernameScreenState extends State<UsernameScreen> {
   void initState() {
     super.initState();
 
-    _userNameController.text = widget.responseData["userName"];
+    Settings.instance.userName = widget.responseData["userName"];
+    Settings.instance.roomUUID = widget.responseData["roomUUID"];
 
-    EventsHandler.instance.startEventLoop(widget.responseData["roomUUID"]);
+    _userNameController.text = Settings.instance.userName;
+
+    EventsHandler.instance.startEventLoop(Settings.instance.roomUUID);
   }
 
   Future<void> _updateUserName() async {
@@ -47,7 +51,9 @@ class _UsernameScreenState extends State<UsernameScreen> {
 
     return updateUserName(
       (String response) {
-        widget.responseData["userName"] = _userNameController.text;
+        Settings.instance.userName = _userNameController.text;
+
+        widget.responseData["userName"] = Settings.instance.userName;
 
         Navigator.push(context, MaterialPageRoute(builder: (_) => VideoScreen(responseData: widget.responseData)));
       },

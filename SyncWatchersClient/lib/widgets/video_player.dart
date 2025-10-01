@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:sync_watchers_client/settings.dart';
 import 'package:sync_watchers_client/web/events.dart';
+import 'package:sync_watchers_client/web/requests.dart';
 import 'package:sync_watchers_client/web_listener.dart';
 import 'package:video_player/video_player.dart';
 import 'package:window_manager/window_manager.dart';
@@ -88,13 +90,17 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> implements WebLis
   Future<void> onUserNameUpdate(String oldUserName, String newUserName) async {}
 
   @override
-  Future<void> play(String userName) async {}
+  Future<void> play(String userName) async {
+    await _controller.play();
+  }
 
   @override
   Future<void> rewind(int offsetInSecondsFromStart) async {}
 
   @override
-  Future<void> stop(String userName) async {}
+  Future<void> stop(String userName) async {
+    await _controller.pause();
+  }
 }
 
 class FullscreenVideoPlayer extends StatelessWidget {
@@ -175,9 +181,15 @@ class _VideoPlayerControlsState extends State<VideoPlayerControls> {
                 icon: Icon(widget.controller.value.isPlaying ? Icons.pause : Icons.play_arrow, color: Colors.white),
                 onPressed: () {
                   if (widget.controller.value.isPlaying) {
-                    widget.controller.pause();
+                    stopRequest((String response) {}, (String errorMessage) => print(errorMessage), {
+                      "roomUUID": Settings.instance.roomUUID,
+                      "userName": Settings.instance.userName,
+                    });
                   } else {
-                    widget.controller.play();
+                    playRequest((String response) {}, (String errorMessage) => print(errorMessage), {
+                      "roomUUID": Settings.instance.roomUUID,
+                      "userName": Settings.instance.userName,
+                    });
                   }
                 },
               ),

@@ -128,6 +128,9 @@ Future<void> downloadContent(Function(String response) onSuccess, Function(Strin
   }
 }
 
+Future<void> getRoomContent(Function(String response) onSuccess, Function(String errorMessage) onFail, Map<String, String> data) async =>
+    _makeGetRequest(url: Uri.parse("http://${Settings.instance["host"]}:52000/content/${data["roomUUID"]}"), onSuccess: onSuccess, onFail: onFail);
+
 Future<void> changeVideoRequest(Function(String response) onSuccess, Function(String errorMessage) onFail, Map<String, String> data) async => _makeRequest(
   method: http.post,
   url: Uri.parse("http://${Settings.instance["host"]}:52000/video/change_video"),
@@ -137,5 +140,20 @@ Future<void> changeVideoRequest(Function(String response) onSuccess, Function(St
   onFail: onFail,
 );
 
-Future<void> getRoomContent(Function(String response) onSuccess, Function(String errorMessage) onFail, Map<String, String> data) async =>
-    _makeGetRequest(url: Uri.parse("http://${Settings.instance["host"]}:52000/content/${data["roomUUID"]}"), onSuccess: onSuccess, onFail: onFail);
+Future<void> playRequest(Function(String response) onSuccess, Function(String errorMessage) onFail, Map<String, String> data) async => _makeRequest(
+  method: http.post,
+  url: Uri.parse("http://${Settings.instance["host"]}:52000/video/play"),
+  headers: {"Content-Type": "application/json"},
+  body: jsonEncode({"roomUUID": data["roomUUID"], "userName": data["userName"]}),
+  onSuccess: onSuccess,
+  onFail: onFail,
+);
+
+Future<void> stopRequest(Function(String response) onSuccess, Function(String errorMessage) onFail, Map<String, String> data) async => _makeRequest(
+  method: http.post,
+  url: Uri.parse("http://${Settings.instance["host"]}:52000/video/stop"),
+  headers: {"Content-Type": "application/json"},
+  body: jsonEncode({"roomUUID": data["roomUUID"], "userName": data["userName"]}),
+  onSuccess: onSuccess,
+  onFail: onFail,
+);
