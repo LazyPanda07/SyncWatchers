@@ -1,28 +1,49 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:path_provider/path_provider.dart';
+
 class Settings {
   static final Settings instance = Settings._internal();
   late final Map<String, dynamic> _settings;
   late String _userName;
   late String _roomUUID;
 
-  Settings._internal() {
+  Future<File> _getSettingsFile() async {
+    File settings;
+    const String settingsFileName = "sync_watchers_settings.json";
+
     if (Platform.isWindows) {
-      File settings = File("settings.json");
+      settings = File(settingsFileName);
+    } else if (Platform.isAndroid) {
+      Directory dir = await getApplicationDocumentsDirectory();
 
-      if (!settings.existsSync()) {
-        settings.createSync();
-
-        settings.writeAsStringSync(jsonEncode({"host": "127.0.0.1"}));
-      }
-
-      _settings = jsonDecode(settings.readAsStringSync());
+      settings = File("${dir.path}/$settingsFileName");
     } else {
-      // TODO: settings file
-
-      _settings = {"host": "127.0.0.1"};
+      throw UnimplementedError("Can't get path to settings file in current platform");
     }
+
+    if (!settings.existsSync()) {
+      settings.createSync();
+
+      settings.writeAsStringSync(jsonEncode({"host": "127.0.0.1"}));
+    }
+
+    return settings;
+  }
+
+  Future<void> _updateSaveFile() async {
+    File settingsFile = await _getSettingsFile();
+
+    await settingsFile.writeAsString(jsonEncode(_settings));
+  }
+
+  Settings._internal() {
+    _getSettingsFile().then((settingsFile) {
+      _settings = jsonDecode(settingsFile.readAsStringSync());
+
+      print(jsonEncode(_settings));
+    });
   }
 
   set userName(String userName) => _userName = userName;
@@ -33,8 +54,10 @@ class Settings {
 
   String get roomUUID => _roomUUID;
 
-  void log() {
-    print(jsonEncode(_settings));
+  Future<void> updateSettings(Map<String, dynamic> settings) async {
+    settings.forEach((String key, dynamic value) => _settings[key] = value);
+
+    await _updateSaveFile();
   }
 
   dynamic operator [](String key) => _settings[key];

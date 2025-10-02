@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -20,7 +19,7 @@ Future<void> main() async {
     });
   }
 
-  Settings.instance.log();
+  Settings.instance;
 
   runApp(const App());
 }

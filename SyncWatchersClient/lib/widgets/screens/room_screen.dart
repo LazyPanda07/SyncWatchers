@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:sync_watchers_client/web/requests.dart';
+import 'package:sync_watchers_client/widgets/screens/settings_screen.dart';
 import 'package:sync_watchers_client/widgets/screens/user_name_screen.dart';
 
 class RoomScreen extends StatefulWidget {
@@ -64,7 +65,13 @@ class _RoomScreenState extends State<RoomScreen> {
     _messenger = ScaffoldMessenger.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Sync Watchers")),
+      appBar: AppBar(
+        title: const Text("Sync Watchers"),
+        leading: IconButton(
+          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => SettingsScreen())),
+          icon: const Icon(Icons.settings),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Row(

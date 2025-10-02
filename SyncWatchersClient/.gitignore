@@ -45,4 +45,4 @@ app.*.map.json
 /android/app/release
 
 # Application settings
-settings.json
+sync_watchers_settings.json
