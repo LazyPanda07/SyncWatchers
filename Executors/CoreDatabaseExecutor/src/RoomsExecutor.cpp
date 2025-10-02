@@ -10,18 +10,6 @@
 
 namespace executors
 {
-	std::string RoomsExecutor::inviteLink = "";
-
-	std::string_view RoomsExecutor::getBaseInviteLink()
-	{
-		return RoomsExecutor::inviteLink;
-	}
-
-	void RoomsExecutor::init(const framework::utility::ExecutorSettings& settings)
-	{
-		RoomsExecutor::inviteLink = settings.getInitParameters().get<std::string>("inviteLink");
-	}
-
 	void RoomsExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
 	{
 		framework::Table users = request.getTable(":memory:", "users");
@@ -47,9 +35,24 @@ namespace executors
 	{
 		framework::Database database = request.getOrCreateDatabase(":memory:");
 		framework::Table rooms = database.getOrCreateTable("rooms", database::createRoomsQuery());
+		const framework::HTTPRequest::HeadersMap& headers = request.getHeaders();
+		std::string host;
+
+		if (auto it = headers.find("Host"); it == headers.end())
+		{
+			response.setBody("Can't find Host header");
+
+			response.setResponseCode(framework::ResponseCodes::badRequest);
+
+			return;
+		}
+		else
+		{
+			host = it->second;
+		}
 
 		std::string roomName = request.getJSON().get<std::string>("name");
-		std::string roomInviteLink = std::format("{}/{}", inviteLink, framework::utility::uuid::generateUUID());
+		std::string roomInviteLink = std::format("http://{}/invite_link/{}", host, framework::utility::uuid::generateUUID());
 		std::string roomUUID = framework::utility::uuid::generateUUID();
 
 		framework::SQLResult test = rooms.execute

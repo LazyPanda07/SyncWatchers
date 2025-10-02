@@ -2,10 +2,7 @@
   "RoomsExecutor": {
     "loadType": "initialization",
     "route": "rooms",
-    "api": "cxx",
-    "initParameters": {
-      "inviteLink": "http://127.0.0.1:52000/invite_link"
-    }
+    "api": "cxx"
   },
   "InviteLinkExecutor": {
     "loadType": "initialization",

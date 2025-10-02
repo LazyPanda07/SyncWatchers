@@ -5,7 +5,7 @@ project(SyncWatchersClient)
 add_custom_target(
 	${PROJECT_NAME}_Android ALL
 	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/SyncWatchersClient
-	COMMAND flutter build apk -V --release
+	COMMAND flutter build apk -v --release
 	COMMENT "Building Android Flutter application"
 )
 
@@ -13,7 +13,7 @@ if (WIN32)
 	add_custom_target(
 		${PROJECT_NAME}_Windows ALL
 		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/SyncWatchersClient
-		COMMAND flutter build windows -V --release
+		COMMAND flutter build windows -v --release
 		COMMENT "Building Windows Flutter application"
 	)
 endif()

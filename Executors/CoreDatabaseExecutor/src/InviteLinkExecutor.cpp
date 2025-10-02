@@ -27,7 +27,24 @@ namespace executors
 	void InviteLinkExecutor::doPut(framework::HTTPRequest& request, framework::HTTPResponse& response)
 	{
 		framework::Table rooms = request.getTable(":memory:", "rooms");
-		std::string link = std::format("{}/{}", RoomsExecutor::getBaseInviteLink(), request.getRouteParameter<std::string>("link"));
+		const framework::HTTPRequest::HeadersMap& headers = request.getHeaders();
+		std::string host;
+
+		if (auto it = headers.find("Host"); it == headers.end())
+		{
+			response.setBody("Can't find Host header");
+
+			response.setResponseCode(framework::ResponseCodes::badRequest);
+
+			return;
+		}
+		else
+		{
+			host = it->second;
+		}
+
+		std::string link = std::format("http://{}/invite_link/{}", host, request.getRouteParameter<std::string>("link"));
+
 		framework::SQLResult sqlResult = rooms.execute
 		(
 			"SELECT id, uuid FROM rooms WHERE invite_link = ?",
