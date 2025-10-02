@@ -8,15 +8,21 @@ class Settings {
   late String _roomUUID;
 
   Settings._internal() {
-    File settings = File("settings.json");
+    if (Platform.isWindows) {
+      File settings = File("settings.json");
 
-    if (!settings.existsSync()) {
-      settings.createSync();
+      if (!settings.existsSync()) {
+        settings.createSync();
 
-      settings.writeAsStringSync(jsonEncode({"host": "127.0.0.1"}));
+        settings.writeAsStringSync(jsonEncode({"host": "127.0.0.1"}));
+      }
+
+      _settings = jsonDecode(settings.readAsStringSync());
+    } else {
+      // TODO: settings file
+
+      _settings = {"host": "127.0.0.1"};
     }
-
-    _settings = jsonDecode(settings.readAsStringSync());
   }
 
   set userName(String userName) => _userName = userName;

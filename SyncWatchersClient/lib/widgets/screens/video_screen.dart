@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sync_watchers_client/web/events.dart';
 import 'package:sync_watchers_client/web_listener.dart';
 import 'package:sync_watchers_client/widgets/room_menu.dart';
@@ -23,6 +24,8 @@ class _VideoScreenState extends State<VideoScreen> implements WebListener {
   @override
   void initState() {
     super.initState();
+
+    SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
 
     EventsHandler.instance.addListener(this);
   }
@@ -60,6 +63,13 @@ class _VideoScreenState extends State<VideoScreen> implements WebListener {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown, DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+
+    super.dispose();
   }
 
   @override

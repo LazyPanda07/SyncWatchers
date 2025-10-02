@@ -106,16 +106,21 @@ Future<void> uploadContent(Function(String response) onSuccess, Function(String 
 Future<void> downloadContent(Function(String response) onSuccess, Function(String errorMessage) onFail, Map<String, String> data) async {
   try {
     final String contentName = data["contentName"]!;
-    final request = await HttpClient().getUrl(Uri.parse("http://${Settings.instance["host"]}:52000/download/${data["roomUUID"]}/$contentName"));
-    final response = await request.close();
+    final HttpClientRequest request = await HttpClient().getUrl(Uri.parse("http://${Settings.instance["host"]}:52000/download/${data["roomUUID"]}/$contentName"));
+    final HttpClientResponse response = await request.close();
 
     if (response.statusCode == 200) {
       Directory temporaryDirectory = await getTemporaryDirectory();
+      final File file = File("${temporaryDirectory.path}/$contentName");
+      final IOSink sink = file.openWrite();
 
-      final file = File("${temporaryDirectory.path}/$contentName");
-      final sink = file.openWrite();
-
-      await response.pipe(sink);
+      if (Platform.isWindows) {
+        await response.pipe(sink);
+      } else {
+        await for (final chunk in response) {
+          sink.add(chunk);
+        }
+      }
 
       await sink.close();
 
