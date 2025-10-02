@@ -5,7 +5,7 @@ project(SyncWatchersClient)
 add_custom_target(
 	${PROJECT_NAME}_Android ALL
 	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/SyncWatchersClient
-	COMMAND flutter build apk -v --release
+	COMMAND flutter build apk -v --release --split-per-abi
 	COMMENT "Building Android Flutter application"
 )
 

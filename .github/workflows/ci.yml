@@ -13,6 +13,10 @@ env:
   version: 0.1.0
 
 
+permissions:
+  contents: write
+
+
 jobs:
   windows-tests:
     runs-on: windows-latest
@@ -115,18 +119,18 @@ jobs:
           mkdir windows
           mkdir android
           mv SyncWatchersClient/build/windows/x64/runner/release/* windows
-          mv SyncWatchersClient/build/app/outputs/flutter-apk/app-release.apk android
+          mv SyncWatchersClient/build/app/outputs/flutter-apk/app-arm64-v8a-release.apk android
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: windows
+        name: windows-server
         path: build/bin
 
     - name: Upload Flutter apps
       uses: actions/upload-artifact@v4
       with:
-        name: flutter
+        name: flutter-clients
         path: |
             windows
             android
@@ -150,5 +154,53 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: linux
+        name: linux-server
         path: build/bin
+
+
+  publish:
+    needs: [
+      build-windows,
+      build-linux,
+      docker-tests
+    ]
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Get current branch
+      uses : LazyPanda07/extract-current-branch@master
+    
+    - name: Download artifacts
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      uses: actions/download-artifact@v4
+      
+    - name: Create Windows zip
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      run: zip -r windows-server.zip windows-server
+
+    - name: Create Linux zip
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      run: zip -r linux-server.zip linux-server
+
+    - name: Create Flutter zip
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      run: zip -r flutter-clients.zip flutter-clients
+      
+    - name: Publish binaries
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      run: gh release upload v${{ env.version }} *.zip --clobber
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Publish Docker image
+      if: ${{ env.CURRENT_BRANCH == 'master' }}
+      run: |
+          sudo docker build . -t lazypanda07/sync_watchers:${{ env.version }}
+          sudo docker build . -t ghcr.io/lazypanda07/sync_watchers:${{ env.version }}
+          sudo docker login -u "${{ secrets.DOCKER_HUB_LOGIN }}" -p "${{ secrets.DOCKER_HUB_PASSWORD }}"
+          sudo docker push lazypanda07/sync_watchers:${{ env.version }}
+          echo ${{ secrets.GITHUB_TOKEN }} | sudo docker login ghcr.io -u LazyPanda07 --password-stdin
+          sudo docker push ghcr.io/lazypanda07/sync_watchers:${{ env.version }}
+          
