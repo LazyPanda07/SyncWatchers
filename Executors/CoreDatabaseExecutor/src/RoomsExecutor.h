@@ -6,8 +6,13 @@ namespace executors
 {
 	class RoomsExecutor : public framework::BaseHeavyOperationStatelessExecutor
 	{
+	private:
+		bool useHTTPS;
+
 	public:
-		RoomsExecutor() = default;
+		RoomsExecutor();
+
+		void init(const framework::utility::ExecutorSettings& settings) override;
 
 		void doGet(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
 

@@ -1,6 +1,7 @@
 #include "InviteLinkExecutor.h"
 
 #include <random>
+#include <fstream>
 
 #include <Utility/WebFrameworkUtility.hpp>
 
@@ -11,6 +12,20 @@
 
 namespace executors
 {
+	InviteLinkExecutor::InviteLinkExecutor() :
+		useHTTPS(false)
+	{
+
+	}
+
+	void InviteLinkExecutor::init(const framework::utility::ExecutorSettings& settings)
+	{
+		std::string data = (std::ostringstream() << std::ifstream("config.json").rdbuf()).str();
+		framework::JSONParser parser(data);
+
+		useHTTPS = parser.get<bool>("useHTTPS", true);
+	}
+
 	std::string InviteLinkExecutor::generateDefaultName()
 	{
 		std::mt19937 random(static_cast<uint32_t>(time(nullptr)));
@@ -43,7 +58,7 @@ namespace executors
 			host = it->second;
 		}
 
-		std::string link = std::format("http://{}/invite_link/{}", host, request.getRouteParameter<std::string>("link"));
+		std::string link = std::format("{}://{}/invite_link/{}", (useHTTPS ? "https" : "http"), host, request.getRouteParameter<std::string>("link"));
 
 		framework::SQLResult sqlResult = rooms.execute
 		(

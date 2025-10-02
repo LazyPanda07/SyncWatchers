@@ -1,6 +1,7 @@
 #include "RoomsExecutor.h"
 
 #include <filesystem>
+#include <fstream>
 
 #include <Utility/WebFrameworkUtility.hpp>
 
@@ -10,6 +11,20 @@
 
 namespace executors
 {
+	RoomsExecutor::RoomsExecutor() :
+		useHTTPS(false)
+	{
+
+	}
+
+	void RoomsExecutor::init(const framework::utility::ExecutorSettings& settings)
+	{
+		std::string data = (std::ostringstream() << std::ifstream("config.json").rdbuf()).str();
+		framework::JSONParser parser(data);
+
+		useHTTPS = parser.get<bool>("useHTTPS", true);
+	}
+
 	void RoomsExecutor::doGet(framework::HTTPRequest& request, framework::HTTPResponse& response)
 	{
 		framework::Table users = request.getTable(":memory:", "users");
@@ -52,7 +67,7 @@ namespace executors
 		}
 
 		std::string roomName = request.getJSON().get<std::string>("name");
-		std::string roomInviteLink = std::format("http://{}/invite_link/{}", host, framework::utility::uuid::generateUUID());
+		std::string roomInviteLink = std::format("{}://{}/invite_link/{}", (useHTTPS ? "https" : "http"), host, framework::utility::uuid::generateUUID());
 		std::string roomUUID = framework::utility::uuid::generateUUID();
 
 		framework::SQLResult test = rooms.execute

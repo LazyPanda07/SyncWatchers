@@ -9,7 +9,16 @@ namespace executors
 	private:
 		static std::string generateDefaultName();
 
+	private:
+		bool useHTTPS;
+
 	public:
+		InviteLinkExecutor();
+
+		void init(const framework::utility::ExecutorSettings& settings) override;
+
 		void doPut(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
+
+		~InviteLinkExecutor() = default;
 	};
 }
