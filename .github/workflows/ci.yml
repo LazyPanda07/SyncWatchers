@@ -199,7 +199,7 @@ jobs:
 
     - name: Create Flutter zip
       if: ${{ env.CURRENT_BRANCH == 'master' }}
-      run: zip -r flutter-clients.zip windows-flutter-client android-flutter-client
+      run: zip -r flutter-clients.zip flutter-windows-client flutter-android-client
       
     - name: Publish binaries
       if: ${{ env.CURRENT_BRANCH == 'master' }}
