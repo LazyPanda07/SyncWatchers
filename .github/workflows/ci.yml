@@ -109,17 +109,15 @@ jobs:
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=bin -DWITH_CLIENTS=ON -G "Ninja" ..
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=bin -DWITH_WINDOWS_CLIENT=ON -G "Ninja" ..
           cmake --build . -j --config Release
           cmake --install . --config Release
 
-    - name: Move apps
+    - name: Move app
       shell: bash
       run: |
           mkdir windows
-          mkdir android
-          mv SyncWatchersClient/build/windows/x64/runner/release/* windows
-          mv SyncWatchersClient/build/app/outputs/flutter-apk/app-arm64-v8a-release.apk android
+          mv build/bin/windows/* windows
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
@@ -127,13 +125,11 @@ jobs:
         name: windows-server
         path: build/bin
 
-    - name: Upload Flutter apps
+    - name: Upload Flutter app
       uses: actions/upload-artifact@v4
       with:
-        name: flutter-clients
-        path: |
-            windows
-            android
+        name: flutter-windows-client
+        path: windows
             
             
   build-linux:
@@ -143,19 +139,36 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
+    - name: Install Flutter
+      uses: subosito/flutter-action@v2.16.0
+      with:
+        channel: stable
+        flutter-version: ${{ env.flutter-version }}
+
     - name: Build
       run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=bin -G "Ninja" ..
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=bin -DWITH_ANDROID_CLIENT=ON -G "Ninja" ..
           cmake --build . -j --config Release
           cmake --install . --config Release
+
+    - name: Move app
+      run: |
+          mkdir android
+          mv build/bin/android/app-arm64-v8a-release.apk android
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
         name: linux-server
         path: build/bin
+
+    - name: Upload Flutter apps
+      uses: actions/upload-artifact@v4
+      with:
+        name: flutter-android-client
+        path: android
 
 
   publish:
@@ -186,11 +199,11 @@ jobs:
 
     - name: Create Flutter zip
       if: ${{ env.CURRENT_BRANCH == 'master' }}
-      run: zip -r flutter-clients.zip flutter-clients
+      run: zip -r flutter-clients.zip windows-flutter-client android-flutter-client
       
     - name: Publish binaries
       if: ${{ env.CURRENT_BRANCH == 'master' }}
-      run: gh release upload v${{ env.version }} *.zip --clobber
+      run: gh release create v${{ env.version }} *.zip --title v${{ env.version }} --generate-notes
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
