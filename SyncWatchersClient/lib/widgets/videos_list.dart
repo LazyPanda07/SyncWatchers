@@ -121,6 +121,13 @@ class _DownloadListState extends State<DownloadListWidget> implements WebListene
   }
 
   @override
+  void dispose() {
+    EventsHandler.instance.removeListener(this);
+
+    super.dispose();
+  }
+
+  @override
   Future<void> changeVideo(String videoName) async {}
 
   @override

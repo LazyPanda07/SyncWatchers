@@ -162,3 +162,12 @@ Future<void> stopRequest(Function(String response) onSuccess, Function(String er
   onSuccess: onSuccess,
   onFail: onFail,
 );
+
+Future<void> rewindRequest(Function(String response) onSuccess, Function(String errorMessage) onFail, Map<String, String> data) async => _makeRequest(
+  method: http.post,
+  url: Uri.parse("http://${Settings.instance["host"]}:52000/video/rewind"),
+  headers: {"Content-Type": "application/json"},
+  body: jsonEncode({"roomUUID": data["roomUUID"], "offset": int.parse(data["offset"]!)}),
+  onSuccess: onSuccess,
+  onFail: onFail,
+);

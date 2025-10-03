@@ -35,7 +35,9 @@ class _RoomScreenState extends State<RoomScreen> {
 
     return createRoom(
       (String response) async {
-        _showSnackBar(SnackBar(content: Text("Joining to created room..."), onVisible: () async => await _joinToRoom(jsonDecode(response)["inviteLink"], "owner")));
+        _showSnackBar(SnackBar(content: Text("Joining to created room..."), duration: const Duration(seconds: 1)));
+
+        await _joinToRoom(jsonDecode(response)["inviteLink"], "owner");
       },
       (String errorMessage) {
         _showSnackBar(SnackBar(content: Text(errorMessage)));
@@ -50,6 +52,8 @@ class _RoomScreenState extends State<RoomScreen> {
         final Map<String, dynamic> responseData = jsonDecode(response);
 
         responseData["inviteLink"] = link;
+
+        _showSnackBar(null);
 
         Navigator.push(context, MaterialPageRoute(builder: (_) => UsernameScreen(responseData: responseData)));
       },

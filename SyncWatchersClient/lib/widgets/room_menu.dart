@@ -5,11 +5,7 @@ class ControlMenuWidget extends StatelessWidget {
   final String inviteLink;
   final VoidCallback onSelectVideo;
 
-  const ControlMenuWidget({
-    super.key,
-    required this.inviteLink,
-    required this.onSelectVideo,
-  });
+  const ControlMenuWidget({super.key, required this.inviteLink, required this.onSelectVideo});
 
   @override
   Widget build(BuildContext context) {
@@ -18,19 +14,14 @@ class ControlMenuWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          "Invite Link:",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
+        const Text("Invite Link:", style: TextStyle(fontWeight: FontWeight.bold)),
         Row(
           children: [
             Expanded(
               child: TextField(
                 controller: controller,
                 readOnly: true,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                ),
+                decoration: const InputDecoration(border: OutlineInputBorder()),
               ),
             ),
             const SizedBox(width: 8),
@@ -39,18 +30,12 @@ class ControlMenuWidget extends StatelessWidget {
               tooltip: "Copy invite link",
               onPressed: () {
                 Clipboard.setData(ClipboardData(text: inviteLink));
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Copied to clipboard")),
-                );
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Copied to clipboard")));
               },
             ),
           ],
         ),
         const SizedBox(height: 16),
-        ElevatedButton(
-          onPressed: onSelectVideo,
-          child: const Text("Select Video"),
-        ),
       ],
     );
   }

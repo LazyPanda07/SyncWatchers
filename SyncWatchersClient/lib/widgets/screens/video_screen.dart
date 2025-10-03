@@ -18,7 +18,7 @@ class VideoScreen extends StatefulWidget {
   State<VideoScreen> createState() => _VideoScreenState();
 }
 
-class _VideoScreenState extends State<VideoScreen> implements WebListener {
+class _VideoScreenState extends State<VideoScreen> {
   String get role => widget.responseData["role"];
 
   @override
@@ -26,8 +26,6 @@ class _VideoScreenState extends State<VideoScreen> implements WebListener {
     super.initState();
 
     SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
-
-    EventsHandler.instance.addListener(this);
   }
 
   @override
@@ -71,31 +69,4 @@ class _VideoScreenState extends State<VideoScreen> implements WebListener {
 
     super.dispose();
   }
-
-  @override
-  Future<void> changeVideo(String videoName) async {}
-
-  @override
-  Future<void> onInvite(String userName) async {}
-
-  @override
-  Future<void> onRoomDelete() async {}
-
-  @override
-  Future<void> onUpdateRole(String role) async {}
-
-  @override
-  Future<void> onUploadContent(String userUUID) async {}
-
-  @override
-  Future<void> onUserNameUpdate(String oldUserName, String newUserName) async {}
-
-  @override
-  Future<void> play(String userName) async {}
-
-  @override
-  Future<void> rewind(int offsetInSecondsFromStart) async {}
-
-  @override
-  Future<void> stop(String userName) async {}
 }

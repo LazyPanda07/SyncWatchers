@@ -17,45 +17,49 @@ class VideoPlayerWidget extends StatefulWidget {
 }
 
 class _VideoPlayerWidgetState extends State<VideoPlayerWidget> implements WebListener {
-  late VideoPlayerController _controller;
+  VideoPlayerController? _controller;
 
   @override
   void initState() {
     super.initState();
 
     EventsHandler.instance.addListener(this);
-
-    _controller = VideoPlayerController.asset("")
-      ..initialize().whenComplete(() {
-        setState(() {});
-      });
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    EventsHandler.instance.removeListener(this);
+
+    _controller?.dispose();
     super.dispose();
   }
 
   void _enterFullscreen() {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => FullscreenVideoPlayer(controller: _controller)));
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => FullscreenVideoPlayer(controller: _controller!)));
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_controller == null) {
+      return Container(
+        color: Colors.black,
+        child: const Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return Container(
       color: Colors.black,
-      child: _controller.value.isInitialized
+      child: _controller!.value.isInitialized
           ? Stack(
               alignment: Alignment.bottomCenter,
               children: [
                 Center(
                   child: FittedBox(
                     fit: BoxFit.contain,
-                    child: SizedBox(width: _controller.value.size.width, height: _controller.value.size.height, child: VideoPlayer(_controller)),
+                    child: SizedBox(width: _controller!.value.size.width, height: _controller!.value.size.height, child: VideoPlayer(_controller!)),
                   ),
                 ),
-                VideoPlayerControls(controller: _controller, onFullscreenToggle: _enterFullscreen, isFullscreen: false),
+                VideoPlayerControls(controller: _controller!, onFullscreenToggle: _enterFullscreen, isFullscreen: false),
               ],
             )
           : const Center(child: CircularProgressIndicator()),
@@ -64,14 +68,20 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> implements WebLis
 
   @override
   Future<void> changeVideo(String videoName) async {
-    if (_controller.value.isInitialized) {
-      await _controller.pause();
-      await _controller.dispose();
+    if (_controller != null) {
+      if (_controller!.value.isInitialized) {
+        await _controller!.pause();
+      }
+
+      await _controller!.dispose();
     }
 
     Directory temporaryDirectory = await getTemporaryDirectory();
+    String videoPath = "${temporaryDirectory.path}/$videoName";
 
-    _controller = VideoPlayerController.file(File("${temporaryDirectory.path}/$videoName"))..initialize().whenComplete(() => setState(() {}));
+    print("Open video from $videoPath");
+
+    _controller = VideoPlayerController.file(File(videoPath))..initialize().whenComplete(() => setState(() {}));
   }
 
   @override
@@ -91,15 +101,17 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> implements WebLis
 
   @override
   Future<void> play(String userName) async {
-    await _controller.play();
+    await _controller!.play();
   }
 
   @override
-  Future<void> rewind(int offsetInSecondsFromStart) async {}
+  Future<void> rewind(int offsetInSecondsFromStart) async {
+    await _controller!.seekTo(Duration(seconds: offsetInSecondsFromStart));
+  }
 
   @override
   Future<void> stop(String userName) async {
-    await _controller.pause();
+    await _controller!.pause();
   }
 }
 
@@ -142,18 +154,20 @@ class VideoPlayerControls extends StatefulWidget {
 }
 
 class _VideoPlayerControlsState extends State<VideoPlayerControls> {
-  double _volume = 1.0;
+  double _volume = 0.4;
 
   @override
   void initState() {
     super.initState();
-    _volume = widget.controller.value.volume;
+    widget.controller.setVolume(_volume);
+
     widget.controller.addListener(_update); // listen for play/pause updates
   }
 
   @override
   void dispose() {
     widget.controller.removeListener(_update);
+
     super.dispose();
   }
 
@@ -169,10 +183,28 @@ class _VideoPlayerControlsState extends State<VideoPlayerControls> {
       right: 8,
       child: Column(
         children: [
-          VideoProgressIndicator(
-            widget.controller,
-            allowScrubbing: true,
-            colors: const VideoProgressColors(playedColor: Colors.blue, bufferedColor: Colors.grey, backgroundColor: Colors.black),
+          GestureDetector(
+            onTapUp: (details) async {
+              final RenderBox box = context.findRenderObject() as RenderBox;
+              final double dx = box.globalToLocal(details.globalPosition).dx;
+              final double width = box.size.width;
+              final Duration position = widget.controller.value.duration * (dx / width);
+              final int seconds = position.inSeconds;
+              final bool wasPlaying = widget.controller.value.isPlaying;
+
+              stopRequest((response) {}, (errorMessage) {}, {"roomUUID": Settings.instance.roomUUID, "userName": Settings.instance.userName}).whenComplete(
+                () => rewindRequest((response) {}, (errorMessage) {}, {"roomUUID": Settings.instance.roomUUID, "offset": "$seconds"}).whenComplete(() {
+                  if (wasPlaying) {
+                    playRequest((response) {}, (errorMessage) {}, {"roomUUID": Settings.instance.roomUUID, "userName": Settings.instance.userName});
+                  }
+                }),
+              );
+            },
+            child: VideoProgressIndicator(
+              widget.controller,
+              allowScrubbing: false,
+              colors: const VideoProgressColors(playedColor: Colors.red, bufferedColor: Colors.white, backgroundColor: Colors.grey),
+            ),
           ),
           const SizedBox(height: 8),
           Row(
@@ -191,13 +223,6 @@ class _VideoPlayerControlsState extends State<VideoPlayerControls> {
                       "userName": Settings.instance.userName,
                     });
                   }
-                },
-              ),
-              IconButton(
-                icon: const Icon(Icons.stop, color: Colors.white),
-                onPressed: () {
-                  widget.controller.pause();
-                  widget.controller.seekTo(Duration.zero);
                 },
               ),
               IconButton(

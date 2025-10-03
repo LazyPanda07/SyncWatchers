@@ -12,7 +12,7 @@ enum _TypeFromBytes { int32, uint32 }
 
 class EventsHandler {
   static final EventsHandler instance = EventsHandler._internal();
-  final List<WebListener> _listeners = [];
+  final Map<Type, WebListener> _listeners = {};
 
   EventsHandler._internal();
 
@@ -92,7 +92,7 @@ class EventsHandler {
   }
 
   void _handleEvent(_Events eventType, Uint8List payload) {
-    for (WebListener listener in _listeners) {
+    for (WebListener listener in _listeners.values) {
       switch (eventType) {
         case _Events.onUploadContent:
           listener.onUploadContent(utf8.decode(payload));
@@ -171,6 +171,10 @@ class EventsHandler {
   }
 
   void addListener(WebListener listener) {
-    _listeners.add(listener);
+    _listeners[listener.runtimeType] = listener;
+  }
+
+  void removeListener(WebListener listener) {
+    _listeners.remove(listener.runtimeType);
   }
 }

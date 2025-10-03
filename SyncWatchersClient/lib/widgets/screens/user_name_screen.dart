@@ -55,6 +55,8 @@ class _UsernameScreenState extends State<UsernameScreen> {
 
         widget.responseData["userName"] = Settings.instance.userName;
 
+        _showSnackBar(null);
+
         Navigator.push(context, MaterialPageRoute(builder: (_) => VideoScreen(responseData: widget.responseData)));
       },
       (String errorMessage) {
