@@ -70,6 +70,7 @@ namespace executors
 
 			utils::notify<events::OnUploadContentEvent>(roomUUID, request.getRouteParameter<std::string>("user_uuid"));
 
+			response.setResponseCode(framework::ResponseCodes::created);
 			response.setBody("File uploaded");
 		}
 	}

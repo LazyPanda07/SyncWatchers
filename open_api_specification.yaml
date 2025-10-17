@@ -1,0 +1,417 @@
+openapi: 3.0.4
+info: 
+  title: SyncWatchers API
+  description: Access to SyncWatchers API features
+  version: 0.1.1
+  
+servers:
+  - url: "http://<ip>:52000"
+  
+paths:
+  /rooms:
+    get:
+      summary: Get list of users in room
+      operationId: getUsersInRoom
+      parameters:
+        - name: uuid
+          in: query
+          description: User UUID
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+    post:
+      summary: Create room
+      operationId: createRoom
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  example: Custom room
+      responses:
+        "201":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  inviteLink:
+                    type: string
+                    
+        "400":
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                description: Error text
+                type: string
+                example: Can't find Host header
+    delete:
+      summary: Delete room
+      operationId: deleteRoom
+      parameters:
+        - name: room_uuid
+          in: query
+          description: Room UUID
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+  /users:
+    get:
+      summary: Get all content uploaded by user
+      operationId: getUserContent
+      parameters:
+        - name: user_uuid
+          in: query
+          description: User UUID
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  role:
+                    type: string
+                    enum: ["owner", "link_poster", "default"]
+                  uploadedContent:
+                    type: array
+                    items:
+                      type: string
+        "404":
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: string
+    post:
+      summary: Change user's role
+      operationId: changeUserRole
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ownerUUID:
+                  type: string
+                userName:
+                  type: string
+                newRole:
+                  type: string
+                  enum: ["owner", "link_poster", "default"]
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+    patch:
+      summary: Change user's name
+      operationId: changeUserName
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userUUID:
+                  type: string
+                newUserName:
+                  type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+  /invite_link/{link}:
+    post:
+      summary: Invite to room
+      operationId: joinToRoom
+      parameters:
+        - name: link
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role:
+                  type: string
+                  enum: ["owner", "link_poster", "default"]
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  roomUUID:
+                    type: string
+                  userName:
+                    type: string
+                  userUUID:
+                    type: string
+                  role:
+                    type: string
+                    enum: ["owner", "link_poster", "default"]
+        "400":
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                description: Error text
+                type: string
+                example: Can't find Host header
+        "404":
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: string
+  /content/{room_uuid}:
+    get:
+      summary: Get all content in room
+      operationId: getRoomContent
+      parameters:
+        - name: room_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uploadedContent:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        contentName:
+                          type: string
+                        userName:
+                          type: string
+  /upload/{room_uuid}/{user_uuid}/{content_name}:
+    put:
+      summary: Upload content
+      operationId: uploadContent
+      parameters:
+        - name: room_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: user_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: content_name
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        "201":
+          description: Created
+          content:
+            text/plain:
+              schema:
+                type: string
+                
+  /download/{room_uuid}/{content_name}:
+    get:
+      summary: Download content
+      operationId: downloadContent
+      parameters:
+        - name: room_uuid
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: content_name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        "404":
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: string
+    options:
+      summary: Get meta information about content
+      operationId: getContentInformation
+      parameters:
+          - name: room_uuid
+            in: path
+            required: true
+            schema:
+              type: string
+          - name: content_name
+            in: path
+            required: true
+            schema:
+              type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  fileSize:
+                    type: integer
+                  lastModifiedTime:
+                    type: string
+  /video/stop:
+    post:
+      summary: Stop video
+      operationId: stopVideo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                roomUUID:
+                  type: string
+                userName:
+                  type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+  /video/play:
+    post:
+      summary: Play video
+      operationId: playVideo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                roomUUID:
+                  type: string
+                userName:
+                  type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string       
+  /video/change_video:
+    post:
+      summary: Change video
+      operationId: changeVideo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                roomUUID:
+                  type: string
+                videoName:
+                  type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string    
+  /video/rewind:
+    post:
+      summary: Rewind video
+      operationId: rewindVideo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                roomUUID:
+                  type: string
+                offset:
+                  description: Offset in seconds from start
+                  type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string                

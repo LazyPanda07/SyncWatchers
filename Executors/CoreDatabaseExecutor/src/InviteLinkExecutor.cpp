@@ -39,7 +39,7 @@ namespace executors
 		return result;
 	}
 
-	void InviteLinkExecutor::doPut(framework::HTTPRequest& request, framework::HTTPResponse& response)
+	void InviteLinkExecutor::doPost(framework::HTTPRequest& request, framework::HTTPResponse& response)
 	{
 		framework::Table rooms = request.getTable(":memory:", "rooms");
 		const framework::HTTPRequest::HeadersMap& headers = request.getHeaders();
@@ -92,6 +92,7 @@ namespace executors
 
 			utils::notify<events::OnInviteEvent>(roomUUID, userName);
 
+			response.setResponseCode(framework::ResponseCodes::created);
 			response.setBody(result);
 		}
 		else

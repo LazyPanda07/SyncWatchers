@@ -17,7 +17,7 @@ namespace executors
 
 		void init(const framework::utility::ExecutorSettings& settings) override;
 
-		void doPut(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
+		void doPost(framework::HTTPRequest& request, framework::HTTPResponse& response) override;
 
 		~InviteLinkExecutor() = default;
 	};

@@ -76,6 +76,7 @@ namespace executors
 			{ framework::SQLValue(roomInviteLink), framework::SQLValue(roomName), framework::SQLValue(roomUUID) }
 		);
 
+		response.setResponseCode(framework::ResponseCodes::created);
 		response.setBody(framework::JSONBuilder().append("inviteLink", roomInviteLink));
 	}
 
@@ -83,7 +84,7 @@ namespace executors
 	{
 		framework::Table rooms = request.getTable(":memory:", "rooms");
 		framework::Table users = request.getTable(":memory:", "users");
-		std::string uuid = request.getJSON().get<std::string>("room_uuid");
+		std::string uuid = request.getQueryParameters().at("room_uuid");
 
 		users.execute
 		(

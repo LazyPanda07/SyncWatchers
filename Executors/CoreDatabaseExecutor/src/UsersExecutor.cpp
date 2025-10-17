@@ -21,39 +21,31 @@ namespace executors
 
 		if (sqlResult.size())
 		{
-			try
+			request.getOrCreateTable(":memory:", "content", database::createContentQuery());
+
+			const framework::SQLResult::Row& user = *sqlResult.begin();
+			framework::Table content = request.getTable(":memory:", "content");
+			std::vector<framework::JSONObject> uploadedContent;
+
+			framework::SQLResult sqlContent = content.execute
+			(
+				"SELECT name FROM content WHERE upload_user_id = ?",
+				{ framework::SQLValue(user.at("id").get<int64_t>()) }
+			);
+
+			for (const auto& row : sqlContent)
 			{
-				request.getOrCreateTable(":memory:", "content", database::createContentQuery());
-
-				const framework::SQLResult::Row& user = *sqlResult.begin();
-				framework::Table content = request.getTable(":memory:", "content");
-				std::vector<framework::JSONObject> uploadedContent;
-
-				framework::SQLResult sqlContent = content.execute
-				(
-					"SELECT name FROM content WHERE upload_user_id = ?",
-					{ framework::SQLValue(user.at("id").get<int64_t>()) }
-				);
-
-				for (const auto& row : sqlContent)
+				for (const auto& [_, contentName] : row)
 				{
-					for (const auto& [_, contentName] : row)
-					{
-						framework::utility::appendArray(uploadedContent, contentName.get<std::string>());
-					}
+					framework::utility::appendArray(uploadedContent, contentName.get<std::string>());
 				}
-
-				result["name"] = user.at("name").get<std::string>();
-				result["role"] = user.at("role").get<std::string>();
-				result["uploadedContent"] = uploadedContent;
-
-				response.setBody(result);
 			}
-			catch (const std::exception& e)
-			{
-				response.setResponseCode(framework::ResponseCodes::internalServerError);
-				response.setBody(e.what());
-			}
+
+			result["name"] = user.at("name").get<std::string>();
+			result["role"] = user.at("role").get<std::string>();
+			result["uploadedContent"] = uploadedContent;
+
+			response.setBody(result);
 		}
 		else
 		{

@@ -51,7 +51,7 @@ Future<void> createRoom(Function(String response) onSuccess, Function(String err
 );
 
 Future<void> joinRoom(Function(String response) onSuccess, Function(String errorMessage) onFail, Map<String, String> data) async => _makeRequest(
-  method: http.put,
+  method: http.post,
   url: Uri.parse(data["inviteLink"]!),
   headers: {"Content-Type": "application/json"},
   body: jsonEncode({"role": data["role"]}),

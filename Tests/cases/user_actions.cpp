@@ -9,6 +9,8 @@
 
 #include "utils/Socket.h"
 
+#define ASSERT_RESPONSE_CODE(code) long responseCode; curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &responseCode); ASSERT_EQ(code, responseCode)
+
 class UserActions : public testing::Test
 {
 private:
@@ -119,6 +121,8 @@ TEST_F(UserActions, CreateRoom)
 
 	ASSERT_EQ(curl_easy_perform(curl), CURLE_OK);
 
+	ASSERT_RESPONSE_CODE(201);
+
 	auto responseJSON = nlohmann::json::parse(UserActions::response);
 
 	UserActions::inviteLink = responseJSON["inviteLink"].get<std::string>();
@@ -131,7 +135,7 @@ TEST_F(UserActions, JoinRoom)
 	constexpr std::string_view jsonData = R"({"role": "owner"})";
 
 	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_URL, inviteLink.data()), CURLE_OK);
-	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "PUT"), CURLE_OK);
+	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_POST, 1L), CURLE_OK);
 	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonData.data()), CURLE_OK);
 
 	curl_slist* headers = curl_slist_append(nullptr, "Content-Type: application/json");
@@ -139,6 +143,8 @@ TEST_F(UserActions, JoinRoom)
 	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers), CURLE_OK);
 
 	ASSERT_EQ(curl_easy_perform(curl), CURLE_OK);
+
+	ASSERT_RESPONSE_CODE(201);
 
 	auto responseJSON = nlohmann::json::parse(UserActions::response);
 
@@ -234,6 +240,8 @@ TEST_F(UserActions, UploadContent)
 
 		ASSERT_EQ(curl_easy_perform(curl), CURLE_OK);
 
+		ASSERT_RESPONSE_CODE(201);
+
 		ASSERT_EQ(UserActions::response, "File uploaded");
 
 		UserActions::socket.receive(&eventId);
@@ -315,26 +323,19 @@ TEST_F(UserActions, DownloadContent)
 
 TEST_F(UserActions, DeleteRoom)
 {
-	std::string jsonData = std::format(R"({{"room_uuid": "{}", }})", UserActions::roomUUID);
+	std::string url = std::format("http://127.0.0.1:52000/rooms?room_uuid={}", UserActions::roomUUID);
 	uint8_t eventId;
 
-	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_URL, "http://127.0.0.1:52000/rooms"), CURLE_OK);
+	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_URL, url.data()), CURLE_OK);
 	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "DELETE"), CURLE_OK);
-	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonData.data()), CURLE_OK);
-
-	curl_slist* headers = nullptr;
-
-	headers = curl_slist_append(headers, "Content-Type: application/json");
-
-	ASSERT_EQ(curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers), CURLE_OK);
 
 	ASSERT_EQ(curl_easy_perform(curl), CURLE_OK);
+
+	ASSERT_RESPONSE_CODE(200);
 
 	UserActions::socket.receive(&eventId);
 
 	ASSERT_EQ(eventId, 4);
-
-	curl_slist_free_all(headers);
 
 	ASSERT_EQ(UserActions::response, "Room deleted");
 }
