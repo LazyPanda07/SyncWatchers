@@ -6,11 +6,13 @@ info:
   
 servers:
   - url: "http://<ip>:52000"
-  
+
 paths:
   /rooms:
     get:
       summary: Get list of users in room
+      tags:
+        - rooms
       operationId: getUsersInRoom
       parameters:
         - name: uuid
@@ -30,6 +32,8 @@ paths:
                   type: string
     post:
       summary: Create room
+      tags:
+        - rooms
       operationId: createRoom
       requestBody:
         required: true
@@ -64,6 +68,8 @@ paths:
                 example: Can't find Host header
     delete:
       summary: Delete room
+      tags:
+        - rooms
       operationId: deleteRoom
       parameters:
         - name: room_uuid
@@ -82,6 +88,8 @@ paths:
   /users:
     get:
       summary: Get all content uploaded by user
+      tags:
+        - users
       operationId: getUserContent
       parameters:
         - name: user_uuid
@@ -115,6 +123,8 @@ paths:
                 type: string
     post:
       summary: Change user's role
+      tags:
+        - users
       operationId: changeUserRole
       requestBody:
         required: true
@@ -139,6 +149,8 @@ paths:
                 type: string
     patch:
       summary: Change user's name
+      tags:
+        - users
       operationId: changeUserName
       requestBody:
         required: true
@@ -161,6 +173,8 @@ paths:
   /invite_link/{link}:
     post:
       summary: Invite to room
+      tags:
+        - rooms
       operationId: joinToRoom
       parameters:
         - name: link
@@ -212,6 +226,8 @@ paths:
   /content/{room_uuid}:
     get:
       summary: Get all content in room
+      tags:
+        - content
       operationId: getRoomContent
       parameters:
         - name: room_uuid
@@ -239,6 +255,8 @@ paths:
   /upload/{room_uuid}/{user_uuid}/{content_name}:
     put:
       summary: Upload content
+      tags:
+        - content
       operationId: uploadContent
       parameters:
         - name: room_uuid
@@ -274,6 +292,8 @@ paths:
   /download/{room_uuid}/{content_name}:
     get:
       summary: Download content
+      tags:
+        - content
       operationId: downloadContent
       parameters:
         - name: room_uuid
@@ -302,6 +322,8 @@ paths:
                 type: string
     options:
       summary: Get meta information about content
+      tags:
+        - content
       operationId: getContentInformation
       parameters:
           - name: room_uuid
@@ -329,6 +351,8 @@ paths:
   /video/stop:
     post:
       summary: Stop video
+      tags:
+        - video
       operationId: stopVideo
       requestBody:
         required: true
@@ -351,6 +375,8 @@ paths:
   /video/play:
     post:
       summary: Play video
+      tags:
+        - video
       operationId: playVideo
       requestBody:
         required: true
@@ -373,6 +399,8 @@ paths:
   /video/change_video:
     post:
       summary: Change video
+      tags:
+        - video
       operationId: changeVideo
       requestBody:
         required: true
@@ -395,6 +423,8 @@ paths:
   /video/rewind:
     post:
       summary: Rewind video
+      tags:
+        - video
       operationId: rewindVideo
       requestBody:
         required: true

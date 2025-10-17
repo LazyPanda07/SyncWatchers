@@ -8,7 +8,7 @@ RUN cd /opt/SyncWatchers && mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=
 
 FROM ubuntu:24.04
 
-ARG HOST=0.0.0.0
+ENV HOST=0.0.0.0
 
 ENV LD_LIBRARY_PATH=/opt/SyncWatchers
 

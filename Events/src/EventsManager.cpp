@@ -51,6 +51,7 @@ namespace events
 			[this, roomUUID = roomUUID, eventId, eventData = std::move(eventData)]()
 			{
 				std::vector<SOCKET> sockets;
+				std::vector<SOCKET> disconnected;
 				std::mutex* sendMutex = nullptr;
 
 				{
@@ -70,15 +71,37 @@ namespace events
 
 				static_assert(sizeof(eventId) == 1);
 
-				std::lock_guard<std::mutex> lock(*sendMutex);
-
-				for (SOCKET socket : sockets)
 				{
-					send(socket, reinterpret_cast<const char*>(&eventId), sizeof(eventId), 0);
+					std::lock_guard<std::mutex> lock(*sendMutex);
 
-					if (eventData.size())
+					for (SOCKET socket : sockets)
 					{
-						send(socket, eventData.data(), static_cast<int>(eventData.size()), 0);
+						if (send(socket, reinterpret_cast<const char*>(&eventId), sizeof(eventId), 0) == SOCKET_ERROR)
+						{
+							disconnected.push_back(socket);
+
+							continue;
+						}
+
+						if (eventData.size())
+						{
+							if (send(socket, eventData.data(), static_cast<int>(eventData.size()), 0) == SOCKET_ERROR)
+							{
+								disconnected.push_back(socket);
+							}
+						}
+					}
+				}
+
+				{
+					std::lock_guard<std::mutex> lock(dataMutex);
+
+					if (auto it = data.find(roomUUID); it != data.end())
+					{
+						for (SOCKET socket : disconnected)
+						{
+							it->second.subscribers.erase(std::find(it->second.subscribers.begin(), it->second.subscribers.end(), socket));
+						}
 					}
 				}
 			}
