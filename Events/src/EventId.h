@@ -10,7 +10,7 @@ namespace events
 		onInvite,
 		onUpdateRole,
 		onUserNameUpdate,
-		onRoomDelete,
+		onDeleteRoom,
 		stop,
 		play,
 		rewind,

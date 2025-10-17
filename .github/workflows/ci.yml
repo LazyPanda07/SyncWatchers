@@ -1,4 +1,4 @@
-name: "Continues Integration"
+name: "Continuous Integration"
 
 
 on:
@@ -10,8 +10,8 @@ on:
 
 
 env:
-  flutter-version: 3.35.5
-  version: 0.1.0
+  flutter-version: 3.35.6
+  version: 0.1.1
 
 
 permissions:
@@ -86,7 +86,7 @@ jobs:
       working-directory: Tests/build/bin
       run: |
           export LD_LIBRARY_PATH=$(pwd):${LD_LIBRARY_PATH}
-          sudo docker run -d -p 52000:52000 -p 52001:52001 lazypanda07/sync_watchers:${{ env.version }}
+          sudo docker run -d -p 52000:52000 -p 52001:52001 -e HOST=127.0.0.1 lazypanda07/sync_watchers:${{ env.version }}
           ./Tests --external_server
 
 

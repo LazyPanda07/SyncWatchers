@@ -1,5 +1,7 @@
 #include "EventsManager.h"
 
+#include <algorithm>
+
 #include "Server.h"
 
 static std::unique_ptr<events::EventsManager> instance;
@@ -100,7 +102,10 @@ namespace events
 					{
 						for (SOCKET socket : disconnected)
 						{
-							it->second.subscribers.erase(std::find(it->second.subscribers.begin(), it->second.subscribers.end(), socket));
+							if (auto eraseIt = std::find(it->second.subscribers.begin(), it->second.subscribers.end(), socket); eraseIt != it->second.subscribers.end())
+							{
+								it->second.subscribers.erase(eraseIt);
+							}
 						}
 					}
 				}

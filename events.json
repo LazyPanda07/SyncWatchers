@@ -1,0 +1,67 @@
+{
+  "onUploadContent": {
+    "value": 0,
+    "data": {
+      "hasSize": false,
+      "fixedSize": 36,
+      "description": "User UUID"
+    }
+  },
+  "onInvite": {
+    "value": 1,
+    "data": {
+      "hasSize": true,
+      "description": "User name"
+    }
+  },
+  "onUpdateRole": {
+    "value": 2,
+    "data": {
+      "hasSize": true,
+      "description": "Role"
+    }
+  },
+  "onUserNameUpdate": {
+    "value": 3,
+    "data": {
+      "hasSize": true,
+      "description": "Old user name + space + new user name"
+    }
+  },
+  "onDeleteRoom": {
+    "value": 4,
+    "data": {
+      "hasSize": false,
+      "fixedSize": 0,
+      "description": ""
+    }
+  },
+  "stop": {
+    "value": 5,
+    "data": {
+      "hasSize": true,
+      "description": "Stop user name"
+    }
+  },
+  "play": {
+    "value": 6,
+    "data": {
+      "hasSize": true,
+      "description": "Play user name"
+    }
+  },
+  "rewind": {
+    "value": 7,
+    "data": {
+      "hasSize": false,
+      "description": "4 bytes integer of offset in seconds from start"
+    }
+  },
+  "changeVideo": {
+    "value": 8,
+    "data": {
+      "hasSize": true,
+      "description": "Video name"
+    }
+  }
+}

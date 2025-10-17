@@ -4,7 +4,7 @@ namespace events
 {
 	EventId OnDeleteRoomEvent::getEventId() const
 	{
-		return EventId::onRoomDelete;
+		return EventId::onDeleteRoom;
 	}
 
 	std::string_view OnDeleteRoomEvent::getEventData() const
